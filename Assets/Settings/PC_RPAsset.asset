@@ -74,6 +74,7 @@ MonoBehaviour:
   m_MixedLightingSupported: 1
   m_SupportsLightCookies: 1
   m_SupportsLightLayers: 1
+  m_DebugLevel: 0
   m_StoreActionsOptimization: 0
   m_UseAdaptivePerformance: 1
   m_ColorGradingMode: 0
@@ -82,7 +83,7 @@ MonoBehaviour:
   m_UseFastSRGBLinearConversion: 0
   m_SupportDataDrivenLensFlare: 1
   m_SupportScreenSpaceLensFlare: 1
-  m_GPUResidentDrawerMode: 1
+  m_GPUResidentDrawerMode: 0
   m_SmallMeshScreenPercentage: 0
   m_GPUResidentDrawerEnableOcclusionCullingInCameras: 0
   m_ShadowType: 1
@@ -106,8 +107,6 @@ MonoBehaviour:
   m_PrefilteringModeForwardPlus: 1
   m_PrefilteringModeDeferredRendering: 0
   m_PrefilteringModeScreenSpaceOcclusion: 1
-  m_PrefilteringModeScreenSpaceReflection: 1
-  m_PrefilterWriteSmoothness: 1
   m_PrefilterDebugKeywords: 1
   m_PrefilterWriteRenderingLayers: 0
   m_PrefilterHDROutput: 1
