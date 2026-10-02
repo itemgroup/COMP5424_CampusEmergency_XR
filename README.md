@@ -161,3 +161,20 @@ git cherry-pick --abort
 - 文档、代码、配置修改，全部走本套 PR 流程
 - 一个 PR 只完成一项小任务，不要一次性提交大量改动
 - 出现代码冲突，先在小组内沟通，再解决冲突，禁止强行覆盖他人修改
+
+## 七、第五模块文案与素材交接包
+
+[COMP5424_Module5](COMP5424_Module5/README.md) 提供四楼教室→电梯选择反馈→楼梯→一楼训练终点所需的英文文案、基础模型、标识、短提示音及来源记录。它保留独立交接目录，场景与 UI 负责人按需整合到根目录的 Unity 工程。
+
+| 外层文件夹 | 存放什么 | 用来干什么 |
+|---|---|---|
+| [Assets](COMP5424_Module5/Assets/) | `Module5` 下的英文 cue JSON、录音稿、原创模型/标识/WAV、Kenney 模型/OGG 及许可 | 为场景、UI 和声音开发提供素材与文本；将需要的 `Assets/Module5` 内容导入工程，并保留生成的 `.meta`。JSON 是内容数据，TXT 是录音稿。 |
+| [AlternativeFormats](COMP5424_Module5/AlternativeFormats/) | 五个家具模型的备用 FBX 及许可证 | 选择 FBX 时替代对应 OBJ，避免两套格式重复导入。 |
+| [Docs](COMP5424_Module5/Docs/) | 参考项目、英文线索、素材登记、声音计划、验收与贡献记录六份文档 | 供全组交接、核对使用方法和记录实际贡献；无需导入 Unity。 |
+| [Preview](COMP5424_Module5/Preview/index.html) | 浏览器预览、标识总览图、模型示意图 | 查看内容及试听提示音；图像为素材示意，无需导入 Unity。 |
+| [Research](COMP5424_Module5/Research/) | 素材来源/许可/哈希、参考仓库研究、研究文件链接、格式验证及原创规格记录 | 保留可追查的来源和检查证据；无需导入 Unity，也不代表 Quest 验收通过。 |
+| [Tools](COMP5424_Module5/Tools/) | `build_original_assets.py` 原创素材生成脚本 | 需要修改或重新生成原创素材时使用，需 Python、Pillow 和字体；使用现成素材无需运行。包内已移除 `assemble_pack.py`。 |
+
+先阅读包内 [README](COMP5424_Module5/README.md)、[英文台词](COMP5424_Module5/Docs/02_EnglishCueSheet.md) 和 [素材登记](COMP5424_Module5/Docs/03_AssetRegister.md)。工程 `Assets/Models` 已有建筑相关模型，应先核对现有内容再选择补充道具。控制器说明仍待移动负责人确认，旁白仍为录音稿；Unity 导入、主场景整合和 Quest 3 测试由团队后续完成。
+
+本包的 FBX、PNG、WAV 和 OGG 由 Git LFS 管理，规则保存在根目录 `.gitattributes`；克隆或拉取时应安装并启用 Git LFS。素材原始下载 ZIP、研究源码缓存和 `.DS_Store` 不纳入交接。

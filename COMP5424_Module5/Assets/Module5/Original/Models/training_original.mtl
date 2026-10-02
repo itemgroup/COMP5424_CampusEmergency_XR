@@ -1,0 +1,23 @@
+newmtl Door
+Ka 0.1 0.1 0.1
+Kd 0.43 0.48 0.53
+Ks 0 0 0
+d 1
+
+newmtl Frame
+Ka 0.1 0.1 0.1
+Kd 0.2 0.24 0.28
+Ks 0 0 0
+d 1
+
+newmtl Wall
+Ka 0.1 0.1 0.1
+Kd 0.79 0.81 0.81
+Ks 0 0 0
+d 1
+
+newmtl SignBlank
+Ka 0.1 0.1 0.1
+Kd 1 1 1
+Ks 0 0 0
+d 1

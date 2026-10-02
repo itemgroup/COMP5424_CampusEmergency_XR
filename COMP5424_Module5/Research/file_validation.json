@@ -1,0 +1,456 @@
+{
+  "date_hk": "2026-10-01",
+  "scope": "File-layer checks only; not Unity, Quest or subjective audition",
+  "source_zip_crc": [
+    {
+      "pack": "KenneyFurnitureKit",
+      "result": "passed"
+    },
+    {
+      "pack": "KenneyInterfaceSounds",
+      "result": "passed"
+    }
+  ],
+  "models": [
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/cardboardBoxClosed.obj",
+      "vertices": 20,
+      "triangles": 120,
+      "bounds_span_source_units": [
+        0.2125,
+        0.281,
+        0.2125
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/chair.obj",
+      "vertices": 77,
+      "triangles": 340,
+      "bounds_span_source_units": [
+        0.2,
+        0.47,
+        0.2
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/desk.obj",
+      "vertices": 103,
+      "triangles": 352,
+      "bounds_span_source_units": [
+        0.734475,
+        0.384408,
+        0.3923
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/doorwayOpen.obj",
+      "vertices": 16,
+      "triangles": 56,
+      "bounds_span_source_units": [
+        0.486,
+        1.009532,
+        0.0891
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/stairsOpen.obj",
+      "vertices": 209,
+      "triangles": 732,
+      "bounds_span_source_units": [
+        1.823435,
+        1.339532,
+        0.79
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/Original/Models/TrainingElevatorFacade.obj",
+      "vertices": 144,
+      "triangles": 72,
+      "bounds_span_source_units": [
+        2.075,
+        2.28,
+        0.1
+      ],
+      "face_indices_valid": true
+    },
+    {
+      "path": "Assets/Module5/Original/Models/TrainingSignPlate.obj",
+      "vertices": 4,
+      "triangles": 2,
+      "bounds_span_source_units": [
+        1.2,
+        0.5,
+        0.0
+      ],
+      "face_indices_valid": true
+    }
+  ],
+  "original_audio": [
+    {
+      "path": "Assets/Module5/Original/Audio/completion_soft.wav",
+      "channels": 1,
+      "sample_rate_hz": 44100,
+      "bits": 16,
+      "seconds": 0.75,
+      "frames_read_ok": true
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/hint_soft.wav",
+      "channels": 1,
+      "sample_rate_hz": 44100,
+      "bits": 16,
+      "seconds": 0.48,
+      "frames_read_ok": true
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/training_alert_soft.wav",
+      "channels": 1,
+      "sample_rate_hz": 44100,
+      "bits": 16,
+      "seconds": 1.7,
+      "frames_read_ok": true
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/ui_confirm_soft.wav",
+      "channels": 1,
+      "sample_rate_hz": 44100,
+      "bits": 16,
+      "seconds": 0.22,
+      "frames_read_ok": true
+    }
+  ],
+  "signage": [
+    {
+      "path": "Assets/Module5/Original/Signage/elevator_unavailable.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_left.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_right.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_1.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_4.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_left.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_right.png",
+      "width": 1200,
+      "height": 500
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/training_endpoint.png",
+      "width": 1200,
+      "height": 500
+    }
+  ],
+  "content_json_parsed": true,
+  "controller_placeholder_count": 3,
+  "unity_import": "NOT TESTED",
+  "quest3": "NOT TESTED",
+  "narration_audio": "NOT PRODUCED",
+  "audio_subjective_audition": "NOT TESTED",
+  "files": [
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C01_Comfort.txt",
+      "bytes": 73,
+      "sha256": "655767adb2e3f2244fc887aae590bd5ba15e0d70e28be08e0796c3774fa753e2"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C01_Controls_PENDING.txt",
+      "bytes": 279,
+      "sha256": "99e5c32c3d108d36168a21a5a500d77f26c9e88c242dd87c0a4ddcd3cc058230"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C01_Ready.txt",
+      "bytes": 64,
+      "sha256": "8a52b8a910bd7c96ed22f38e757c342115c58cdfb06de8127f3002ba44cc86da"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C01_Welcome.txt",
+      "bytes": 139,
+      "sha256": "f10e37d0d58a20d9ab80fc8ec9415b7fee93da57f7c3a7def73b13a9166d35c7"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C02_Notice.txt",
+      "bytes": 87,
+      "sha256": "58f44fca7eb4d1099bac0e0dd3131fe3ecd307eb32fc24d54452130f80e44ab0"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C03_Help.txt",
+      "bytes": 58,
+      "sha256": "31a42089f49f96f559317aab39ee2558dac9af92ef66e2004bdde5a2744f54f7"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C04_Explanation.txt",
+      "bytes": 130,
+      "sha256": "4e75921fa165d8c6561c0d269960d36a1353c1e16b890eadf454050b230ef686"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C05_Stairs.txt",
+      "bytes": 79,
+      "sha256": "a69ca0d8c7b6357d1aa41aa725ae1abbd03d8b36ed0c9dafebcf5d4970c1a784"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C06_Complete.txt",
+      "bytes": 80,
+      "sha256": "b1d9eab330309848696b7f4c68be32de17520a8a697b418b6a394f4b2d7c3fb6"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C07_Comfort.txt",
+      "bytes": 65,
+      "sha256": "252e22c74e594ae0886c78c050c761fe14aedd94c44df7b9b9a90fca3d3bb383"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C07_Cues.txt",
+      "bytes": 56,
+      "sha256": "dbae58fc9c77eafe79cb97826e12b02faddef98b6b38aa7c4bc4231f6ce73136"
+    },
+    {
+      "path": "Assets/Module5/Content/VoiceScripts/C07_Elevator.txt",
+      "bytes": 44,
+      "sha256": "d9ced81d641b38c654f24c11e7b9db97580036c17c87ecd103cd7ffe8c09091a"
+    },
+    {
+      "path": "Assets/Module5/Content/cues.en.json",
+      "bytes": 6618,
+      "sha256": "a47e114ba342750906c16110110fa52467c02fa8b5b1c1ca5cc79bc75f79345c"
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/completion_soft.wav",
+      "bytes": 66194,
+      "sha256": "c57dc7be311072d456afc979ffe09383a59d232f603d6de09f63761f0f632a0b"
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/hint_soft.wav",
+      "bytes": 42380,
+      "sha256": "f8ceda69c5ed9bb1e8c64aced3660df4cf5284ab1d3a1ec27f0c43c576fd2a37"
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/training_alert_soft.wav",
+      "bytes": 149984,
+      "sha256": "94704e50b6464b6f3baef2859e9370c848b950ab8c3946d833d6b9693d239f2b"
+    },
+    {
+      "path": "Assets/Module5/Original/Audio/ui_confirm_soft.wav",
+      "bytes": 19448,
+      "sha256": "1389bc985a40d3b386503562db71d0a616288877f00cb7b0efc3f682c747e111"
+    },
+    {
+      "path": "Assets/Module5/Original/Models/TrainingElevatorFacade.obj",
+      "bytes": 5395,
+      "sha256": "1a451f9559cb394c5ec788326fe38a0705c1cdb1cbdfb22cbe29a513969522ce"
+    },
+    {
+      "path": "Assets/Module5/Original/Models/TrainingSignPlate.obj",
+      "bytes": 254,
+      "sha256": "721d45e679f233dd57c04b670ac4c0b66b78df66c789c32e33a9f208bfa87b7e"
+    },
+    {
+      "path": "Assets/Module5/Original/Models/training_original.mtl",
+      "bytes": 231,
+      "sha256": "21a67334ce3b5e2653767e3611053bfc75578b52bf69d0e7eee77058d4e6f85d"
+    },
+    {
+      "path": "Assets/Module5/Original/PROVENANCE.md",
+      "bytes": 995,
+      "sha256": "70589fd17901d2874b45331395c2e118c61079f1825065373f68d45645e19776"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/elevator_unavailable.png",
+      "bytes": 19804,
+      "sha256": "0fdf57b56a90142eb6b722e185f509dc6fa79dbd316e1e2a7b7fa49c35fe3e3a"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/elevator_unavailable.svg",
+      "bytes": 597,
+      "sha256": "788a15ac52ecc5bb8dfd75641bad774678f2807c3998b82e24794e8228213ef6"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_left.png",
+      "bytes": 7848,
+      "sha256": "7c9eac2e113d201141e77b3bd62be695aaaa22c1328cb2da7eb0483e6e71dcc3"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_left.svg",
+      "bytes": 496,
+      "sha256": "906ba10da3cf8577b90a9d301d7ca7febb5458877fd93e1b083a0b7c666da1c6"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_right.png",
+      "bytes": 7875,
+      "sha256": "3a62f4b202720746a79d85192e9d9362a78eb07413ea0cf41050a1114f17280a"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/exit_right.svg",
+      "bytes": 498,
+      "sha256": "85e2d0e7fa0cf8d0eae7d385cd5ad3dc27a7ddb9c9a5f765486a769509fb10da"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_1.png",
+      "bytes": 6785,
+      "sha256": "ebe3bcf73c694f007a3f67b8b7b964e2962c2012cbcf5dc11eb30d72ba84babf"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_1.svg",
+      "bytes": 412,
+      "sha256": "a1be9643f74b6f142d71d3477ea8bf99d5e82bc6910e8d0c27b54e2308f162c2"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_4.png",
+      "bytes": 7273,
+      "sha256": "04106d8a974fd2688d17abd7734a7248f85d116ea438788a13f00b3ccfd0753d"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/level_4.svg",
+      "bytes": 412,
+      "sha256": "5b2666d5ea6070a756d4ea22fb858952c83ccf0fe264e97b376aa5622a855e4b"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_left.png",
+      "bytes": 13382,
+      "sha256": "696e17996454f4eecc31c8c440f313864a4a0fb282ad38a20284fe2300185274"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_left.svg",
+      "bytes": 498,
+      "sha256": "dd87e63a13ae5195c0de6e5699d98c3ab06c257df15ef2992899efb09e5fe06b"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_right.png",
+      "bytes": 13458,
+      "sha256": "7fc71af808013ff568a98d685ab8a82abd0931344a1e1b8b23785de0bca6dffe"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/stairs_right.svg",
+      "bytes": 500,
+      "sha256": "4213262858d69716e7d6a0502c677eb077c1ac5670f0d16cb5efa4d854a867ef"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/training_endpoint.png",
+      "bytes": 16164,
+      "sha256": "0f54d9ea928a4621b313612c3bbad1cd25ae842fc75e743170bc8df759e883a2"
+    },
+    {
+      "path": "Assets/Module5/Original/Signage/training_endpoint.svg",
+      "bytes": 585,
+      "sha256": "4daf5bebc6f63fb2d100325fe9e94cd7935a9cee82fd14e0fd869aa464091b30"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/License.txt",
+      "bytes": 614,
+      "sha256": "bc0de1a0742cb490f9ed4bae0bd284286ebb27e23149b9917c7d8c0d590b8b29"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/cardboardBoxClosed.mtl",
+      "bytes": 256,
+      "sha256": "aeb33dfccdf381881fd065ef5724709610fe7748f818090a755b4eb46002a952"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/cardboardBoxClosed.obj",
+      "bytes": 4676,
+      "sha256": "f1d344f2433406fe9d3f54a927978dbfcf20b13ceb533155dc06965de28ef793"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/chair.mtl",
+      "bytes": 147,
+      "sha256": "eb2bffff6262d9b032d9ae1de51467559b6a03da66cd68ac5ecd34ecd004c0c5"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/chair.obj",
+      "bytes": 13851,
+      "sha256": "73b0cc678606b37302bfb66192a007855ce9a7826f8824e04e75f8a413a82f02"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/desk.mtl",
+      "bytes": 257,
+      "sha256": "5e5596841db7ef51c29d073c80e432ccca5240d0fc966255a0cb1fbcec3f6dc0"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/desk.obj",
+      "bytes": 17411,
+      "sha256": "5591258c26d1311a99ddb7b73e1e9ca48492afa102757d51fd9b3686e3fbff7e"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/doorwayOpen.mtl",
+      "bytes": 147,
+      "sha256": "eb2bffff6262d9b032d9ae1de51467559b6a03da66cd68ac5ecd34ecd004c0c5"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/doorwayOpen.obj",
+      "bytes": 2956,
+      "sha256": "a42b72f4bbb64612aca2c6d22bfdfa8bcbf03c9f13bfb4ceb6c906fbe5d97bac"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/stairsOpen.mtl",
+      "bytes": 366,
+      "sha256": "4a5b77b940ca3631e9a8de90b33f39e538065f1813249e2dd582e4d318b7fbd2"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Models/stairsOpen.obj",
+      "bytes": 36611,
+      "sha256": "ee9359c46dfeef5fc77270d45040555186aba042995d3454198305eb3f6f948b"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyFurnitureKit/Source.txt",
+      "bytes": 276,
+      "sha256": "16e4880914561ff375a3a5e9dc74dd5f70e7a75d041b6106741813c2712d09bf"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyInterfaceSounds/Audio/click_001.ogg",
+      "bytes": 4876,
+      "sha256": "ccfb7fa0cccdd9faec0eb16033c732b1e308d139d80f799161495d58f7adcdb9"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyInterfaceSounds/Audio/confirmation_001.ogg",
+      "bytes": 8968,
+      "sha256": "063564703b6094d70718a3e787a55cc9141611e4ecd6b6637f8828f79b4a8c3a"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyInterfaceSounds/Audio/open_001.ogg",
+      "bytes": 9834,
+      "sha256": "a27c6bb0df7da1e6af5dd5937593c98bc58b6e513f42fe6a3254cd6a6949c648"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyInterfaceSounds/License.txt",
+      "bytes": 574,
+      "sha256": "f7966c773bbed0eca6a9c75081c44a178b38eae112724dbb5fdfbd4192d118a9"
+    },
+    {
+      "path": "Assets/Module5/ThirdParty/KenneyInterfaceSounds/Source.txt",
+      "bytes": 279,
+      "sha256": "45e9469bd22426d921c654f0cd5436a10b0266e844d7331f223a49c90342e709"
+    }
+  ],
+  "browser_preview": {
+    "date_hk": "2026-10-01",
+    "all_9_images_loaded": true,
+    "all_7_audio_tracks_loaded_without_media_error": true,
+    "horizontal_overflow": false,
+    "subjective_audition": "NOT TESTED"
+  },
+  "all_local_document_preview_and_cue_links_exist": true,
+  "all_11_recordable_voice_scripts_match_screen_text": true
+}

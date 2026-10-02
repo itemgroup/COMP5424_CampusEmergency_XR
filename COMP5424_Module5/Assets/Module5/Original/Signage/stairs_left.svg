@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+<rect width="1200" height="500" fill="#16644C"/><rect x="18" y="18" width="1164" height="464" rx="18" fill="none" stroke="white" stroke-width="8"/>
+<polygon points="70,250 205,110 205,195 345,195 345,305 205,305 205,390" fill="white"/>
+<text x="770" y="250" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="142" fill="white">STAIRS</text>
+
+</svg>
