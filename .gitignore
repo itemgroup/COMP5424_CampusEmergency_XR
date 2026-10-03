@@ -121,3 +121,28 @@ InitTestScene*.unity*
 *.unity text eol=lf
 *.cs text eol=lf
 *.json text eol=lf
+# Unity auto-generated version control setting
+ProjectSettings/VersionControlSettings.asset
+
+# macOS
+.DS_Store
+._*
+*.swp
+
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# VS Code
+.vscode/
+
+# Rider / IntelliJ
+.idea/
+
+# Android / Quest build artifacts
+*.apk.idsig
+*.symbols.zip
+/[Aa]rtefacts/
+/[Ee]ngine/
+/[Gg]radleOut*/
