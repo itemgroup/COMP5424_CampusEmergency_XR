@@ -1,0 +1,472 @@
+﻿#include "pch-cpp.hpp"
+
+
+
+
+
+
+
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774_RuntimeMethod_var;
+
+
+IL2CPP_EXTERN_C_BEGIN
+IL2CPP_EXTERN_C_END
+
+
+
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A_gshared (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA_gshared (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method) ;
+
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3 (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0 (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0 (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774 (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2 (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6 (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7 (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522 (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442 (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8 (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A (int32_t ___0_layerId, uint32_t ___1_texId, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint32_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A_gshared)(___0_layerId, ___1_texId, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5 (int32_t ___0_layerId, uint64_t ___1_swapchainHandle, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5_gshared)(___0_layerId, ___1_swapchainHandle, method);
+}
+inline void OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA (int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight, const RuntimeMethod* method)
+{
+	((  void (*) (int32_t, uint64_t, uint64_t, const RuntimeMethod*))OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA_gshared)(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, method);
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m73CE37230C31ED7632D51B1488C03153122080F3_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD5EA83F99135D347B55F71CE2EF289FDA4B40BC0_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mD6F5ADC526C5E3DFBD6E7031C798047306ABFAD7_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m1E31A051D766FA63A4DD2CA4591AD379BA5995A0_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m4C63BB214ABCD451AD5481BD2E5D991E0F5A92CE_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mEABFAF8956D0A9424C4ABDD509FA327550A3CE03_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mF57AC6E98D0CFC7BC6B641A035407CBF6D6CC774_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m6978D0DAA4A6BD217399960870754D08DD54C20B_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8BEE37BF5B1F1CBD7915260C7715B07A9F629943_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m690DAE105588BA049CE230918BFF791893E851A2_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m26AFFCA51D4AB6E012E787D14A771F531FF868E6_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m80897AA46FF2FCB67DE0B7C9C1C45BBBAD86BC09_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m422954B5CE412344A8A6601A23C4CA9C5F5C68D7_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mD1FD663A1A25D531F95F0C891B78A2FC34814EFD_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m8766C38BA7B5BBFDF832F7BEBF842588DB484F91_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m6412EE17467C4225E34E5F6FD024629DDDB80BEA_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_m33D7EE4488662BAC0BC9CCC216D489CA91806522_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_mF9411AAC0ABA957F9A5FE0413DE1656C1FC3565E_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_m43ADDDAC20DB972BCED3BF7AC7C45A5284E1690E_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mA499633F9AF5EE6FE9E0F28080FE174665C0B442_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m42F0EB7104D4F0B5EA0C0C90A919C94B36CB80F8_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A(int32_t ___0_layerId, uint32_t ___1_texId)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A(___0_layerId, ___1_texId, OpenXRCustomLayerHandler_1_OnRenderTextureIdIdCallback_mAAD548FC0C12E96AC156C1CE2B3A19D415B8604A_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5(int32_t ___0_layerId, uint64_t ___1_swapchainHandle)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5(___0_layerId, ___1_swapchainHandle, OpenXRCustomLayerHandler_1_OnCreatedSwapchainCallback_mCD474FF44AF096927FB88606F3BF9F4B16B262F5_RuntimeMethod_var);
+
+}
+extern "C" void DEFAULT_CALL ReversePInvokeWrapper_OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA(int32_t ___0_layerId, uint64_t ___1_swapchainHandleLeft, uint64_t ___2_swapchainHandleRight)
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA_RuntimeMethod_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	il2cpp::vm::ScopedThreadAttacher _vmThreadHelper;
+
+	OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA(___0_layerId, ___1_swapchainHandleLeft, ___2_swapchainHandleRight, OpenXRCustomLayerHandler_1_OnCreatedStereoSwapchainCallback_m93D6170DCF0C42F067551C176203E4EC086E2AAA_RuntimeMethod_var);
+
+}
