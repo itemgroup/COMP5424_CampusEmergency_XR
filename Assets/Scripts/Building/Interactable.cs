@@ -14,7 +14,7 @@ namespace CampusEmergency.Building
         [SerializeField] private string displayName = "Interactable";
 
         [Tooltip("可选：XRI 简单交互组件，activated 事件转发到 Interact()。")]
-        [SerializeField] private XRSimpleInteractable simpleInteractable;
+        [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable simpleInteractable;
 
         public string DisplayName => displayName;
 
