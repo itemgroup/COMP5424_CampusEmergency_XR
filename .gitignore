@@ -118,3 +118,5 @@ InitTestScene*.unity*
 *.unity text eol=lf
 *.cs text eol=lf
 *.json text eol=lf
+# Unity auto-generated version control setting
+ProjectSettings/VersionControlSettings.asset
