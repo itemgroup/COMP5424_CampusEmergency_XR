@@ -21,5 +21,13 @@ namespace CampusEmergency.Utilities
             Instance = (T)this;
             DontDestroyOnLoad(gameObject);
         }
+
+        protected virtual void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
     }
 }
