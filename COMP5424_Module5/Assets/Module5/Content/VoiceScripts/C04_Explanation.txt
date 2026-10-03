@@ -1,0 +1,1 @@
+This elevator is not part of the evacuation route in this exercise. Check the evacuation signs and choose the marked stair route.

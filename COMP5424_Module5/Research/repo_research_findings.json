@@ -1,0 +1,131 @@
+{
+  "checked_date_hk": "2026-10-01",
+  "method": "公开GitHub REST递归tree（truncated=false）+锁定提交raw文本；只取少量文档、许可和提示相关脚本，未克隆大仓、未运行Unity或Quest。",
+  "findings": [
+    {
+      "repo": "namratabhaumik/VR-Evacuation-Simulation",
+      "commit_sha": "b2f6891dbc92683de675402e8748da18e8536a67",
+      "root_license": "MIT; Copyright (c) 2024 Namrata Bhaumik",
+      "root_license_url": "https://github.com/namratabhaumik/VR-Evacuation-Simulation/blob/b2f6891dbc92683de675402e8748da18e8536a67/LICENSE",
+      "facts": [
+        {
+          "text": "README描述疏散标识与人声提示两种导引，以及到达终点后停止练习。",
+          "source": "https://github.com/namratabhaumik/VR-Evacuation-Simulation/blob/b2f6891dbc92683de675402e8748da18e8536a67/README.md"
+        },
+        {
+          "text": "实际CSV表头包含场景名、时长、行走距离、选择、距离A/B终点；仅检查表头，不复制参与者记录。",
+          "source": "https://github.com/namratabhaumik/VR-Evacuation-Simulation/blob/b2f6891dbc92683de675402e8748da18e8536a67/Assets/NormalPlayerGameData.csv"
+        },
+        {
+          "text": "README提到Assets/Sketchup和Assets/Scenarios，但当前递归API树没有这些目录内容，也未发现项目自编C#脚本。Assets有3个场景文件、CSV日志、MP3及alex-men.zip。不能声称可以直接复用完整模型/脚本。",
+          "source": "https://api.github.com/repos/namratabhaumik/VR-Evacuation-Simulation/git/trees/b2f6891dbc92683de675402e8748da18e8536a67?recursive=1"
+        },
+        {
+          "text": "Unity实际ProjectVersion为2022.3.46f1。README中的MIT文字链接错误指向chatgpt.com/c/LICENSE；根LICENSE文件本身有效。",
+          "source": "https://github.com/namratabhaumik/VR-Evacuation-Simulation/blob/b2f6891dbc92683de675402e8748da18e8536a67/ProjectSettings/ProjectVersion.txt"
+        }
+      ],
+      "design_suggestions": [
+        "关键路线提示同时提供标识和配对字幕/可选语音；这属于本项目设计建议，不能声称参考项目已有完全对应的字幕。",
+        "沿途事件ID用于个人贡献和行为观察；不采纳时长/距离作为成绩指标。"
+      ],
+      "do_not_adopt": [
+        "真实Halifax城市模型、人群追随情境、12个场景、head bobbing/复杂人群AI。"
+      ],
+      "asset_reuse_status": "有一个PTT录音，作者/原始语音授权来源未知，不下载到项目；MIT不能替代原始录音来源核查。未能确认第三方城市/树/巴士模型授权。"
+    },
+    {
+      "repo": "ISTE-VIT/Inferno",
+      "commit_sha": "5c50fae96de094d186efab4881ea5cc37f663dff",
+      "root_license": "MIT; Copyright (c) 2025 Ashwani Kumar Moudgil",
+      "root_license_url": "https://github.com/ISTE-VIT/Inferno/blob/5c50fae96de094d186efab4881ea5cc37f663dff/LICENSE",
+      "facts": [
+        {
+          "text": "实际Assets/Audio Clips有alarm.wav、click1.wav、fire.wav、Spray.mp3，并有独立AlarmAudio/ClickAudio/FireAudio/SprayAudio Prefab。",
+          "source": "https://github.com/ISTE-VIT/Inferno/tree/main/Assets/Audio%20Clips"
+        },
+        {
+          "text": "AlarmTriggered.cs在Finger触发后发布事件，且仅未播放时启动alarmAudioSource。ExitFound.cs在Player到达时发布出口事件。",
+          "source": "https://github.com/ISTE-VIT/Inferno/blob/main/Assets/Scripts/AlarmTriggered.cs"
+        },
+        {
+          "text": "PerformanceTracker.cs记录事件时间并读取UserEmail/UserAge发送到backendURL，与README匿名数据说法有差异；未运行后端，不代表数据真的发出或后端存在。",
+          "source": "https://github.com/ISTE-VIT/Inferno/blob/main/Assets/Scripts/PerformanceTracker.cs"
+        }
+      ],
+      "design_suggestions": [
+        "把提示音、语音与环境音分别登记，给每个声音明确触发条件、重复规则及配对文字。",
+        "采用场景事件来触发提示；最终采用团队XR选择输入，不能直接复制Finger标签逻辑。"
+      ],
+      "do_not_adopt": [
+        "真实TT楼宇平面图、灭火器操作、恐慌体验、计时效率/排名/AI分数、个人信息上传。"
+      ],
+      "asset_reuse_status": "音频和Alarm.fbx文件存在，但在查看的README和树内没有针对这些素材的原始作者/下载页/专属许可证据；作为来源未核实，不复制音频/模型。项目原创MIT代码可按条件保留声明后参考，但模块5不需要搬入旧依赖代码。"
+    },
+    {
+      "repo": "marcusleeeugene/FireBusters-VR",
+      "commit_sha": "046da8aa4efcb6cb39b999cdd9200905ce1d6db9",
+      "root_license": "当前完整API树未见根项目许可证，GitHub license字段为null；第三方插件license不授予本项目原创代码使用许可。",
+      "facts": [
+        {
+          "text": "FireEscapeLevel-instructions.txt确有火警、找出口楼梯及楼梯末端终点的说明；LoadLevelInstructions.cs按场景名加载Resources文本。",
+          "source": "https://github.com/marcusleeeugene/FireBusters-VR/blob/main/Assets/Resources/FireEscapeLevel-instructions.txt"
+        },
+        {
+          "text": "EnterElevatorDoor.cs在Hand触发时启用deathVideoScene、暂停音频并移回spawnLocation；不能描述成只有教学弹窗。",
+          "source": "https://github.com/marcusleeeugene/FireBusters-VR/blob/main/Assets/Scripts/FireEscapeLevel/EnterElevatorDoor.cs"
+        },
+        {
+          "text": "实际有FireExit/ExitSign.fbx、Elevator/elevator-door.obj和Fire Announcement.mp3、报警、门音效、scream音频。",
+          "source": "https://github.com/marcusleeeugene/FireBusters-VR/tree/main/Assets"
+        },
+        {
+          "text": "README提供桌椅/门/出口标识/火警装置等第三方原始链接。出口标识Sketchfab原页面明确Model deleted。",
+          "source": "https://sketchfab.com/3d-models/exit-sign-5cdc6c488a46477d836ea870c5af46a6"
+        }
+      ],
+      "design_suggestions": [
+        "将沿途文案与代码分离交付给UI负责人；使用电梯选择作为非惩罚解释性反馈分支。"
+      ],
+      "do_not_adopt": [
+        "deathVideo、强制回出生点、恐慌人物/尖叫、Sandbox纵火、灭火器选择、旧HTC Vive/SteamVR依赖。"
+      ],
+      "asset_reuse_status": "未经原创许可授权不复制项目代码/音轨；素材只能回到各原始页面逐项确认。出口标识原始下载已失效；仓库里有旧FBX也不等于仍能取得合法使用许可。"
+    },
+    {
+      "repo": "Educatian/vr-safety-training",
+      "commit_sha": "589f0d87565227fca315908498a6b91c99a37275",
+      "root_license": "当前完整API树未见根项目许可证，GitHub license字段为null。第三方各自有许可。",
+      "facts": [
+        {
+          "text": "QA Rubric规定重要音频配文字、提示可读可关闭、无强制移动/闪烁、须头显验证。",
+          "source": "https://github.com/Educatian/vr-safety-training/blob/main/VR_TRAINING_QA_RUBRIC.md"
+        },
+        {
+          "text": "NpcSpeechBubbleView.cs有文字显示、页码与Hide功能；TrainingHud.cs显示当前区域及反馈。",
+          "source": "https://github.com/Educatian/vr-safety-training/blob/main/Assets/SafetyTraining/Scripts/Runtime/NpcSpeechBubbleView.cs"
+        },
+        {
+          "text": "EXPERIENCE.md明写Audio remains future debt，不是现成旁白/音效来源。",
+          "source": "https://github.com/Educatian/vr-safety-training/blob/main/EXPERIENCE.md"
+        },
+        {
+          "text": "Assets/ThirdParty/PolyHaven/README.md将纸箱、塑料箱等原模型与CC0来源联系起来；Kenney UI Pack Sci-fi License.txt写CC0/无需署名；Rocketbox有MIT 2020 Microsoft声明。",
+          "source": "https://github.com/Educatian/vr-safety-training/blob/main/Assets/ThirdParty/PolyHaven/README.md"
+        }
+      ],
+      "design_suggestions": [
+        "采用独立ThirdParty来源登记思路，从原站下载适合的小素材；借鉴文字替代、短句反馈和头显可读性验收。"
+      ],
+      "do_not_adopt": [
+        "5区20分钟认证、多NPC、LLM对话、确定性计分、全套工业场景。"
+      ],
+      "asset_reuse_status": "原创代码不复制；Poly Haven/Kenney优先从原作者官网获取并复核许可；Rocketbox非本版必需，不下载。"
+    }
+  ],
+  "limitations": [
+    "文件存在不代表能在你们的Unity版本/渲染管线/Quest构建运行。",
+    "下载到Research的是核查材料，不代表加入小组Assets或已经满足许可使用条件。",
+    "未读取或复制参考项目参与者CSV行；仅验证表头。"
+  ]
+}
