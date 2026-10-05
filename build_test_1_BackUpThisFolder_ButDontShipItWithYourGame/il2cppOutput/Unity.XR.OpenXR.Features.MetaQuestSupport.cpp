@@ -139,7 +139,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void OpenXRFeature__ctor_m120460E34ECC22ED2DB
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
-// Method Definition Index: 88622
+// Method Definition Index: 88633
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MetaQuestFeature_OnBeforeSerialize_mBDBD9B1831B675B51E313203F4085B9E323F986D (MetaQuestFeature_t8E2B25DD2DCD3C6B43B6AA0B69C4504566363C62* __this, const RuntimeMethod* method) 
 {
 	{
@@ -147,7 +147,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MetaQuestFeature_OnBeforeSerialize_mBDBD
 		return;
 	}
 }
-// Method Definition Index: 88623
+// Method Definition Index: 88634
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MetaQuestFeature_OnAfterDeserialize_m6CEC9A834FF816944D60749296CF1E826441718E (MetaQuestFeature_t8E2B25DD2DCD3C6B43B6AA0B69C4504566363C62* __this, const RuntimeMethod* method) 
 {
 	{
@@ -155,7 +155,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MetaQuestFeature_OnAfterDeserialize_m6CE
 		return;
 	}
 }
-// Method Definition Index: 88624
+// Method Definition Index: 88635
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MetaQuestFeature__ctor_m5252F2B3583ED0398B5E04ECE2892C240D4F4E63 (MetaQuestFeature_t8E2B25DD2DCD3C6B43B6AA0B69C4504566363C62* __this, const RuntimeMethod* method) 
 {
 	//<source_info:<no-source>:1>

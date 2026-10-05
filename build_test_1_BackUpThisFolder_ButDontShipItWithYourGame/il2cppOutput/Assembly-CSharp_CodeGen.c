@@ -173,7 +173,15 @@ extern void Interactable_OnEnable_m18B546C2BECABCB03CDD95D904589E3679864898 (voi
 extern void Interactable_OnDisable_m8EDDEB441E932DEA98F68900483F6BDFDDC3EBDB (void);
 extern void Interactable_OnActivated_m7CE05D84453AB25A427F13E0B6E903678BC49E08 (void);
 extern void Interactable__ctor_mC6F6D52B9DA1680C8DC55065336C6D163E75D9E9 (void);
-static Il2CppMethodPointer s_methodPointers[172] = 
+extern void SchoolCollisionSetup_Awake_m6489087E5F6FD373185CE6A2CE737011C1076DC7 (void);
+extern void SchoolCollisionSetup_OnDestroy_m4CA77DDA8C79B469D922410E0B8F54F10FBC7118 (void);
+extern void SchoolCollisionSetup_BuildCollisionGeometry_m477928B0C79DFA65C53C9223C6472699D449401E (void);
+extern void SchoolCollisionSetup_FindWalkableFloor_mAD219DCFC40BA628686C5F3687DE04BE45369AC6 (void);
+extern void SchoolCollisionSetup_AppendTriangle_m2832C396C883B55FDF5753242662B0EAB53B7CDC (void);
+extern void SchoolCollisionSetup_CreateMesh_m5E66431981C665DA49E63484B9DBC8EBF2F84D8A (void);
+extern void SchoolCollisionSetup__ctor_m91210B5C18EDCDEE5C50ED1BC1861178807BAB7D (void);
+extern void SchoolCollisionSetup__cctor_m58F0C3CE5ED1EA61A6EFA91455F6A0D3597250B1 (void);
+static Il2CppMethodPointer s_methodPointers[180] = 
 {
 	AnchorVisuals_Start_m84A5BBC02FFBE8BF40D0A3E2D7B36D1FD701DED6,
 	AnchorVisuals_Update_mD2CF52D5A41427FB49A899A2478D687B470A7EDE,
@@ -347,6 +355,14 @@ static Il2CppMethodPointer s_methodPointers[172] =
 	Interactable_OnActivated_m7CE05D84453AB25A427F13E0B6E903678BC49E08,
 	NULL,
 	Interactable__ctor_mC6F6D52B9DA1680C8DC55065336C6D163E75D9E9,
+	SchoolCollisionSetup_Awake_m6489087E5F6FD373185CE6A2CE737011C1076DC7,
+	SchoolCollisionSetup_OnDestroy_m4CA77DDA8C79B469D922410E0B8F54F10FBC7118,
+	SchoolCollisionSetup_BuildCollisionGeometry_m477928B0C79DFA65C53C9223C6472699D449401E,
+	SchoolCollisionSetup_FindWalkableFloor_mAD219DCFC40BA628686C5F3687DE04BE45369AC6,
+	SchoolCollisionSetup_AppendTriangle_m2832C396C883B55FDF5753242662B0EAB53B7CDC,
+	SchoolCollisionSetup_CreateMesh_m5E66431981C665DA49E63484B9DBC8EBF2F84D8A,
+	SchoolCollisionSetup__ctor_m91210B5C18EDCDEE5C50ED1BC1861178807BAB7D,
+	SchoolCollisionSetup__cctor_m58F0C3CE5ED1EA61A6EFA91455F6A0D3597250B1,
 };
 extern void TrackedRotation_get_totalOffset_mC129829FFE6CDD96C8885030BDAEF40D569F06C8_AdjustorThunk (void);
 extern void TrackedRotation_Reset_m54545DE2D01827833956AEC4324C136A0CB72425_AdjustorThunk (void);
@@ -359,7 +375,7 @@ static Il2CppTokenAdjustorThunkPair s_adjustorThunks[4] =
 	{ 0x06000074, TrackedRotation_SetBaseFromVector_m0CAD68507FD5C7AA3C7CAE09720645F033F1D26E_AdjustorThunk },
 	{ 0x06000075, TrackedRotation_SetTargetFromVector_m42F1586C38A41E0FB628220D326B1572BB8F80D7_AdjustorThunk },
 };
-static const int32_t s_InvokerIndices[172] = 
+static const int32_t s_InvokerIndices[180] = 
 {
 	17869,
 	17869,
@@ -470,7 +486,7 @@ static const int32_t s_InvokerIndices[172] =
 	13615,
 	17764,
 	17869,
-	22245,
+	22247,
 	17869,
 	17869,
 	17869,
@@ -533,6 +549,14 @@ static const int32_t s_InvokerIndices[172] =
 	13518,
 	-1,
 	17869,
+	17869,
+	17869,
+	17869,
+	20815,
+	20235,
+	2527,
+	17869,
+	30757,
 };
 static const Il2CppTokenRangePair s_rgctxIndices[1] = 
 {
@@ -555,7 +579,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	172,
+	180,
 	s_methodPointers,
 	4,
 	s_adjustorThunks,
