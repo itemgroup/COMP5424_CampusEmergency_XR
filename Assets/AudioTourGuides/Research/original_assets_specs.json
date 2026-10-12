@@ -1,0 +1,65 @@
+{
+  "created": "2026-10-01",
+  "creator": "Codex at the user's direction",
+  "source_type": "Original procedural content, no sampled audio or copied artwork",
+  "models": [
+    {
+      "file": "TrainingElevatorFacade.obj",
+      "vertex_count": 144,
+      "triangle_count": 72
+    },
+    {
+      "file": "TrainingSignPlate.obj",
+      "vertex_count": 4,
+      "triangle_count": 2
+    }
+  ],
+  "audio": [
+    {
+      "file": "training_alert_soft.wav",
+      "seconds": 1.7,
+      "sample_rate": 44100,
+      "channels": 1,
+      "bits": 16,
+      "peak_dbfs": -18.42,
+      "rms_dbfs": -24.87
+    },
+    {
+      "file": "ui_confirm_soft.wav",
+      "seconds": 0.22,
+      "sample_rate": 44100,
+      "channels": 1,
+      "bits": 16,
+      "peak_dbfs": -20.92,
+      "rms_dbfs": -29.11
+    },
+    {
+      "file": "hint_soft.wav",
+      "seconds": 0.48,
+      "sample_rate": 44100,
+      "channels": 1,
+      "bits": 16,
+      "peak_dbfs": -20.92,
+      "rms_dbfs": -27.38
+    },
+    {
+      "file": "completion_soft.wav",
+      "seconds": 0.75,
+      "sample_rate": 44100,
+      "channels": 1,
+      "bits": 16,
+      "peak_dbfs": -20.92,
+      "rms_dbfs": -26.55
+    }
+  ],
+  "signs": [
+    "exit_left.png",
+    "exit_right.png",
+    "stairs_left.png",
+    "stairs_right.png",
+    "level_4.png",
+    "level_1.png",
+    "training_endpoint.png",
+    "elevator_unavailable.png"
+  ]
+}

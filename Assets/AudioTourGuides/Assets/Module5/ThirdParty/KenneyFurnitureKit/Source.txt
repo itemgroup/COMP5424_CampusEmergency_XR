@@ -1,0 +1,6 @@
+Author: Kenney
+Original page: https://kenney.nl/assets/furniture-kit
+Licence: CC0 1.0, as specified on the source page and included License.txt
+Downloaded: 2026-10-01
+Attribution is not required; retained here for provenance.
+No Unity import or Quest test has been completed.

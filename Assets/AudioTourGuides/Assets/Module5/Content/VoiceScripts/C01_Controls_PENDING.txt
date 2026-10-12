@@ -1,0 +1,3 @@
+Do not record yet. Confirm the control bindings and replace the authoring placeholders in the matching screen text.
+
+Move: [待与移动负责人确认]. Select: [待与移动负责人确认]. Pause or exit: [待与移动负责人确认]. Practise the controls before you begin.

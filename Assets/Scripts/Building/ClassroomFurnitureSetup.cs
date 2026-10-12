@@ -15,6 +15,10 @@ namespace CampusEmergency.Building
         private const float DoorOpeningWidth = 4.2f;
         private const float DoorOpeningHeight = 2.29f;
         private const float DoorFrameDepthScale = 0.18f;
+        private const float ClassroomHalfWidth = 4.2f;
+        private const float ClassroomLength = 8.4f;
+        private const float ClassroomHeight = 4f;
+        private const float ClassroomFloorTolerance = 0.25f;
 
         [SerializeField] private Transform spawnAnchor;
         [SerializeField] private GameObject deskModel;
@@ -26,7 +30,10 @@ namespace CampusEmergency.Building
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying && gameObject.scene.IsValid() && !UnityEditor.EditorUtility.IsPersistent(gameObject))
+            {
                 EnsureCampusFurnitureExists();
+                ConfigureClassroomPropPhysics();
+            }
 #endif
         }
 
@@ -36,6 +43,7 @@ namespace CampusEmergency.Building
                 return;
 
             EnsureCampusFurnitureExists();
+            ConfigureClassroomGrabInteractables();
             AddPlayerPushSupport();
         }
 
@@ -182,6 +190,235 @@ namespace CampusEmergency.Building
 
             if (controller.GetComponent<CharacterControllerRigidbodyPusher>() == null)
                 controller.gameObject.AddComponent<CharacterControllerRigidbodyPusher>();
+        }
+
+        private void ConfigureClassroomPropPhysics()
+        {
+            if (spawnAnchor == null)
+                return;
+
+            Bounds classroomsBounds = GetClassroomsBounds();
+            MeshFilter[] meshFilters = FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (MeshFilter meshFilter in meshFilters)
+            {
+                if (meshFilter.sharedMesh == null || !IsClassroomPropModel(meshFilter))
+                    continue;
+
+                Renderer modelRenderer = meshFilter.GetComponent<Renderer>();
+                if (modelRenderer == null || !classroomsBounds.Intersects(modelRenderer.bounds))
+                    continue;
+
+                GameObject modelObject = meshFilter.gameObject;
+                if (IsChair1(modelObject))
+                {
+                    ConfigureGrabbableChair(modelObject, meshFilter.sharedMesh);
+                    continue;
+                }
+
+                Collider existingCollider = meshFilter.GetComponentInParent<Collider>();
+                if (existingCollider == null)
+                {
+#if UNITY_EDITOR
+                    MeshCollider meshCollider = Application.isPlaying
+                        ? modelObject.AddComponent<MeshCollider>()
+                        : UnityEditor.Undo.AddComponent<MeshCollider>(modelObject);
+#else
+                    MeshCollider meshCollider = modelObject.AddComponent<MeshCollider>();
+#endif
+                    meshCollider.sharedMesh = meshFilter.sharedMesh;
+                    meshCollider.convex = false;
+                    existingCollider = meshCollider;
+                }
+
+                if (existingCollider.isTrigger)
+                    existingCollider.isTrigger = false;
+
+#if UNITY_EDITOR
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(existingCollider);
+#endif
+            }
+
+            ConfigureClassroomGrabInteractables();
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+#endif
+        }
+
+        private Bounds GetClassroomsBounds()
+        {
+            float floorY = spawnAnchor.position.y - SpawnAnchorFloorOffset;
+            Vector3 center = new Vector3(
+                spawnAnchor.position.x,
+                floorY + ClassroomHeight * 0.5f,
+                spawnAnchor.position.z - ClassroomLength * 0.5f);
+            Vector3 size = new Vector3(
+                ClassroomHalfWidth * 2f,
+                ClassroomHeight + ClassroomFloorTolerance,
+                ClassroomLength * 2f + ClassroomFloorTolerance);
+            return new Bounds(center, size);
+        }
+
+        private static bool IsClassroomPropModel(MeshFilter meshFilter)
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                string assetPath = UnityEditor.AssetDatabase.GetAssetPath(meshFilter.sharedMesh);
+                return assetPath.StartsWith("Assets/school/props/", StringComparison.OrdinalIgnoreCase);
+            }
+#endif
+            return meshFilter.gameObject.layer != 5;
+        }
+
+        private static bool IsChair1(GameObject modelObject)
+        {
+            string objectName = modelObject.name;
+            return objectName.Equals("chair1", StringComparison.OrdinalIgnoreCase)
+                || objectName.StartsWith("chair1 (", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void ConfigureClassroomGrabInteractables()
+        {
+            if (spawnAnchor == null)
+                return;
+
+            Bounds classroomsBounds = GetClassroomsBounds();
+            GameObject[] sceneObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (GameObject sceneObject in sceneObjects)
+            {
+                if (IsChair1(sceneObject))
+                {
+                    MeshFilter meshFilter = sceneObject.GetComponent<MeshFilter>();
+                    Renderer modelRenderer = sceneObject.GetComponent<Renderer>();
+                    if (meshFilter != null && meshFilter.sharedMesh != null && modelRenderer != null && classroomsBounds.Intersects(modelRenderer.bounds))
+                        ConfigureGrabbableChair(sceneObject, meshFilter.sharedMesh);
+                    continue;
+                }
+
+                if (sceneObject.name == "Classroom Chair 2")
+                {
+                    Rigidbody body = sceneObject.GetComponent<Rigidbody>();
+                    Collider collider = sceneObject.GetComponent<Collider>();
+                    XRGrabInteractable interactable = sceneObject.GetComponent<XRGrabInteractable>();
+                    if (body == null || collider == null || interactable == null)
+                    {
+                        Debug.LogError("[ClassroomFurnitureSetup] Classroom Chair 2 requires a Rigidbody, Collider, and XRGrabInteractable.", sceneObject);
+                        continue;
+                    }
+
+                    if (classroomsBounds.Intersects(collider.bounds))
+                        ConfigureChairPhysics(body, collider, interactable);
+                    continue;
+                }
+
+                if (sceneObject.name.StartsWith("Classroom Desk ", StringComparison.Ordinal)
+                    || sceneObject.name.StartsWith("Classroom Chair ", StringComparison.Ordinal))
+                {
+                    Collider collider = sceneObject.GetComponent<Collider>();
+                    if (collider != null && classroomsBounds.Intersects(collider.bounds))
+                        MakeFurnitureStatic(sceneObject);
+                }
+            }
+        }
+
+        private static void MakeFurnitureStatic(GameObject furniture)
+        {
+            XRGrabInteractable interactable = furniture.GetComponent<XRGrabInteractable>();
+            if (interactable != null)
+                interactable.enabled = false;
+
+            Rigidbody body = furniture.GetComponent<Rigidbody>();
+            if (body == null)
+                return;
+
+            body.isKinematic = true;
+            body.useGravity = false;
+            if (Application.isPlaying)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (interactable != null)
+                    UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(interactable);
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(body);
+            }
+#endif
+        }
+
+        private static void ConfigureGrabbableChair(GameObject chair, Mesh mesh)
+        {
+#if UNITY_EDITOR
+            MeshCollider collider = chair.GetComponent<MeshCollider>();
+            if (collider == null)
+            {
+                collider = Application.isPlaying
+                    ? chair.AddComponent<MeshCollider>()
+                    : UnityEditor.Undo.AddComponent<MeshCollider>(chair);
+            }
+#else
+            MeshCollider collider = chair.GetComponent<MeshCollider>();
+            if (collider == null)
+                collider = chair.AddComponent<MeshCollider>();
+#endif
+            collider.sharedMesh = mesh;
+            collider.convex = true;
+            collider.isTrigger = false;
+
+#if UNITY_EDITOR
+            Rigidbody body = chair.GetComponent<Rigidbody>();
+            if (body == null)
+            {
+                body = Application.isPlaying
+                    ? chair.AddComponent<Rigidbody>()
+                    : UnityEditor.Undo.AddComponent<Rigidbody>(chair);
+            }
+            XRGrabInteractable interactable = chair.GetComponent<XRGrabInteractable>();
+            if (interactable == null)
+            {
+                interactable = Application.isPlaying
+                    ? chair.AddComponent<XRGrabInteractable>()
+                    : UnityEditor.Undo.AddComponent<XRGrabInteractable>(chair);
+            }
+            if (!Application.isPlaying)
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(collider);
+#else
+            Rigidbody body = chair.GetComponent<Rigidbody>();
+            if (body == null)
+                body = chair.AddComponent<Rigidbody>();
+            XRGrabInteractable interactable = chair.GetComponent<XRGrabInteractable>();
+            if (interactable == null)
+                interactable = chair.AddComponent<XRGrabInteractable>();
+#endif
+            ConfigureChairPhysics(body, collider, interactable);
+        }
+
+        private static void ConfigureChairPhysics(Rigidbody body, Collider collider, XRGrabInteractable interactable)
+        {
+            body.mass = 3f;
+            body.linearDamping = 1f;
+            body.angularDamping = 2f;
+            body.isKinematic = false;
+            body.useGravity = true;
+            body.interpolation = RigidbodyInterpolation.Interpolate;
+            body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+            collider.isTrigger = false;
+            interactable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+            interactable.trackScale = false;
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(body);
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(collider);
+                UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(interactable);
+            }
+#endif
         }
 
         private void CreatePushable(
