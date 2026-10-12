@@ -1,0 +1,75 @@
+{
+  "language": "en",
+  "version": "2026-10-01",
+  "purpose": "Content handoff; event bindings and UI behaviours are proposed, not implemented by this file.",
+  "building": "Fictional teaching building",
+  "start": "Level 4 classroom",
+  "endpoint": "Level 1 training endpoint",
+  "release_blockers": ["Confirm and replace controller bindings", "Define the Level 1 endpoint in the scene", "Decide how the new route addresses Phase 1 route recovery", "Complete Unity and Quest 3 validation"],
+  "nodes": [
+    {
+      "id": "C01",
+      "title": "Classroom briefing",
+      "suggested_trigger": "Before Start",
+      "cards": [
+        {"id": "C01_Welcome", "screen_text": "Welcome to this supervised VR fire evacuation exercise. You are in a fictional building on Level 4. Keep within your supervised play area.", "voice_text": "Welcome to this supervised VR fire evacuation exercise. You are in a fictional building on Level 4. Keep within your supervised play area.", "recording_ready": true},
+        {"id": "C01_Controls", "screen_text": "Move: [待与移动负责人确认]. Select: [待与移动负责人确认]. Pause or exit: [待与移动负责人确认]. Practise the controls before you begin.", "voice_text": null, "recording_ready": false, "author_note": "Resolve bindings and record the matching English screen text before participant use."},
+        {"id": "C01_Comfort", "screen_text": "You can stop at any time. Tell the supervisor if you feel uncomfortable.", "voice_text": "You can stop at any time. Tell the supervisor if you feel uncomfortable.", "recording_ready": true},
+        {"id": "C01_Ready", "screen_text": "When you are ready, begin the exercise and leave the classroom.", "voice_text": "When you are ready, begin the exercise and leave the classroom.", "recording_ready": true}
+      ],
+      "button_label": "Begin exercise",
+      "voice_mode": "optional, one card at a time",
+      "sound": null,
+      "signs": ["Original/Signage/level_4.png"],
+      "repeat": "On exercise start; replay only if the team implements it"
+    },
+    {
+      "id": "C02", "title": "Leave the classroom", "suggested_trigger": "Start confirmed",
+      "cards": [{"id": "C02_Notice", "screen_text": "Fire evacuation exercise in progress. Look for evacuation signs and choose your route.", "voice_text": "Fire evacuation exercise in progress. Look for evacuation signs and choose your route.", "recording_ready": true}],
+      "voice_mode": "optional once", "sound": "Original/Audio/training_alert_soft.wav",
+      "signs": [], "sign_options": ["Original/Signage/exit_left.png", "Original/Signage/exit_right.png"],
+      "sign_selection_note": "Choose exactly the direction matching the scene; these are alternatives, not simultaneous signs.",
+      "repeat": "Once per exercise"
+    },
+    {
+      "id": "C03", "title": "Elevator decision area", "suggested_trigger": "Optional learner-requested help only",
+      "cards": [{"id": "C03_Help", "screen_text": "Look around for evacuation signs before choosing a route.", "voice_text": "Look around for evacuation signs before choosing a route.", "recording_ready": true}],
+      "voice_mode": "Off on approach; optional on help request", "sound": "Original/Audio/hint_soft.wav",
+      "signs": [], "default_automatic_popup": false, "repeat": "Only when requested; disable if Help is not implemented",
+      "author_note": "No automatic popup or spoken answer when the user only approaches the elevator."
+    },
+    {
+      "id": "C04", "title": "Elevator selection feedback", "suggested_trigger": "Elevator selection confirmed",
+      "cards": [{"id": "C04_Explanation", "screen_text": "This elevator is not part of the evacuation route in this exercise. Check the evacuation signs and choose the marked stair route.", "voice_text": "This elevator is not part of the evacuation route in this exercise. Check the evacuation signs and choose the marked stair route.", "recording_ready": true}],
+      "button_label": "Continue", "voice_mode": "optional once per displayed panel",
+      "sound": "Original/Audio/ui_confirm_soft.wav", "signs": ["Original/Signage/elevator_unavailable.png"],
+      "repeat": "Do not reopen or replay while the same panel is open",
+      "author_note": "Continue dismisses the panel. Do not auto-move, reset, score or invent lift failure. Sign is feedback only."
+    },
+    {
+      "id": "C05", "title": "Stair route", "suggested_trigger": "Entered the stair route",
+      "cards": [{"id": "C05_Stairs", "screen_text": "You are on the stair route. Follow the signs to the Level 1 training endpoint.", "voice_text": "You are on the stair route. Follow the signs to the Level 1 training endpoint.", "recording_ready": true}],
+      "voice_mode": "optional once", "sound": null,
+      "signs": [], "sign_options": ["Original/Signage/stairs_left.png", "Original/Signage/stairs_right.png"],
+      "sign_selection_note": "Choose the direction matching the stair route. Place floor labels only on their actual floors.",
+      "repeat": "Once after stair-route entry"
+    },
+    {
+      "id": "C06", "title": "Training endpoint", "suggested_trigger": "Entered the defined endpoint area",
+      "cards": [{"id": "C06_Complete", "screen_text": "You have reached the Level 1 training endpoint. The route exercise is complete.", "voice_text": "You have reached the Level 1 training endpoint. The route exercise is complete.", "recording_ready": true}],
+      "voice_mode": "optional once", "sound": "Original/Audio/completion_soft.wav",
+      "signs": ["Original/Signage/training_endpoint.png", "Original/Signage/level_1.png"],
+      "repeat": "Once per exercise; only after actual arrival"
+    },
+    {
+      "id": "C07", "title": "Debrief", "suggested_trigger": "After completion",
+      "cards": [
+        {"id": "C07_Cues", "screen_text": "Which signs or other cues helped you choose your route?", "voice_text": "Which signs or other cues helped you choose your route?", "recording_ready": true},
+        {"id": "C07_Elevator", "screen_text": "What did you understand about the elevator?", "voice_text": "What did you understand about the elevator?", "recording_ready": true},
+        {"id": "C07_Comfort", "screen_text": "Did anything feel unclear or uncomfortable? Tell the supervisor.", "voice_text": "Did anything feel unclear or uncomfortable? Tell the supervisor.", "recording_ready": true}
+      ],
+      "button_label": "End exercise", "voice_mode": "optional one question at a time or supervisor-led", "sound": null, "signs": [],
+      "repeat": "Once; preserve real participant explanations without inferred answers"
+    }
+  ]
+}
