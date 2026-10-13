@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using CampusEmergency.Building;
 
 namespace CampusEmergency.UI
 {
@@ -19,6 +20,7 @@ namespace CampusEmergency.UI
         [SerializeField] private Transform downStairAssist1;
         [SerializeField] private Transform downStairAssist2;
         [SerializeField] private Transform downStairFinished;
+        [SerializeField] private NpcGuideDialogue elizabethGuideDialogue;
 
         private const float CanvasScale = 0.001f;
         private const float PanelWidth = 1600f;
@@ -32,6 +34,7 @@ namespace CampusEmergency.UI
         private const float UiDistanceStep = 0.2f;
         private const float InitialGuideDistance = 1.4f;
         private const float InitialHudDistance = 1.1f;
+        private const string ElizabethStartObjectName = "Elizabeth Warren animation Start";
         private static readonly string[] TutorialSteps =
         {
             "Move with the left joystick",
@@ -170,7 +173,6 @@ namespace CampusEmergency.UI
             }
 
             Transform cameraTransform = headCamera.transform;
-            FollowPlayer(guideCanvasObject, cameraTransform, guideDistance, -0.02f);
             FollowPlayer(hudCanvasObject, cameraTransform, hudDistance, -0.38f);
             FollowPlayer(pauseCanvasObject, cameraTransform, guideDistance, -0.02f);
         }
@@ -319,6 +321,8 @@ namespace CampusEmergency.UI
                 CompleteStep("Teleport successful. Push the right joystick up to aim again, then press the right grip to cancel.");
         }
 
+        public UnityEvent onTeleportCornerReached;
+
         private void AdvanceRoute(Vector3 destination)
         {
             if (downStairStart == null || downStairAssist == null ||
@@ -334,6 +338,7 @@ namespace CampusEmergency.UI
                     currentObjective = "At the DownStair corner, read the signs and choose the stair route to 2F.";
                     currentFloor = "3F";
                     floorTrackingConnected = true;
+                    onTeleportCornerReached?.Invoke();
                     break;
                 case RouteProgress.RouteChoiceStarted when IsRouteDestination(destination, downStairAssist):
                     routeProgress = RouteProgress.EnteredStairs;
@@ -499,6 +504,7 @@ namespace CampusEmergency.UI
                 new Vector2(0.37f, 0.56f), new Vector2(0.68f, 0.77f), TextAnchor.MiddleLeft);
             hudTasksText = CreateText("HUD Tasks", hudRect, font, string.Empty, 25, SecondaryTextColor,
                 new Vector2(0.025f, 0.07f), new Vector2(0.68f, 0.52f), TextAnchor.UpperLeft);
+            hudTasksText.gameObject.SetActive(false);
             hudNearerButton = CreateButton("HUD Nearer Button", hudRect, font, "Nearer",
                 new Vector2(0.70f, 0.78f), new Vector2(0.83f, 0.96f), MoveHudNearer);
             hudFartherButton = CreateButton("HUD Farther Button", hudRect, font, "Farther",
@@ -509,6 +515,7 @@ namespace CampusEmergency.UI
                 new Vector2(0.70f, 0.29f), new Vector2(0.98f, 0.51f), ReviewGuide);
             hudCollapseButton = CreateButton("Collapse HUD Button", hudRect, font, "Hide tasks",
                 new Vector2(0.70f, 0.04f), new Vector2(0.98f, 0.26f), ToggleHud);
+            hudCollapseButton.gameObject.SetActive(false);
             hudCollapseLabel = hudCollapseButton.GetComponentInChildren<Text>();
             UpdateNavigationHud();
             UpdateHudExpandedState();
@@ -529,9 +536,8 @@ namespace CampusEmergency.UI
 
             hudFloorText.gameObject.SetActive(hudExpanded);
             hudObjectiveText.gameObject.SetActive(hudExpanded);
-            hudTasksText.gameObject.SetActive(hudExpanded);
+            hudTasksText.gameObject.SetActive(false);
             hudTitleText.text = hudExpanded ? "CAMPUS EMERGENCY PRACTICE" : "PRACTICE TASKS";
-            hudCollapseLabel.text = hudExpanded ? "Hide tasks" : "Show tasks";
 
             SetButtonAnchors(hudNearerButton,
                 new Vector2(hudExpanded ? 0.70f : 0.025f, hudExpanded ? 0.78f : 0.36f),
@@ -541,7 +547,7 @@ namespace CampusEmergency.UI
                 new Vector2(hudExpanded ? 0.98f : 0.68f, hudExpanded ? 0.96f : 0.68f));
             SetButtonAnchors(hudPauseButton, new Vector2(0.70f, hudExpanded ? 0.54f : 0.67f), new Vector2(0.98f, hudExpanded ? 0.76f : 0.94f));
             SetButtonAnchors(hudReviewButton, new Vector2(0.70f, hudExpanded ? 0.29f : 0.36f), new Vector2(0.98f, hudExpanded ? 0.51f : 0.63f));
-            SetButtonAnchors(hudCollapseButton, new Vector2(0.70f, hudExpanded ? 0.04f : 0.05f), new Vector2(0.98f, hudExpanded ? 0.26f : 0.32f));
+            hudCollapseButton.gameObject.SetActive(false);
         }
 
         private void MoveGuideNearer()
@@ -719,14 +725,26 @@ namespace CampusEmergency.UI
 
         private void UpdateNavigationHud()
         {
-            if (hudFloorText == null || hudObjectiveText == null || hudTasksText == null)
-                return;
+            string taskList = BuildTaskList();
+            if (hudFloorText != null && hudObjectiveText != null)
+            {
+                hudFloorText.text = floorTrackingConnected
+                    ? $"Current floor: {currentFloor}     Practice route: 3F to 2F"
+                    : "Planned practice route: 3F to 2F";
+                hudObjectiveText.text = $"Current objective: {currentObjective}";
+            }
+            if (hudTasksText != null)
+                hudTasksText.text = taskList;
 
-            hudFloorText.text = floorTrackingConnected
-                ? $"Current floor: {currentFloor}     Practice route: 3F to 2F"
-                : "Planned practice route: 3F to 2F";
-            hudObjectiveText.text = $"Current objective: {currentObjective}";
+            if (elizabethGuideDialogue == null)
+                elizabethGuideDialogue = FindElizabethStartGuideDialogue();
 
+            if (elizabethGuideDialogue != null)
+                elizabethGuideDialogue.ShowPersistentDialogue("EVACUATION TASK LIST", taskList);
+        }
+
+        private string BuildTaskList()
+        {
             var taskLines = new System.Text.StringBuilder();
             for (int i = 0; i < PracticeTasks.Length; i++)
             {
@@ -739,7 +757,23 @@ namespace CampusEmergency.UI
             if (routeProgress == RouteProgress.AwaitingStart)
                 taskLines.Append("\nContinue to the DownStair corner to begin route practice.");
 
-            hudTasksText.text = taskLines.ToString();
+            return taskLines.ToString();
+        }
+
+        private NpcGuideDialogue FindElizabethStartGuideDialogue()
+        {
+            GameObject npc = GameObject.Find(ElizabethStartObjectName);
+            if (npc == null)
+            {
+                Debug.LogError($"Practice route could not find '{ElizabethStartObjectName}' for the task list.", this);
+                return null;
+            }
+
+            NpcGuideDialogue dialogue = npc.GetComponent<NpcGuideDialogue>();
+            if (dialogue == null)
+                dialogue = npc.AddComponent<NpcGuideDialogue>();
+
+            return dialogue;
         }
 
         private Button CreateButton(

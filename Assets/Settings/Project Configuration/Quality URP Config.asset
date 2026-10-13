@@ -52,7 +52,7 @@ MonoBehaviour:
   m_AdditionalLightsShadowResolutionTierMedium: 512
   m_AdditionalLightsShadowResolutionTierHigh: 1024
   m_ReflectionProbeBlending: 0
-  m_ReflectionProbeBoxProjection: 0
+  m_ReflectionProbeBoxProjection: 1
   m_ReflectionProbeAtlas: 1
   m_ShadowDistance: 10
   m_ShadowCascadeCount: 1
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_PrefilterBicubicLightmapSampling: 1
   m_PrefilterReflectionProbeRotation: 1
   m_PrefilterReflectionProbeBlending: 1
-  m_PrefilterReflectionProbeBoxProjection: 1
+  m_PrefilterReflectionProbeBoxProjection: 0
   m_PrefilterReflectionProbeAtlas: 1
   m_ShaderVariantLogLevel: 0
   m_ShadowCascades: 0

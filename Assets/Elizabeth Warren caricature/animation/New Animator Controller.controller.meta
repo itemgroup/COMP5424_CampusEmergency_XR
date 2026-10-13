@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6ffd0893bd39fad41bf26cad38f60bba
+timeCreated: 1503344186
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 98615
+  packageName: Elizabeth Warren caricature
+  packageVersion: 1.0
+  assetPath: Assets/Elizabeth Warren caricature/animation/New Animator Controller.controller
+  uploadId: 726049
