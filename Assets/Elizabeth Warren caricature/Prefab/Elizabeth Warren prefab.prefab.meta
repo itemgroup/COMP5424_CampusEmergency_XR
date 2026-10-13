@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b5bf67069f5950943afac56320c54b69
+timeCreated: 1503510711
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 98615
+  packageName: Elizabeth Warren caricature
+  packageVersion: 1.0
+  assetPath: Assets/Elizabeth Warren caricature/Prefab/Elizabeth Warren prefab.prefab
+  uploadId: 726049

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a89e051fcebee1647abdfd9946bb31e2
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295744
+  packageName: Kansai University (Takatsuki Campus)
+  packageVersion: 1.0
+  assetPath: Assets/Kansai University (Takatsuki)/Shader/BothSides.shader
+  uploadId: 692932
