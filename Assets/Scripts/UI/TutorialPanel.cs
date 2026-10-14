@@ -1,4 +1,5 @@
 using TMPro;
+using CampusEmergency.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -305,6 +306,7 @@ namespace CampusEmergency.UI
         public void NextPage()
         {
             if (_runtimePages == null || _runtimePages.Length <= 1) return;
+            CampusAudioDirector.Instance?.PlayPopup();
             _currentPage = (_currentPage + 1) % _runtimePages.Length;
             Debug.Log($"[TutorialPanel] 翻页 → {_currentPage + 1}/{_runtimePages.Length}");
             UpdateBodyText();
@@ -325,6 +327,7 @@ namespace CampusEmergency.UI
 
         public void ShowPanel()
         {
+            CampusAudioDirector.Instance?.PlayPopup();
             gameObject.SetActive(true);
             _isHiding = false;
             _currentPage = 0;

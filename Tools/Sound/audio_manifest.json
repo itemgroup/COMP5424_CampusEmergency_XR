@@ -1,0 +1,156 @@
+[
+  {
+    "file": "alarm_activation.wav",
+    "seconds": 0.9,
+    "sample_rate": 22050,
+    "peak_dbfs": -6.02,
+    "sha256": "026239d660d7cc0aad1582e29f80f0040f35a2eb6e2446a5963712123687f01e"
+  },
+  {
+    "file": "alarm_loop.wav",
+    "seconds": 4.5,
+    "sample_rate": 22050,
+    "peak_dbfs": -7.54,
+    "sha256": "cf167523aa06fda5eb88c3fbc55a2b00b7b16bcefe4a67271e5b9e8444fde098"
+  },
+  {
+    "file": "completion.wav",
+    "seconds": 1.5,
+    "sample_rate": 22050,
+    "peak_dbfs": -4.44,
+    "sha256": "8b92440c5970e1fab81ea9ff2e9f2a17a9eec40e018839787279121d25f73e8f"
+  },
+  {
+    "file": "correct.wav",
+    "seconds": 0.85,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "6d667113b9bd0ade5ac71088261f39a608592c2d54ae501cd4538f0ac30f7099"
+  },
+  {
+    "file": "incorrect.wav",
+    "seconds": 0.7,
+    "sample_rate": 22050,
+    "peak_dbfs": -6.02,
+    "sha256": "e4f78773ce2fd96d8adda701cb93773c0d1f3172529ff4bc531e018045573d52"
+  },
+  {
+    "file": "npc_complete.wav",
+    "seconds": 5.039,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "a1e4331be549d80b60c6517606f8b5589b80964dd93a65973e872a2652e66821"
+  },
+  {
+    "file": "npc_lifts.wav",
+    "seconds": 8.258,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "ce219a1c37bc5188ef08611520479d47181a8dc4115fcb2ac261cfa147978816"
+  },
+  {
+    "file": "npc_tasks_route.wav",
+    "seconds": 15.492,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "0dcf9e9088261eea55ed57af7948d25d860963caed1b2adf03a01b35f9e53e0e"
+  },
+  {
+    "file": "npc_tasks_start.wav",
+    "seconds": 19.622,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "c7025e042b11154581c853c55386c44c17e5a0d9a2f218bd8b726af951c8793b"
+  },
+  {
+    "file": "npc_welcome.wav",
+    "seconds": 9.533,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "e375fb7d823dd4f7f5eb7824eae1bbeb9b60de3aabd66f626165d24e28737cb0"
+  },
+  {
+    "file": "outdoor_wind.wav",
+    "seconds": 12.0,
+    "sample_rate": 22050,
+    "peak_dbfs": -13.15,
+    "sha256": "12c91e52f9e78fc286cdcf5ec6e51e3d2cbd573c1495c62cd532c400035299a7"
+  },
+  {
+    "file": "pa_assembly.wav",
+    "seconds": 7.863,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "f02896280bf6121498068f4a239dfee70d5fb0e1344ee52bb549dfe5f19a290c"
+  },
+  {
+    "file": "pa_emergency.wav",
+    "seconds": 10.273,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "0398ce3341019c469550a6696a536727d0dd89cfb7a65624e106b04c367a853b"
+  },
+  {
+    "file": "pa_lifts.wav",
+    "seconds": 7.104,
+    "sample_rate": 22050,
+    "peak_dbfs": -2.85,
+    "sha256": "8b5f3c7d1df89839601aa8fdcf47270ce69f14d6122367da84c682f6551966c1"
+  },
+  {
+    "file": "popup.wav",
+    "seconds": 0.4,
+    "sample_rate": 22050,
+    "peak_dbfs": -6.02,
+    "sha256": "e86427fe865b2ff65f7347cea73fa66f471078c398f96a3d48849401ce950e5d"
+  },
+  {
+    "file": "step_floor_1.wav",
+    "seconds": 0.26,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "85e5ef5eba1b2de5e6013909c657c2709c40283c7baca88d28159dfff5c5315a"
+  },
+  {
+    "file": "step_floor_2.wav",
+    "seconds": 0.26,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "80a40c0107ab532e1428abd4fb3b3a5f9cd9fd972e556a055e3ec637687e13e8"
+  },
+  {
+    "file": "step_floor_3.wav",
+    "seconds": 0.26,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "7898d8dedc0a9daf7648be989e203dea2fe113d12f38f79b155622a3b5fa10ef"
+  },
+  {
+    "file": "step_stair_1.wav",
+    "seconds": 0.32,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "08d6f2982cbef1e6c34de3bf8537f33ba4859d8e86568058553430b793442ea3"
+  },
+  {
+    "file": "step_stair_2.wav",
+    "seconds": 0.32,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "9cd47f8a106022375bffb02485133e9f9dc5532c6ddf3f538412ea3142de6cee"
+  },
+  {
+    "file": "step_stair_3.wav",
+    "seconds": 0.32,
+    "sample_rate": 22050,
+    "peak_dbfs": -5.19,
+    "sha256": "0219ba207e5062a4a6473b79ae98df126703bde0faa48b1f154cc19a89949e3b"
+  },
+  {
+    "file": "teleport.wav",
+    "seconds": 0.55,
+    "sample_rate": 22050,
+    "peak_dbfs": -6.94,
+    "sha256": "7a57f2328087a51990b561d170e61e110668f54f5a151c76696b7e82c9726353"
+  }
+]

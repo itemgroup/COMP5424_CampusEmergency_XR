@@ -1,4 +1,5 @@
 using CampusEmergency.Core;
+using CampusEmergency.Audio;
 using UnityEngine;
 
 namespace CampusEmergency.Emergency
@@ -22,7 +23,8 @@ namespace CampusEmergency.Emergency
 
             IsEmergencyActive = true;
 
-            // TODO: 播放警报音效、点燃火源粒子
+            CampusAudioDirector.Instance?.BeginEmergency();
+            // TODO: 点燃火源粒子
             GameManager.Instance.ChangeState(GameState.Emergency);
             Debug.Log("[Emergency] 火灾警报已触发");
         }
@@ -45,6 +47,7 @@ namespace CampusEmergency.Emergency
         public void ClearEmergency()
         {
             IsEmergencyActive = false;
+            CampusAudioDirector.Instance?.EndEmergency();
 
             // TODO: 关闭火源与警报、复位场景
             GameManager.Instance.ChangeState(GameState.Ended);
