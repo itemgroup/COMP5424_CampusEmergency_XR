@@ -1,0 +1,27 @@
+PASS
+22 audio assets import successfully
+NPC voice matches scene text
+Dynamic task-list markers match baked NPC speech
+Lift warning targets exist on all four floors
+Offset anchor resolves to actual destination
+Training route uses corrected anchor position
+Emergency starts idempotently
+Indoor alarm fades in to configured level
+Exact emergency PA is selected
+Speech ducks alarm for intelligibility
+Triggered NPC preserves currently displayed task-list text
+Triggered NPC queues the voice for the visible text
+XRI accepts real teleport request
+No teleport sound on request/aim/cancel phase
+Real XRI teleport completes and moves player
+Arrival audio is triggered by completed teleport
+Grounded continuous movement triggers footsteps
+Lift proximity detected at matching floor
+Wrong lift interaction shows warning and cue
+Pause freezes alarm fades
+G-floor covered corridor does not count as outdoors
+G-floor open courtyard fades alarm without false completion
+Assembly point triggers success once
+Assembly retains only distant alarm
+EndEmergency clears alarm and speech queue
+Scene cleanup releases singleton and listeners

@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 using CampusEmergency.Building;
+using CampusEmergency.Audio;
 
 namespace CampusEmergency.UI
 {
@@ -173,6 +174,12 @@ namespace CampusEmergency.UI
             }
 
             Transform cameraTransform = headCamera.transform;
+            if (!isPaused)
+            {
+                var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
+                Vector3 feet = origin != null ? origin.transform.position : cameraTransform.position - Vector3.up * 1.6f;
+                AdvanceRoute(feet);
+            }
             FollowPlayer(hudCanvasObject, cameraTransform, hudDistance, -0.38f);
             FollowPlayer(pauseCanvasObject, cameraTransform, guideDistance, -0.02f);
         }
@@ -333,6 +340,7 @@ namespace CampusEmergency.UI
             switch (routeProgress)
             {
                 case RouteProgress.AwaitingStart when IsRouteDestination(destination, downStairStart):
+                    CampusAudioDirector.Instance?.BeginEmergency();
                     routeProgress = RouteProgress.RouteChoiceStarted;
                     currentTaskIndex = 1;
                     currentObjective = "At the DownStair corner, read the signs and choose the stair route to 2F.";
@@ -373,13 +381,16 @@ namespace CampusEmergency.UI
                     return;
             }
 
+            if (routeProgress == RouteProgress.Completed)
+                CampusAudioDirector.Instance?.PlayCompletion();
+            else
+                CampusAudioDirector.Instance?.PlayCorrect();
             UpdateNavigationHud();
         }
 
         private static bool IsRouteDestination(Vector3 destination, Transform waypoint)
         {
-            return waypoint != null &&
-                (destination - waypoint.position).sqrMagnitude <= RoutePointTolerance * RoutePointTolerance;
+            return CampusAudioDirector.NearWaypoint(destination, waypoint, RoutePointTolerance);
         }
 
         private void OnTeleportCancel(InputAction.CallbackContext context)
@@ -396,6 +407,7 @@ namespace CampusEmergency.UI
 
         private void CompleteStep(string feedback)
         {
+            CampusAudioDirector.Instance?.PlayCorrect();
             currentStep++;
             if (currentStep == TutorialSteps.Length)
             {
@@ -608,6 +620,7 @@ namespace CampusEmergency.UI
         {
             if (isPaused)
                 return;
+            CampusAudioDirector.Instance?.PlayPopup();
 
             previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
@@ -683,6 +696,7 @@ namespace CampusEmergency.UI
 
         private void ReviewGuide()
         {
+            CampusAudioDirector.Instance?.PlayPopup();
             hudCanvasObject.SetActive(false);
             guideCanvasObject.SetActive(true);
             ShowWelcome();
@@ -690,6 +704,7 @@ namespace CampusEmergency.UI
 
         private void ShowWelcome()
         {
+            CampusAudioDirector.Instance?.PlayPopup();
             guideInProgress = false;
             currentStep = 0;
             beginGuideButton.interactable = true;
@@ -809,6 +824,7 @@ namespace CampusEmergency.UI
             CreateText("Label", rect, font, label, 26, PanelColor,
                 new Vector2(0.04f, 0.03f), new Vector2(0.96f, 0.97f), TextAnchor.MiddleCenter);
             button.onClick.AddListener(onClick);
+            button.onClick.AddListener(() => CampusAudioDirector.Instance?.PlayClick());
             return button;
         }
 

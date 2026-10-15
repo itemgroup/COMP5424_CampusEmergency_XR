@@ -1,0 +1,36 @@
+{
+  "entries": [
+    {
+      "text": "Attention please. A fire alarm has been activated. Please leave the building immediately using the nearest available exit.",
+      "clip": "pa_emergency"
+    },
+    {
+      "text": "Do not use the lifts. Please proceed calmly to the designated assembly point.",
+      "clip": "pa_lifts"
+    },
+    {
+      "text": "You have reached the designated assembly point. Please remain here and wait for further instructions.",
+      "clip": "pa_assembly"
+    },
+    {
+      "text": "Welcome to the \nCampus Emergency Preparedness Demonstration System! \nLet's take a look at what you'll experience.",
+      "clip": "npc_welcome"
+    },
+    {
+      "text": "In case of fire, do NOT use the elevators! Please evacuate using the stairs and stay safe.",
+      "clip": "npc_lifts"
+    },
+    {
+      "text": "You have completed the experience for Scene 1—congratulations.",
+      "clip": "npc_complete"
+    },
+    {
+      "text": "Learn the controls\nRead signs and choose the stair route\nEnter the stair route\nFollow stair landing 1\nFollow stair landing 2\nReach the 2F practice endpoint\nContinue to the DownStair corner to begin route practice.",
+      "clip": "npc_tasks_start"
+    },
+    {
+      "text": "Learn the controls\nRead signs and choose the stair route\nEnter the stair route\nFollow stair landing 1\nFollow stair landing 2\nReach the 2F practice endpoint",
+      "clip": "npc_tasks_route"
+    }
+  ]
+}
