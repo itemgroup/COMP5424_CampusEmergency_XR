@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using CampusEmergency.Audio;
 using CampusEmergency.Building;
 
 namespace CampusEmergency.Building
@@ -63,6 +64,7 @@ namespace CampusEmergency.Building
             if(hintText != null)
             {
                 hintText.text = content;
+                CampusAudioDirector.Instance?.PlayPopup();
             }
         }
     }

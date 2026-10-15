@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using CampusEmergency.Audio;
 
 namespace CampusEmergency.Building
 {
@@ -37,6 +38,8 @@ namespace CampusEmergency.Building
 
         private bool hasTriggered;
         private Coroutine hideCoroutine;
+        private string persistentMessage;
+        private float nextVoiceTime;
 
         private void OnValidate()
         {
@@ -231,30 +234,43 @@ namespace CampusEmergency.Building
             if (triggerOnce && hasTriggered)
                 return;
 
+            // Multiple player colliders must not restart the same spoken sentence.
+            if (Time.time < nextVoiceTime)
+                return;
+
             hasTriggered = true;
             EnsureSpeechBubbleExists();
             ApplyBubbleTransformAndStyles();
 
+            string spokenMessage = string.IsNullOrEmpty(persistentMessage) ? dialogueMessage : persistentMessage;
             if (tmpDialogueText != null)
-                tmpDialogueText.text = dialogueMessage;
+                tmpDialogueText.text = spokenMessage;
             else if (uiDialogueText != null)
-                uiDialogueText.text = dialogueMessage;
+                uiDialogueText.text = spokenMessage;
+
+            var audio = CampusAudioDirector.Instance;
+            AudioClip voice = voiceAudioSource != null && voiceAudioSource.clip != null && string.IsNullOrEmpty(persistentMessage)
+                ? voiceAudioSource.clip : audio != null ? audio.FindVoice(spokenMessage) : null;
+            audio?.PlayPopup();
+            float voiceDelay = voice != null && audio != null ? audio.SpeakNpc(voice, transform) : 0f;
+            float visibleDuration = voice != null ? Mathf.Max(displayDuration, voiceDelay + voice.length + 1f) : displayDuration;
+            nextVoiceTime = Time.time + Mathf.Max(10f, voice != null ? voiceDelay + voice.length + 1f : 0f);
 
             if (speechBubbleRoot != null)
             {
                 speechBubbleRoot.SetActive(true);
-                if (displayDuration > 0f)
+                if (displayDuration > 0f && string.IsNullOrEmpty(persistentMessage))
                 {
                     if (hideCoroutine != null)
                         StopCoroutine(hideCoroutine);
-                    hideCoroutine = StartCoroutine(HideBubbleRoutine(displayDuration));
+                    hideCoroutine = StartCoroutine(HideBubbleRoutine(visibleDuration));
                 }
             }
 
             if (npcAnimator != null && !string.IsNullOrEmpty(animationTriggerName))
                 npcAnimator.SetTrigger(animationTriggerName);
 
-            if (voiceAudioSource != null && voiceAudioSource.clip != null)
+            if (audio == null && voiceAudioSource != null && voiceAudioSource.clip != null)
                 voiceAudioSource.Play();
         }
 
@@ -268,6 +284,8 @@ namespace CampusEmergency.Building
 
             EnsureSpeechBubbleExists();
             ApplyBubbleTransformAndStyles();
+
+            persistentMessage = message;
 
             Transform titleTransform = speechBubbleRoot.transform.Find("PanelBackground/TitleText");
             if (titleTransform != null)
@@ -334,6 +352,7 @@ namespace CampusEmergency.Building
         public void ResetDialogue()
         {
             hasTriggered = false;
+            nextVoiceTime = 0f;
             if (hideCoroutine != null)
             {
                 StopCoroutine(hideCoroutine);

@@ -1,0 +1,12 @@
+{
+  "voices": [
+    {"clip":"pa_emergency","voice":"Microsoft Zira Desktop","pa":true,"text":"Attention please. A fire alarm has been activated. Please leave the building immediately using the nearest available exit."},
+    {"clip":"pa_lifts","voice":"Microsoft Zira Desktop","pa":true,"text":"Do not use the lifts. Please proceed calmly to the designated assembly point."},
+    {"clip":"pa_assembly","voice":"Microsoft Zira Desktop","pa":true,"text":"You have reached the designated assembly point. Please remain here and wait for further instructions."},
+    {"clip":"npc_welcome","voice":"Microsoft Zira Desktop","pa":false,"text":"Welcome to the \nCampus Emergency Preparedness Demonstration System! \nLet's take a look at what you'll experience."},
+    {"clip":"npc_lifts","voice":"Microsoft Zira Desktop","pa":false,"text":"In case of fire, do NOT use the elevators! Please evacuate using the stairs and stay safe."},
+    {"clip":"npc_complete","voice":"Microsoft Zira Desktop","pa":false,"text":"You have completed the experience for Scene 1—congratulations."},
+    {"clip":"npc_tasks_start","voice":"Microsoft Zira Desktop","pa":false,"text":"Learn the controls\nRead signs and choose the stair route\nEnter the stair route\nFollow stair landing 1\nFollow stair landing 2\nReach the 2F practice endpoint\nContinue to the DownStair corner to begin route practice."},
+    {"clip":"npc_tasks_route","voice":"Microsoft Zira Desktop","pa":false,"text":"Learn the controls\nRead signs and choose the stair route\nEnter the stair route\nFollow stair landing 1\nFollow stair landing 2\nReach the 2F practice endpoint"}
+  ]
+}
