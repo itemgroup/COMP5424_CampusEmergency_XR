@@ -1,15 +1,3 @@
-# Original front-facing quad, 1.2 m x 0.5 m, normal +Z
-mtllib training_original.mtl
-o TrainingSignPlate
-v -0.6 -0.25 0
-v 0.6 -0.25 0
-v 0.6 0.25 0
-v -0.6 0.25 0
-vt 0 0
-vt 1 0
-vt 1 1
-vt 0 1
-vn 0 0 1
-usemtl SignBlank
-f 1/1/1 2/2/1 3/3/1
-f 1/1/1 3/3/1 4/4/1
+version https://git-lfs.github.com/spec/v1
+oid sha256:721d45e679f233dd57c04b670ac4c0b66b78df66c789c32e33a9f208bfa87b7e
+size 254
