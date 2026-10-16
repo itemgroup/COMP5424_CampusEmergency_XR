@@ -1,4 +1,39 @@
 # Group 7 Campus Emergency Preparedness
+
+## Final demonstration update - 2026-10-17
+
+Entry scene: `Assets/Scenes/SampleScene.unity` (Unity 6000.3.25f1).
+
+- Fixed world-space startup menu with a blurred background, Enter/Exit buttons, and
+  looping menu music. Enter System pauses the music and restores the campus.
+- Start NPC welcome with Continue, followed by the task list, evacuation diagram,
+  and optional controller practice. The task card explains how to confirm marked
+  teleports to activate the corresponding tutorial effects.
+- Tutorial and post-tutorial navigation panels stay fixed in world space.
+  Nearer/Farther now move the actual panel in 0.2 m steps, with a normal range of
+  0.65-2.2 m. Review reopens the guide in front of the current viewer.
+- Lift safety interactions use eight actual LiftSign markers across four floors,
+  rather than NPC coordinates. Panels only appear near the matching marker;
+  warnings require an active fire exercise. Panels are offset by +0.5 m in world
+  Y and Z to move them away from the sign surface.
+- Reaching the final teleport destination or approaching the End NPC within
+  2.5 m shows the persistent Scene 1 completion message and requests its existing
+  voice once. This works even without pressing welcome Continue and does not
+  automatically complete or skip the ordered route tasks.
+- Includes the current campus poster/sign placement and required imported assets.
+- Removes obsolete test_1 build backups; generated build backups are now ignored.
+  APKs are local outputs, not part of this source delivery.
+
+Validation: C# build passed and 76 isolated Unity regression checks passed,
+including real panel displacement, fixed panel transforms, distance limits,
+completion before Continue, lift proximity, teleport arrival, and audio behavior.
+These checks do not replace testing the final APK on Quest. The latest observed
+local test_2 Build And Run succeeded on 2026-10-17 at 00:37.
+
+See [implementation details](Docs/SoundImplementation.md) for trigger conditions,
+audio integration, and the validation command. The new welcome sentence has no
+new voice recording; existing task and completion voices are retained.
+
 # COMP5424 Group7 Git 协作工作流
 
 仓库地址：[https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git](https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git)

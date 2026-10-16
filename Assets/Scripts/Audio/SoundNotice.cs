@@ -44,6 +44,17 @@ namespace CampusEmergency.Audio
         }
         private static void Stretch(RectTransform rect, float margin)
         { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = Vector2.one * margin; rect.offsetMax = -Vector2.one * margin; }
+        public static void ShowAt(string title, string body, Vector3 position)
+        {
+            Show(title, body);
+            current.transform.position = position;
+            Camera viewer = Camera.main;
+            if (viewer == null) return;
+            Vector3 forward = position - viewer.transform.position;
+            forward.y = 0f;
+            if (forward.sqrMagnitude > 0.001f)
+                current.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+        }
         private IEnumerator HideAfterDelay() { yield return new WaitForSeconds(9f); hide = null; gameObject.SetActive(false); }
         private void OnDestroy() { if (current == this) current = null; }
     }

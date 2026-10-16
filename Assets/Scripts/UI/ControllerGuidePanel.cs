@@ -22,6 +22,8 @@ namespace CampusEmergency.UI
         [SerializeField] private Transform downStairAssist2;
         [SerializeField] private Transform downStairFinished;
         [SerializeField] private NpcGuideDialogue elizabethGuideDialogue;
+        [SerializeField] private NpcGuideDialogue elizabethEndDialogue;
+        [SerializeField] private Texture2D evacuationDiagram;
 
         private const float CanvasScale = 0.001f;
         private const float PanelWidth = 1600f;
@@ -104,13 +106,13 @@ namespace CampusEmergency.UI
         private bool floorTrackingConnected;
         private bool cameraWarningLogged;
         private bool hudExpanded = true;
-        private float guideDistance = InitialGuideDistance;
-        private float hudDistance = InitialHudDistance;
         private RouteProgress routeProgress;
         private string currentFloor = "3F";
         private string currentObjective = "Review the controls";
         private float previousTimeScale = 1f;
         private bool isPaused;
+        private bool endDialogueTriggered;
+        private bool introductionPending = true;
 
         private void Awake()
         {
@@ -133,6 +135,31 @@ namespace CampusEmergency.UI
                 return;
             }
 
+            guideCanvasObject.SetActive(false);
+        }
+
+        private IEnumerator Start()
+        {
+            // Let NPC Awake finish before showing its persistent welcome card.
+            yield return null;
+            if (elizabethGuideDialogue == null)
+                elizabethGuideDialogue = FindElizabethStartGuideDialogue();
+            if (elizabethGuideDialogue == null || evacuationDiagram == null)
+            {
+                Debug.LogError("Introduction requires the Start NPC and the evacuation diagram Texture2D.", this);
+                yield break;
+            }
+            elizabethGuideDialogue.ShowIntroduction(
+                "Welcome to the Requirements and Prototype Proposal Demonstration System!",
+                ContinueIntroduction);
+        }
+
+        private void ContinueIntroduction()
+        {
+            if (!introductionPending)
+                return;
+            introductionPending = false;
+            CampusAudioDirector.Instance?.PlayClick();
             ShowWelcome();
         }
 
@@ -160,6 +187,25 @@ namespace CampusEmergency.UI
 
         private void LateUpdate()
         {
+            if (!TryGetHeadCamera())
+                return;
+
+            Transform cameraTransform = headCamera.transform;
+            if (!isPaused)
+            {
+                var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
+                Vector3 feet = origin != null ? origin.transform.position : cameraTransform.position - Vector3.up * 1.6f;
+                TryShowEndDialogue(feet);
+                if (!introductionPending)
+                    AdvanceRoute(feet);
+            }
+            PositionPanelInFront(pauseCanvasObject, InitialGuideDistance, -0.02f);
+            UpdateDistanceButtons(guideCanvasObject, guideNearerButton, guideFartherButton);
+            UpdateDistanceButtons(hudCanvasObject, hudNearerButton, hudFartherButton);
+        }
+
+        private bool TryGetHeadCamera()
+        {
             if (headCamera == null)
                 headCamera = Camera.main;
 
@@ -168,27 +214,20 @@ namespace CampusEmergency.UI
                 if (!cameraWarningLogged)
                 {
                     cameraWarningLogged = true;
-                    Debug.LogError("Practice UI cannot follow the player because no MainCamera was found.", this);
+                    Debug.LogError("Practice UI requires a MainCamera for positioning and distance adjustment.", this);
                 }
-                return;
+                return false;
             }
 
-            Transform cameraTransform = headCamera.transform;
-            if (!isPaused)
-            {
-                var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
-                Vector3 feet = origin != null ? origin.transform.position : cameraTransform.position - Vector3.up * 1.6f;
-                AdvanceRoute(feet);
-            }
-            FollowPlayer(hudCanvasObject, cameraTransform, hudDistance, -0.38f);
-            FollowPlayer(pauseCanvasObject, cameraTransform, guideDistance, -0.02f);
+            return true;
         }
 
-        private static void FollowPlayer(GameObject canvasObject, Transform cameraTransform, float distance, float verticalOffset)
+        private void PositionPanelInFront(GameObject canvasObject, float distance, float verticalOffset)
         {
-            if (canvasObject == null || !canvasObject.activeSelf)
+            if (canvasObject == null || !canvasObject.activeSelf || !TryGetHeadCamera())
                 return;
 
+            Transform cameraTransform = headCamera.transform;
             Vector3 forward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
             if (forward.sqrMagnitude < 0.001f)
                 forward = Vector3.ProjectOnPlane(cameraTransform.up, Vector3.up);
@@ -208,6 +247,24 @@ namespace CampusEmergency.UI
                 Debug.LogError("Practice route requires Inspector references to all five DownStair waypoint transforms.", this);
             }
 
+            if (elizabethEndDialogue == null)
+                Debug.LogError("Practice endpoint requires the End NPC dialogue reference.", this);
+        }
+
+        private void TryShowEndDialogue(Vector3 playerPosition)
+        {
+            if (endDialogueTriggered || downStairFinished == null || elizabethEndDialogue == null ||
+                !elizabethEndDialogue.isActiveAndEnabled)
+                return;
+
+            bool nearEndpoint = IsRouteDestination(playerPosition, downStairFinished);
+            bool nearNpc = (playerPosition - elizabethEndDialogue.transform.position).sqrMagnitude <=
+                RoutePointTolerance * RoutePointTolerance;
+            if (!nearEndpoint && !nearNpc)
+                return;
+
+            elizabethEndDialogue.ShowCompletionDialogue();
+            endDialogueTriggered = true;
         }
 
         private GameObject CreateWorldCanvas(string objectName, float width, float height, float canvasScale, int sortingOrder, Vector3 localPosition)
@@ -420,6 +477,7 @@ namespace CampusEmergency.UI
                 }
                 guideCanvasObject.SetActive(false);
                 hudCanvasObject.SetActive(true);
+                PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
                 UpdateNavigationHud();
             }
 
@@ -564,22 +622,50 @@ namespace CampusEmergency.UI
 
         private void MoveGuideNearer()
         {
-            guideDistance = Mathf.Clamp(guideDistance - UiDistanceStep, MinimumUiDistance, MaximumUiDistance);
+            AdjustPanelDistance(guideCanvasObject, -UiDistanceStep);
         }
 
         private void MoveGuideFarther()
         {
-            guideDistance = Mathf.Clamp(guideDistance + UiDistanceStep, MinimumUiDistance, MaximumUiDistance);
+            AdjustPanelDistance(guideCanvasObject, UiDistanceStep);
         }
 
         private void MoveHudNearer()
         {
-            hudDistance = Mathf.Clamp(hudDistance - UiDistanceStep, MinimumUiDistance, MaximumUiDistance);
+            AdjustPanelDistance(hudCanvasObject, -UiDistanceStep);
         }
 
         private void MoveHudFarther()
         {
-            hudDistance = Mathf.Clamp(hudDistance + UiDistanceStep, MinimumUiDistance, MaximumUiDistance);
+            AdjustPanelDistance(hudCanvasObject, UiDistanceStep);
+        }
+
+        private void AdjustPanelDistance(GameObject panel, float step)
+        {
+            if (panel == null || !panel.activeSelf || !TryGetHeadCamera())
+                return;
+
+            Vector3 offset = Vector3.ProjectOnPlane(panel.transform.position - headCamera.transform.position, Vector3.up);
+            float distance = offset.magnitude;
+            float target = step < 0f
+                ? Mathf.Min(distance, Mathf.Max(MinimumUiDistance, distance + step))
+                : Mathf.Max(distance, Mathf.Min(MaximumUiDistance, distance + step));
+            Vector3 direction = distance > 0.001f ? offset / distance :
+                Vector3.ProjectOnPlane(headCamera.transform.forward, Vector3.up).normalized;
+            if (direction.sqrMagnitude < 0.001f)
+                direction = Vector3.ProjectOnPlane(headCamera.transform.up, Vector3.up).normalized;
+            panel.transform.position += direction * (target - distance);
+            UpdateDistanceButtons(guideCanvasObject, guideNearerButton, guideFartherButton);
+            UpdateDistanceButtons(hudCanvasObject, hudNearerButton, hudFartherButton);
+        }
+
+        private void UpdateDistanceButtons(GameObject panel, Button nearer, Button farther)
+        {
+            if (panel == null || nearer == null || farther == null || headCamera == null)
+                return;
+            float distance = Vector3.ProjectOnPlane(panel.transform.position - headCamera.transform.position, Vector3.up).magnitude;
+            nearer.interactable = distance > MinimumUiDistance + 0.001f;
+            farther.interactable = distance < MaximumUiDistance - 0.001f;
         }
 
         private static void SetButtonAnchors(Button button, Vector2 anchorMin, Vector2 anchorMax)
@@ -691,6 +777,7 @@ namespace CampusEmergency.UI
             }
             guideCanvasObject.SetActive(false);
             hudCanvasObject.SetActive(true);
+            PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
             UpdateNavigationHud();
         }
 
@@ -704,6 +791,8 @@ namespace CampusEmergency.UI
 
         private void ShowWelcome()
         {
+            guideCanvasObject.SetActive(true);
+            PositionPanelInFront(guideCanvasObject, InitialGuideDistance, -0.02f);
             CampusAudioDirector.Instance?.PlayPopup();
             guideInProgress = false;
             currentStep = 0;
@@ -751,11 +840,14 @@ namespace CampusEmergency.UI
             if (hudTasksText != null)
                 hudTasksText.text = taskList;
 
+            if (introductionPending)
+                return;
+
             if (elizabethGuideDialogue == null)
                 elizabethGuideDialogue = FindElizabethStartGuideDialogue();
 
             if (elizabethGuideDialogue != null)
-                elizabethGuideDialogue.ShowPersistentDialogue("EVACUATION TASK LIST", taskList);
+                elizabethGuideDialogue.ShowTaskGuide(taskList, evacuationDiagram);
         }
 
         private string BuildTaskList()

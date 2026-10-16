@@ -1,19 +1,25 @@
 # Unity 音频与音效（sound 分支）
 
-入口场景：`Assets/Scenes/SampleScene.unity`。新增 `Campus Audio Director`，已绑定疏散起点、电梯 NPC 和 G 楼庭院集合点。无需手动拖入音频，也不依赖运行时网络、Windows TTS 或 API 密钥；Quest 使用随工程导入的 WAV。
+入口场景：`Assets/Scenes/SampleScene.unity`。新增 `Campus Audio Director`，已绑定疏散起点、`LiftSign` 下八个真实电梯标识和 G 楼庭院集合点。无需手动拖入音频，也不依赖运行时网络、Windows TTS 或 API 密钥；Quest 使用随工程导入的 WAV。
 
 ## 与入场菜单的整合
 
+点击 `Enter System` 后，Start NPC 先显示英文欢迎页和可通过手柄射线点击的 `Continue`。点击后才展示任务列表、`Assets/SignsAndPosters/Fire_Evacuation_Diagram.png`（保持原图比例）及原有可选控制器教程。任务面板另附英文说明：使用标记的传送点并确认传送，触发对应教学效果，仅瞄准不触发；按图上红箭头前往楼梯。该说明不改变原有连续移动检查点或任务顺序规则。新欢迎语未添加离线配音；任务列表仍使用已有配音，图示说明不会混入语音匹配正文。
+
 `SampleScene` 同时保留固定在世界空间中的入场菜单及模糊背景。菜单显示期间暂时停用校园根节点（包括 `Campus Audio Director`、集合点及教程），只播放菜单 BGM。点击 `Enter System` 后暂停 BGM、恢复校园与音频管理器，再启用教程；疏散音效仍按原有条件触发。菜单、音频管理器及集合点均须保留为场景根节点，避免合并场景时遗漏。
 
+`Controller Guide Panel` 的 `Elizabeth End Dialogue` 已绑定终点 NPC。玩家传送完成或步行进入 `Teleport Corner DownStair Finished` 的实际锚点周围，或靠近 `Elizabeth Warren animation End`，脚部与任一目标的三维距离不超过 2.5 米时，显示 `SCENE 1 COMPLETE` 和 NPC 已配置的结束文案。触发后持续显示，不再按原来的 7 秒定时隐藏；每次体验仅触发一次配音，不会因停留或重复到达而重播。该提示不要求依次经过检查点，也不要求点击欢迎页 Continue；进入校园后即使跳过欢迎页也可触发。教程和任务路线进度仍须点击 Continue 后才启用，结束提示不会跳过或提前完成原有任务清单；暂停期间不检测到达，菜单显示期间教程根节点未启用，也不会触发。
+
 ## 已接入的内容
+
+控制器新手指导面板，以及完成或跳过指导后出现的导航面板，均在打开时定位一次，随后固定在世界空间，不随头显转动、行走或传送移动。重新打开 Review 时，指导面板在当前视线前方重新放置。两种面板的 Nearer / Farther 均直接沿当前玩家到面板的水平连线移动对应面板，每次 0.2 米，保持高度及朝向不变；正常调节范围为 0.65–2.2 米，达到边界时禁用对应按钮。玩家自行移动到范围外后，按钮仍可逐步向有效范围调回，不会突然将面板拉到玩家面前。暂停菜单仍随视线显示，以保留原有暂停操作。
 
 | 内容 | 触发与表现 |
 |---|---|
 | 火警 | 到达 DownStair 起点开始演练，或调用 `EmergencyManager.TriggerFireAlarm()`；先播放启动提示，再循环温和的双音电子警报。采用原创的地铁/建筑提示音风格，没有复制 MTR 录音。 |
 | 紧急广播 | 警报启动时播放 “Attention please. A fire alarm has been activated. Please leave the building immediately using the nearest available exit.”；在室内每 55 秒检查重复播放，避免重复入队。轻微带限、软失真与短混响已经写入 WAV。 |
-| 电梯附近广播 | 同一电梯轴线各楼层，距离约 5 米，进入时播放 “Do not use the lifts. Please proceed calmly to the designated assembly point.”；25 秒冷却。 |
-| 错误选择 | 每层增加可用 XR 射线/触发键选择的 Lift Call Button 标识，同时写明火灾期间应走楼梯。尝试呼叫电梯后播放柔和低音错误提示并显示 “Do not use lifts during a fire.” 的提示。`LiftSafetyAudio.AttemptLift()` 也可接已有电梯按钮事件。 |
+| 电梯附近广播 | 使用 Inspector `Lift Signs` 数组绑定 `LiftSign` 下四层共八个标识。不再使用 NPC 坐标或按层高推算位置；头显与标识水平距离不超过 2.5 米且高度差不超过 1.25 米才算靠近。火警演练中进入时播放 “Do not use the lifts. Please proceed calmly to the designated assembly point.”；25 秒冷却。 |
+| 错误选择 | 八个标识各自上方 0.5 米、沿世界 Z 轴正方向偏移 0.5 米处生成可用 XR 射线/触发键选择的 Lift Call Button，避免面板嵌入墙面；仅靠近对应标识时显示并启用射线碰撞体，离开即隐藏。火警期间尝试呼叫电梯后播放错误提示音，警告卡片使用最近标识的相同位置偏移，而非玩家面前或 NPC 身旁。`LiftSafetyAudio.AttemptLift()` 可接已有按钮事件，但玩家不在有效电梯标识范围内时不会触发警告。NPC 自身的安全对话保持不变。 |
 | 步行/上下楼梯 | 根据 XR Origin 实际位移和地面检测积累步距；上/下楼高度变化或斜面使用楼梯脚步，三种变体与轻微随机音调减少机械感。静止、头部晃动、悬空和传送位移不产生脚步。 |
 | 传送 | 监听 XRI 3.5.1 `TeleportationProvider.locomotionEnded`，只在落地完成后播放。瞄准、取消和等待传送不播放。 |
 | NPC | 从 NPC 当前显示的正文查找离线语音，覆盖场景原有欢迎、电梯安全、Scene 1 完成台词，以及起点 NPC 被 HUD 更新后的动态任务清单。勾选标记/换行不影响语音匹配。保留任务清单，不会触发对话时还原成旧欢迎词。语音排队时延长对话框显示及重复触发冷却。 |

@@ -40,6 +40,11 @@ namespace CampusEmergency.Building
         private Coroutine hideCoroutine;
         private string persistentMessage;
         private float nextVoiceTime;
+        private enum GuideCard { None, Introduction, Tasks }
+        private GuideCard guideCard;
+        private Button continueButton;
+        private RawImage evacuationImage;
+        private Text teleportInstructions;
 
         private void OnValidate()
         {
@@ -219,6 +224,128 @@ namespace CampusEmergency.Building
                 }
                 KeepTextReadable(messageTransform);
             }
+
+            if (guideCard != GuideCard.None)
+                ApplyGuideCardLayout();
+        }
+
+        public void ShowIntroduction(string message, UnityEngine.Events.UnityAction onContinue)
+        {
+            if (string.IsNullOrWhiteSpace(message) || onContinue == null)
+            {
+                Debug.LogError("NPC introduction requires welcome text and a Continue callback.", this);
+                return;
+            }
+            ShowPersistentDialogue("WELCOME", message);
+            guideCard = GuideCard.Introduction;
+            Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
+            if (continueButton == null)
+            {
+                var buttonObject = new GameObject("Continue", typeof(RectTransform), typeof(CanvasRenderer),
+                    typeof(Image), typeof(Button));
+                buttonObject.transform.SetParent(panel, false);
+                Image image = buttonObject.GetComponent<Image>();
+                image.color = new Color(0.12f, 0.65f, 0.76f, 1f);
+                continueButton = buttonObject.GetComponent<Button>();
+                continueButton.targetGraphic = image;
+                GameObject labelObject = CreateTextObject("Label", buttonObject.transform, Vector2.zero, Vector2.one);
+                Text label = labelObject.GetComponent<Text>();
+                label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                label.text = "Continue";
+                label.fontSize = 44;
+                label.alignment = TextAnchor.MiddleCenter;
+                label.color = Color.white;
+                label.raycastTarget = false;
+            }
+            continueButton.onClick.RemoveAllListeners();
+            continueButton.onClick.AddListener(() =>
+            {
+                continueButton.interactable = false;
+                onContinue();
+            });
+            continueButton.interactable = true;
+            if (speechBubbleRoot.GetComponent<GraphicRaycaster>() == null)
+                speechBubbleRoot.AddComponent<GraphicRaycaster>();
+            if (speechBubbleRoot.GetComponent<UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster>() == null)
+                speechBubbleRoot.AddComponent<UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster>();
+            speechBubbleRoot.GetComponent<Canvas>().worldCamera = Camera.main;
+            ApplyGuideCardLayout();
+            CampusAudioDirector.Instance?.PlayPopup();
+        }
+
+        public void ShowTaskGuide(string taskList, Texture2D diagram)
+        {
+            if (string.IsNullOrWhiteSpace(taskList) || diagram == null)
+            {
+                Debug.LogError("NPC task guide requires a task list and evacuation diagram Texture2D.", this);
+                return;
+            }
+            ShowPersistentDialogue("EVACUATION TASK GUIDE", taskList);
+            guideCard = GuideCard.Tasks;
+            Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
+            if (evacuationImage == null)
+            {
+                var frame = new GameObject("Evacuation Diagram Frame", typeof(RectTransform));
+                frame.transform.SetParent(panel, false);
+                SetAnchors(frame.transform, new Vector2(0.53f, 0.27f), new Vector2(0.97f, 0.80f));
+                var imageObject = new GameObject("Evacuation Diagram", typeof(RectTransform), typeof(CanvasRenderer),
+                    typeof(RawImage), typeof(AspectRatioFitter));
+                imageObject.transform.SetParent(frame.transform, false);
+                evacuationImage = imageObject.GetComponent<RawImage>();
+                evacuationImage.raycastTarget = false;
+                imageObject.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            }
+            evacuationImage.texture = diagram;
+            evacuationImage.GetComponent<AspectRatioFitter>().aspectRatio = (float)diagram.width / diagram.height;
+            if (teleportInstructions == null)
+            {
+                GameObject note = CreateTextObject("Teleport Instructions", panel,
+                    new Vector2(0.04f, 0.03f), new Vector2(0.96f, 0.23f));
+                teleportInstructions = note.GetComponent<Text>();
+                teleportInstructions.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                teleportInstructions.fontSize = 36;
+                teleportInstructions.alignment = TextAnchor.MiddleLeft;
+                teleportInstructions.color = new Color(1f, 0.85f, 0.25f, 1f);
+                teleportInstructions.raycastTarget = false;
+                teleportInstructions.text = "Use the marked teleport points to trigger the corresponding tutorial effects. " +
+                    "Aim at a teleport point and confirm the teleport; pointing alone does not activate it.\n" +
+                    "Follow the red arrows on the evacuation diagram to the stairs.";
+            }
+            ApplyGuideCardLayout();
+        }
+
+        private void ApplyGuideCardLayout()
+        {
+            bool tasks = guideCard == GuideCard.Tasks;
+            speechBubbleRoot.transform.localPosition = new Vector3(0f, bubbleHeight + 0.5f, bubbleForwardOffset);
+            speechBubbleRoot.GetComponent<RectTransform>().sizeDelta =
+                tasks ? new Vector2(1700f, 1050f) : new Vector2(1250f, 650f);
+            Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
+            SetAnchors(panel.Find("TitleText"), new Vector2(0.04f, 0.85f), new Vector2(0.96f, 0.98f));
+            SetAnchors(panel.Find("BorderAccent"), new Vector2(0.02f, 0.82f), new Vector2(0.98f, 0.83f));
+            SetAnchors(panel.Find("MessageText"),
+                tasks ? new Vector2(0.04f, 0.27f) : new Vector2(0.05f, 0.32f),
+                tasks ? new Vector2(0.49f, 0.80f) : new Vector2(0.95f, 0.80f));
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(!tasks);
+                SetAnchors(continueButton.transform, new Vector2(0.30f, 0.06f), new Vector2(0.70f, 0.26f));
+            }
+            if (evacuationImage != null)
+                evacuationImage.transform.parent.gameObject.SetActive(tasks);
+            if (teleportInstructions != null)
+                teleportInstructions.gameObject.SetActive(tasks);
+        }
+
+        private static void SetAnchors(Transform target, Vector2 min, Vector2 max)
+        {
+            if (target == null)
+                return;
+            RectTransform rect = target.GetComponent<RectTransform>();
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
         }
 
         private static void KeepTextReadable(Transform textTransform)
@@ -272,6 +399,12 @@ namespace CampusEmergency.Building
 
             if (audio == null && voiceAudioSource != null && voiceAudioSource.clip != null)
                 voiceAudioSource.Play();
+        }
+
+        public void ShowCompletionDialogue()
+        {
+            TriggerDialogue();
+            ShowPersistentDialogue("SCENE 1 COMPLETE", dialogueMessage);
         }
 
         public void ShowPersistentDialogue(string heading, string message)

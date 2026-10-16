@@ -10,17 +10,19 @@ namespace CampusEmergency.Audio
     public sealed class LiftSafetyAudio : MonoBehaviour
     {
         private XRSimpleInteractable interactable;
+        private Transform liftMarker;
+        private GameObject label;
+        private BoxCollider box;
         private void Awake()
         {
             interactable = GetComponent<XRSimpleInteractable>();
-            var box = GetComponent<BoxCollider>();
-            box.isTrigger = true; box.size = new Vector3(2.8f, 2.8f, 0.35f); box.center = new Vector3(0f, 1.5f, 0f);
+            box = GetComponent<BoxCollider>();
+            box.isTrigger = true; box.size = new Vector3(0.95f, 0.32f, 0.12f); box.center = Vector3.zero;
             if (!interactable.colliders.Contains(box)) interactable.colliders.Add(box);
-            var label = new GameObject("Lift Safety Sign", typeof(RectTransform), typeof(Canvas));
+            label = new GameObject("Lift Safety Sign", typeof(RectTransform), typeof(Canvas));
             label.transform.SetParent(transform, false);
-            label.transform.localPosition = Vector3.up * 1.5f;
+            label.transform.localPosition = Vector3.zero;
             label.transform.localScale = Vector3.one * 0.001f;
-            label.AddComponent<SoundAreaSign>();
             label.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
             var rect = label.GetComponent<RectTransform>(); rect.sizeDelta = new Vector2(950f, 320f);
             var panel = new GameObject("Background", typeof(RectTransform), typeof(Image));
@@ -35,6 +37,34 @@ namespace CampusEmergency.Audio
             var ui = text.GetComponent<Text>(); ui.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             ui.text = "LIFT CALL BUTTON\nDO NOT USE DURING A FIRE\nUse the stairs";
             ui.fontSize = 36; ui.color = new Color(1f, 0.85f, 0.25f); ui.alignment = TextAnchor.MiddleCenter; ui.raycastTarget = false;
+            SetVisible(false);
+        }
+        public void Initialize(Transform marker)
+        {
+            if (marker == null)
+            {
+                Debug.LogError("[CampusAudio] Lift interaction requires its LiftSign marker.", this);
+                return;
+            }
+            liftMarker = marker;
+        }
+        private void LateUpdate()
+        {
+            Camera viewer = Camera.main;
+            bool visible = viewer != null && CampusAudioDirector.IsNearLiftSign(viewer.transform.position, liftMarker);
+            SetVisible(visible);
+            if (!visible) return;
+            transform.position = liftMarker.position + new Vector3(0f, 0.5f, 0.5f);
+            Vector3 forward = transform.position - viewer.transform.position;
+            forward.y = 0f;
+            if (forward.sqrMagnitude > 0.001f)
+                transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+        }
+        private void SetVisible(bool visible)
+        {
+            label.SetActive(visible);
+            box.enabled = visible;
+            interactable.enabled = visible;
         }
         private void OnEnable() { if (interactable != null) interactable.activated.AddListener(OnActivated); }
         private void OnDisable() { if (interactable != null) interactable.activated.RemoveListener(OnActivated); }
