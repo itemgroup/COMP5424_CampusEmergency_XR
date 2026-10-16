@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 using CampusEmergency.Building;
 using CampusEmergency.Audio;
+using CampusEmergency.Emergency;
 
 namespace CampusEmergency.UI
 {
@@ -24,6 +25,7 @@ namespace CampusEmergency.UI
         [SerializeField] private NpcGuideDialogue elizabethGuideDialogue;
         [SerializeField] private NpcGuideDialogue elizabethEndDialogue;
         [SerializeField] private Texture2D evacuationDiagram;
+        [SerializeField] private RouteChangeExercise routeChangeExercise;
 
         private const float CanvasScale = 0.001f;
         private const float PanelWidth = 1600f;
@@ -113,6 +115,7 @@ namespace CampusEmergency.UI
         private bool isPaused;
         private bool endDialogueTriggered;
         private bool introductionPending = true;
+        private float nextIncompleteEndNoticeTime;
 
         private void Awake()
         {
@@ -136,6 +139,8 @@ namespace CampusEmergency.UI
             }
 
             guideCanvasObject.SetActive(false);
+            if (routeChangeExercise != null)
+                routeChangeExercise.Changed += OnRouteExerciseChanged;
         }
 
         private IEnumerator Start()
@@ -165,6 +170,8 @@ namespace CampusEmergency.UI
 
         private void OnDestroy()
         {
+            if (routeChangeExercise != null)
+                routeChangeExercise.Changed -= OnRouteExerciseChanged;
             if (isPaused)
                 Time.timeScale = previousTimeScale;
 
@@ -191,13 +198,15 @@ namespace CampusEmergency.UI
                 return;
 
             Transform cameraTransform = headCamera.transform;
+            var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
+            Vector3 feet = origin != null ? origin.transform.position : cameraTransform.position - Vector3.up * 1.6f;
+            if (routeChangeExercise != null)
+                routeChangeExercise.ObservePlayer(feet, isPaused);
             if (!isPaused)
             {
-                var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
-                Vector3 feet = origin != null ? origin.transform.position : cameraTransform.position - Vector3.up * 1.6f;
-                TryShowEndDialogue(feet);
                 if (!introductionPending)
                     AdvanceRoute(feet);
+                TryShowEndDialogue(feet);
             }
             PositionPanelInFront(pauseCanvasObject, InitialGuideDistance, -0.02f);
             UpdateDistanceButtons(guideCanvasObject, guideNearerButton, guideFartherButton);
@@ -262,9 +271,41 @@ namespace CampusEmergency.UI
                 RoutePointTolerance * RoutePointTolerance;
             if (!nearEndpoint && !nearNpc)
                 return;
+            if (routeChangeExercise != null && routeChangeExercise.HasStarted &&
+                (!routeChangeExercise.RecoveryCompleted || routeProgress != RouteProgress.Completed))
+            {
+                if (Time.unscaledTime >= nextIncompleteEndNoticeTime)
+                {
+                    nextIncompleteEndNoticeTime = Time.unscaledTime + 10f;
+                    SoundNotice.Show("PRACTICE NOT COMPLETE", routeChangeExercise.RecoveryCompleted
+                        ? "Follow the stair checkpoints in order before finishing the exercise."
+                        : routeChangeExercise.Objective);
+                }
+                return;
+            }
 
-            elizabethEndDialogue.ShowCompletionDialogue();
+            elizabethEndDialogue.ShowCompletionDialogue(ReturnToSpawn);
             endDialogueTriggered = true;
+        }
+
+        private void ReturnToSpawn()
+        {
+            if (isPaused || Time.timeScale == 0f)
+            {
+                SoundNotice.Show("PRACTICE PAUSED", "Resume the practice before returning to the classroom.");
+                return;
+            }
+            foreach (MainMenuController menu in FindObjectsByType<MainMenuController>(
+                FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (menu.gameObject.scene == gameObject.scene)
+                {
+                    menu.RestartAtClassroom();
+                    return;
+                }
+            }
+            Debug.LogError("A clean classroom restart requires the scene's MainMenuController.", this);
+            SoundNotice.Show("RESTART UNAVAILABLE", "The classroom restart is not configured in this scene.");
         }
 
         private GameObject CreateWorldCanvas(string objectName, float width, float height, float canvasScale, int sortingOrder, Vector3 localPosition)
@@ -380,7 +421,10 @@ namespace CampusEmergency.UI
             if ((cameraPositionXZ - destinationXZ).sqrMagnitude > RoutePointTolerance * RoutePointTolerance)
                 yield break;
 
-            AdvanceRoute(destination);
+            if (routeChangeExercise != null)
+                routeChangeExercise.ObservePlayer(destination, isPaused);
+            if (!isPaused)
+                AdvanceRoute(destination);
             if (guideInProgress && currentStep == 2)
                 CompleteStep("Teleport successful. Push the right joystick up to aim again, then press the right grip to cancel.");
         }
@@ -389,6 +433,9 @@ namespace CampusEmergency.UI
 
         private void AdvanceRoute(Vector3 destination)
         {
+            if (routeChangeExercise != null && routeChangeExercise.HasStarted &&
+                !routeChangeExercise.RecoveryCompleted)
+                return;
             if (downStairStart == null || downStairAssist == null ||
                 downStairAssist1 == null || downStairAssist2 == null ||
                 downStairFinished == null || routeProgress == RouteProgress.Completed)
@@ -445,6 +492,29 @@ namespace CampusEmergency.UI
             UpdateNavigationHud();
         }
 
+        private void BeginRouteExercise()
+        {
+            if (routeChangeExercise == null || isPaused || introductionPending ||
+                routeProgress != RouteProgress.AwaitingStart || !TryGetHeadCamera())
+                return;
+            var origin = headCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();
+            Vector3 feet = origin != null ? origin.transform.position : headCamera.transform.position - Vector3.up * 1.6f;
+            if (routeChangeExercise.BeginExercise(feet))
+            {
+                endDialogueTriggered = false;
+                elizabethEndDialogue?.ResetDialogue();
+            }
+        }
+
+        private void OnRouteExerciseChanged()
+        {
+            currentFloor = "3F";
+            floorTrackingConnected = true;
+            currentTaskIndex = 1;
+            currentObjective = routeChangeExercise.Objective;
+            UpdateNavigationHud();
+        }
+
         private static bool IsRouteDestination(Vector3 destination, Transform waypoint)
         {
             return CampusAudioDirector.NearWaypoint(destination, waypoint, RoutePointTolerance);
@@ -473,7 +543,8 @@ namespace CampusEmergency.UI
                 {
                     completedTasks[0] = true;
                     currentTaskIndex = 1;
-                    currentObjective = "Controller practice complete. Continue to the DownStair corner.";
+                    currentObjective = routeChangeExercise != null && routeChangeExercise.HasStarted
+                        ? routeChangeExercise.Objective : "Controller practice complete. Continue to the DownStair corner.";
                 }
                 guideCanvasObject.SetActive(false);
                 hudCanvasObject.SetActive(true);
@@ -771,7 +842,8 @@ namespace CampusEmergency.UI
             if (routeProgress == RouteProgress.AwaitingStart)
             {
                 currentTaskIndex = 1;
-                currentObjective = completedTasks[0]
+                currentObjective = routeChangeExercise != null && routeChangeExercise.HasStarted
+                    ? routeChangeExercise.Objective : completedTasks[0]
                     ? "Continue to the DownStair corner and review the signs."
                     : "Controls skipped. Continue to the DownStair corner.";
             }
@@ -847,7 +919,13 @@ namespace CampusEmergency.UI
                 elizabethGuideDialogue = FindElizabethStartGuideDialogue();
 
             if (elizabethGuideDialogue != null)
-                elizabethGuideDialogue.ShowTaskGuide(taskList, evacuationDiagram);
+            {
+                bool exerciseActive = routeChangeExercise != null && routeChangeExercise.HasStarted;
+                bool canStartExercise = routeChangeExercise != null && routeChangeExercise.isActiveAndEnabled &&
+                    !exerciseActive && routeProgress == RouteProgress.AwaitingStart;
+                elizabethGuideDialogue.ShowTaskGuide(taskList, evacuationDiagram,
+                    canStartExercise ? BeginRouteExercise : (UnityAction)null, exerciseActive);
+            }
         }
 
         private string BuildTaskList()
@@ -862,7 +940,9 @@ namespace CampusEmergency.UI
             }
 
             if (routeProgress == RouteProgress.AwaitingStart)
-                taskLines.Append("\nContinue to the DownStair corner to begin route practice.");
+                taskLines.Append(routeChangeExercise != null && routeChangeExercise.HasStarted
+                    ? "\nReroute exercise: " + routeChangeExercise.Objective
+                    : "\nContinue to the DownStair corner to begin route practice.");
 
             return taskLines.ToString();
         }

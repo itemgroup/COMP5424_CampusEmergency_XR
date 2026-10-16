@@ -10,12 +10,14 @@ New-Item -ItemType Directory -Path "$ValidationRoot\Assets\Editor","$ValidationR
 Copy-Item -LiteralPath "$ProjectRoot\Assets\Scripts" -Destination "$ValidationRoot\Assets\Scripts" -Recurse
 New-Item -ItemType Directory -Path "$ValidationRoot\Assets\Resources" -Force | Out-Null
 Copy-Item -LiteralPath "$ProjectRoot\Assets\Resources\CampusSound" -Destination "$ValidationRoot\Assets\Resources\CampusSound" -Recurse
+Copy-Item -LiteralPath "$ProjectRoot\Assets\Resources\RouteExerciseMaterial.mat","$ProjectRoot\Assets\Resources\RouteExerciseMaterial.mat.meta" -Destination "$ValidationRoot\Assets\Resources"
 Copy-Item -LiteralPath "$PSScriptRoot\Validation\SoundVerification.cs" -Destination "$ValidationRoot\Assets\Editor\SoundVerification.cs"
 New-Item -ItemType Directory -Path "$ValidationRoot\Assets\SignsAndPosters" -Force | Out-Null
 Copy-Item -LiteralPath "$ProjectRoot\Assets\SignsAndPosters\Fire_Evacuation_Diagram.png","$ProjectRoot\Assets\SignsAndPosters\Fire_Evacuation_Diagram.png.meta" -Destination "$ValidationRoot\Assets\SignsAndPosters"
 $manifest = @{dependencies=@{
     'com.unity.xr.interaction.toolkit'='3.5.1'; 'com.unity.xr.core-utils'='2.6.0';
     'com.unity.inputsystem'='1.20.0'; 'com.unity.ugui'='2.0.0';
+    'com.unity.render-pipelines.universal'='17.3.0';
     'com.unity.modules.audio'='1.0.0'; 'com.unity.modules.physics'='1.0.0';
     'com.unity.modules.ui'='1.0.0'; 'com.unity.modules.imgui'='1.0.0'; 'com.unity.modules.jsonserialize'='1.0.0'
 }}
