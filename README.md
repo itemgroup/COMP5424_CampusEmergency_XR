@@ -1,3 +1,4 @@
+# Group 7 Campus Emergency Preparedness
 # COMP5424 Group7 Git 协作工作流
 
 仓库地址：[https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git](https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git)
