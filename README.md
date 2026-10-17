@@ -1,3 +1,7 @@
+# Windows PCVR build
+
+The build package is included in this branch: [Build/CampusEmergency.zip](Build/CampusEmergency.zip) (tracked with Git LFS).
+
 # Group 7 Campus Emergency Preparedness
 
 ## Group members

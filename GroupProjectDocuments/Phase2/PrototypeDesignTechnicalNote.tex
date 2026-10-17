@@ -342,28 +342,165 @@ S4 & \path{Assets/Scripts/Audio/CampusAudioDirector.cs}:
 \end{tabularx}
 
 \subsection{Executed regression evidence}
-The accompanying \path{functional-verification.txt} contains the saved PASS
-record and 147 named checks from an isolated, no-graphics Unity project.
-The persistent test definitions are in
+The complete saved PASS record from the isolated, no-graphics Unity project is
+reproduced below. The persistent test definitions are in
 \path{Tools/Sound/Validation/SoundVerification.cs}; execute using
 \path{Tools/Sound/Verify-Sound.ps1} with the Unity editor path.
-Representative exact labels:
-\begin{itemize}
-\item V1: ``Completion card remains visible beyond its former seven-second
-timeout''; ``Completion before Continue plays or queues the configured
-completion voice''.
-\item V2: ``Guide Nearer physically moves its panel 0.2 meters without
-changing height or orientation''; ``HUD Farther clamps to 2.2 meters''.
-\item V3: ``The registered selection filter rejects a real stair anchor before
-recovery''; ``The original five stair checkpoints still complete in order
-after reroute recovery''.
-\item V4: ``NPC proximity cannot show the lift warning even when explicitly
-requested''.
-\item V5: ``Back skips Enter System and its music, opening the fresh classroom
-welcome instead''; ``Reload clears closure, task checkmarks, endpoint success
-and prior completion UI''. The suite uses an isolated fixture and does not
-verify the entire campus or Quest build.
+\textbf{Result: PASS; 147 named checks.} The suite uses an isolated fixture
+and does not verify the entire campus or Quest build.
+
+\begingroup
+\small
+\begin{itemize}[leftmargin=*,nosep]
+\item 22 audio assets import successfully
+\item NPC voice matches scene text
+\item Dynamic task-list markers match baked NPC speech
+\item All eight lift interaction panels use the actual sign positions on four floors
+\item Lift panels and colliders are hidden when the player is away
+\item Elevator NPC and End NPC locations do not count as lift sign proximity
+\item Actual lift marker is detected: LiftSign 0
+\item Actual lift marker is detected: LiftSign 1
+\item Actual lift marker is detected: LiftSign 2
+\item Actual lift marker is detected: LiftSign 3
+\item Actual lift marker is detected: LiftSign 4
+\item Actual lift marker is detected: LiftSign 5
+\item Actual lift marker is detected: LiftSign 6
+\item Actual lift marker is detected: LiftSign 7
+\item Lift detection rejects other floors and positions outside 2.5 meters
+\item Offset anchor resolves to actual destination
+\item Training route uses corrected anchor position
+\item Evacuation diagram imports as Texture2D
+\item Start NPC welcome precedes the optional controller tutorial
+\item Task updates do not overwrite welcome before Continue
+\item Continue is an enabled XR-raycastable button
+\item Continue reveals controller tutorial and dismisses welcome button
+\item Task card includes the correct evacuation diagram with preserved aspect ratio
+\item Task list and teleport-effect instructions appear together
+\item Repeated Continue and bubble styling preserve the task card
+\item Guide Nearer physically moves its panel 0.2 meters without changing height or orientation
+\item Guide Farther physically reverses the Nearer adjustment
+\item Guide Nearer stops at 0.65 meters and disables its button
+\item Guide Farther stops at 2.2 meters and disables its button
+\item Guide remains world-fixed after head rotation and player translation
+\item Completing all five controller exercises opens the navigation panel
+\item Post-tutorial navigation panel does not follow head rotation, walking or teleport displacement
+\item Nearer adjusts a distant fixed HUD by one step instead of snapping it to the player
+\item HUD Nearer physically moves its panel while preserving height and orientation
+\item HUD Farther physically reverses the Nearer adjustment
+\item HUD Nearer clamps to 0.65 meters
+\item HUD Farther clamps to 2.2 meters
+\item Review explicitly reopens the fixed guide in front of the current viewer
+\item Skipping the guide also opens a world-fixed navigation panel
+\item Endpoint dialogue does not trigger outside actual anchor radius
+\item Endpoint dialogue does not trigger from another floor
+\item Inactive endpoint NPC does not consume arrival trigger
+\item Direct endpoint arrival shows configured End NPC text without prior route checkpoints
+\item Endpoint dialogue leaves ordered task progress unchanged
+\item Repeated endpoint arrival preserves the persistent card without replaying dialogue
+\item Completion card remains visible beyond its former seven-second timeout
+\item Completion card offers an optional controller-ray safety review button
+\item Completion card lower edge is raised 0.4 meters above the original panel lower edge
+\item Safety review explains stairs, lifts, closure awareness and the simulated endpoint without claiming reroute success
+\item Opening safety review preserves persistent display, voice cooldown and ordered route progress
+\item Taller safety review keeps the same raised lower edge, clear of the NPC head
+\item Raised review stays below the next floor at the End NPC's configured four-meter storey height
+\item Safety review body fits its panel at the configured minimum readable font size
+\item Safety review remains visible beyond the former dialogue timeout
+\item Back restores the configured completion message without replaying completion voice
+\item Reset after safety review clears the review page and persistent message for the next experience
+\item End NPC proximity does not trigger completion from another floor
+\item Approaching End NPC after reset restores the completion card rather than the previous review page
+\item Actual frame update still blocks endpoint completion while paused
+\item Actual frame update shows permanent completion before Continue at (48.72, 12.08, -10.44)
+\item Actual frame update shows permanent completion before Continue at (55.22, 12.08, -10.44)
+\item Completion before Continue plays or queues the configured completion voice
+\item Completion does not bypass Continue for the tutorial or advance ordered route progress
+\item Emergency starts idempotently
+\item Indoor alarm fades in to configured level
+\item Exact emergency PA is selected
+\item Speech ducks alarm for intelligibility
+\item Triggered NPC preserves currently displayed task-list text
+\item Triggered NPC queues the voice for the visible text
+\item XRI accepts real teleport request
+\item No teleport sound on request/aim/cancel phase
+\item Real XRI teleport completes and moves player
+\item Arrival audio is triggered by completed teleport
+\item Grounded continuous movement triggers footsteps
+\item NPC proximity cannot show the lift warning even when explicitly requested
+\item Lift proximity detected at matching floor
+\item Nearby lift marker enables its panel and XR collider
+\item Wrong lift warning is anchored at the matching lift marker, not the player or NPC
+\item Moving away hides lift panels and disables raycast targets
+\item Pause freezes alarm fades
+\item G-floor covered corridor does not count as outdoors
+\item G-floor open courtyard fades alarm without false completion
+\item Assembly point triggers success once
+\item Assembly retains only distant alarm
+\item EndEmergency clears alarm and speech queue
+\item Reroute validation is registered on the real XR Interaction Manager
+\item Optional reroute starts idle with no barrier or restrictions on ordinary exploration
+\item Original route sign text has viewer-correct left/right and up/down orientation from all four sides
+\item Start NPC task panel retains its original safe height below the next floor
+\item Start reroute button moves to the right panel edge, away from the NPC head
+\item Task card content restores its original unraised layout
+\item Optional exercise offers Start reroute while preserving the ordinary task diagram
+\item Starting reroute establishes the original route before any closure appears
+\item Repeated start cannot reset an active reroute exercise
+\item Exercise permits the initial corridor but explains why direct teleport to stairs is unavailable
+\item Visiting the alternative corner before the closure does not count as recovery
+\item Pause prevents a route closure from triggering
+\item Standing below the decision corner cannot trigger closure from another floor
+\item Reaching the decision corner changes the previously available route to closed exactly once
+\item Remaining at the closure does not repeat the event
+\item The visible closure has a static solid collider across the corridor, without a falling Rigidbody
+\item A real CharacterController continuous move is stopped by the closure instead of passing through
+\item Both fixed and arbitrary destinations beyond the barrier, downstairs and across the courtyard are rejected
+\item The registered selection filter rejects a real stair anchor before recovery
+\item A real XR ray hitting a free-area floor beyond the barrier cannot select it through the manager
+\item Valid corner-to-corridor teleports are allowed without treating their flight line as walking, while courtyard landings stay blocked
+\item A player near the barrier can teleport back to safety, but not through to the other side
+\item Notification regression uses an actively held real XR select input
+\item An actual invalid teleport gesture reports its reason once
+\item Holding the same invalid teleport gesture does not repeat a popup after the former four-second cooldown
+\item Releasing the teleport gesture rearms feedback for a new attempt
+\item A new invalid teleport gesture can report its reason again
+\item The same real XR ray and free-area floor remain selectable on the available alternative corridor
+\item The opposite same-floor corridor remains available for teleporting
+\item Alternative corner opens the connecting corridor, not an immediate success
+\item Rejoining stairs restores normal destinations but keeps the closed barrier non-teleportable
+\item Active exercise hides the answer diagram and start button, retaining environmental-sign guidance
+\item Recovery alone cannot show success before the ordered stair checkpoints are complete
+\item An out-of-order endpoint after recovery still cannot complete the stair route
+\item The original five stair checkpoints still complete in order after reroute recovery
+\item The real final arrival frame advances the last checkpoint before checking success, without a false incomplete warning
+\item Recovery plus completed stair checkpoints enables the persistent endpoint completion and review
+\item The final End NPC card offers Continue and Back alongside the retained safety review
+\item Continue does not move, rotate, reset progress, hide the card or replay completion voice
+\item Safety review uses Back to results and hides the classroom-return controls to avoid ambiguous Back buttons
+\item Returning from safety review restores both finish actions
+\item Dialogue reset hides both completion action buttons
+\item Disabling the exercise removes its global interaction filter
+\item Scene cleanup releases singleton and listeners
+\item Ordinary scene entry still displays Enter System and plays menu music
+\item The reloaded classroom reconnects all four tutorial input actions
+\item A fresh reroute can begin in clean attempt 0
+\item Restart fixture contains an active barrier, fire audio, popup and moved prop before Back
+\item Back unloads the previous experience including runtime objects, old XR rig and moved props
+\item Back skips Enter System and its music, opening the fresh classroom welcome instead
+\item Reload restores the classroom spawn and original prop placement
+\item Reload clears closure, task checkmarks, endpoint success and prior completion UI
+\item Reload resets fire/global state and time while registering exactly one new route filter
+\item The reloaded classroom reconnects all four tutorial input actions
+\item A fresh reroute can begin in clean attempt 1
+\item Restart fixture contains an active barrier, fire audio, popup and moved prop before Back
+\item Back unloads the previous experience including runtime objects, old XR rig and moved props
+\item Back skips Enter System and its music, opening the fresh classroom welcome instead
+\item Reload restores the classroom spawn and original prop placement
+\item Reload clears closure, task checkmarks, endpoint success and prior completion UI
+\item Reload resets fire/global state and time while registering exactly one new route filter
+\item Classroom skip is consumed once: the normal Restart action still opens Enter System
 \end{itemize}
+\endgroup
 
 \subsection{Retrospective group-member formative test log}
 Group members report hands-on iterations covering the full route, optional
@@ -417,4 +554,69 @@ Automated regressions document implemented behaviour; the reported manual
 result documents one Windows PCVR setup. Neither constitutes a controlled
 learner study. No claims are made about learning gains, independent route
 choice, comfort, or compatibility beyond the tested PC/headset configuration.
+
+\subsection{Weekly Activity Record and Division of Work}
+The project progressed from the Unity/XR foundation through environment and
+interaction development to final integration and validation:
+\begin{itemize}
+\item \textbf{29 September--3 October:} Established the Unity/XR project
+structure, configured Quest/OpenXR settings, assembled the initial campus
+scene and began teleport, controller-turning and tutorial interactions
+(\code{a1888f7}, \code{79e93e7}, \code{6c2beed}, \code{c54852e},
+\code{d6cbf34}, \code{4bb475e}, \code{a962ae6}, \code{49bddb1}; PR \#9).
+\item \textbf{5--9 October:} Added campus furniture, evacuation signs and
+posters and imported asset packages
+(\code{384d062}, \code{1aeddf4}, \code{703edf0}, \code{b9ee901}; PR \#13).
+\item \textbf{12--16 October:} Refined the scene and UI and integrated
+lift-blocking behaviour, evacuation audio, a startup menu and English
+campus-resource descriptions (\code{2ff3ece}, \code{d12625f},
+\code{e0b82b9}, \code{5693305}, \code{786c9b6}, \code{23e006f},
+\code{89d2419}; PRs \#17--\#18).
+\item \textbf{17 October:} Integrated the optional reroute exercise,
+teleport-destination restrictions and clean Back/reset flow, then adjusted
+the Start reroute control. The project records 147 isolated Unity regression
+checks and a team-reported Windows PCVR test on PQ604B/604B205 via Quest
+Link/Air Link (\code{416ca44}, \code{364e4a6}, \code{74234cb}; PR \#22).
+\end{itemize}
+
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}YY@{}}
+\toprule
+\textbf{Member} & \textbf{Responsibilities} & \textbf{Project evidence} \\
+\midrule
+SUN Jiashi &
+XR implementation and integration: campus scene, locomotion, teleport and
+turning, interaction flow, reroute logic, reset behaviour and final integration. &
+\code{d6cbf34}, \code{f15de48}, \code{364e4a6}, \code{416ca44},
+\code{74234cb}; changes across \path{Assets/Scenes} and
+\path{Assets/Scripts}. Phase 1 Development Group. \\
+FENG Kedi &
+Unity development and interaction/scene work, including platform integration
+and the initial controller tutorial panel. &
+Phase 1 Development Group; \code{feat/FKD--develop} (PR \#7) and
+\code{feat/Cody-Scripts} (PR \#9, initial tutorial interaction panel). \\
+SONG Zheyi &
+Campus resource images, signs and posters, English descriptions, evacuation
+audio and sound feedback; product/content coordination. &
+\code{89d2419}, \code{786c9b6}; PRs \#13 and \#18. Phase 1 Product Group. \\
+WENG Zhirui &
+Emergency-related content and asset preparation/handoff; product requirements
+and scope coordination. &
+\code{a962ae6} (Module 5 content and asset handoff pack). Phase 1 Product Group. \\
+ZHU Yu &
+Testing and acceptance responsibilities, together with Unity asset-package
+preparation. &
+Phase 1 Test Group; \code{b9ee901} (Unity Asset Store packages and Git LFS). \\
+CHU Silu &
+Test planning, acceptance and usability feedback. &
+Phase 1 Test Group; the Phase 2 feedback record covers UI, lift prompts,
+reroute signs and reset behaviour. \\
+\bottomrule
+\end{tabularx}
+
+\textbf{Prototype outcome:} The delivered journey includes a classroom welcome
+and task briefing, a stair-based practice route to the 2F endpoint and an
+optional authored reroute exercise at the 3F decision area. The reroute is a
+bounded scenario, not dynamic route planning. The PCVR test covers one
+reported setup; Android standalone acceptance and structured participant
+evaluation remain future work.
 \end{document}
