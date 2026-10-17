@@ -55,13 +55,49 @@ two consecutive clean scene reloads via Back, welcome/menu entry behavior,
 restored prop positions, cleared task/audio state, raised card bounds,
 panel distance controls, completion before
 Continue, safety review navigation/reset, lift proximity and audio behavior.
-A full C# build passed (0 errors). No generated project files were edited.
-These checks do not replace testing the final APK on Quest. The latest observed
-local test_2 Build And Run succeeded on 2026-10-17 at 00:37.
+The current C# build passed with 0 errors. No Unity-generated project artifacts
+were changed; the updated report PDF is included intentionally. These checks do
+not replace testing the final APK on Quest. The previously observed local
+test_2 Build And Run succeeded on 2026-10-17 at 00:37, before the latest
+reroute/reset source update; no APK was rebuilt for that update.
 
 See [implementation details](Docs/SoundImplementation.md) for trigger conditions,
 audio integration, and the validation command. The new welcome sentence has no
 new voice recording; existing task and completion voices are retained.
+
+## Group members
+
+| Member | Student ID | GitHub account |
+|---|---|---|
+| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
+| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
+| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
+| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
+| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
+| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
+
+## Basic use
+
+1. Open the project with Unity **6000.3.25f1**, open
+   `Assets/Scenes/SampleScene.unity`, and enter Play mode or launch the current
+   matching build.
+2. Select **Enter System**. At the Start NPC, select **Continue** to show the
+   task card and evacuation diagram. The controller tutorial is optional.
+3. For the optional route-recovery practice, select **Start reroute** from the
+   task card before beginning the stair route. Otherwise, explore the normal
+   campus route without the closure exercise.
+4. Use the left stick to move. Move the right stick left/right to snap-turn;
+   push it up to aim a teleport, then release to confirm. Use the right grip to
+   cancel teleport and the right trigger/controller ray to activate supported
+   buttons and panels.
+5. In reroute practice, reach the marked 3F decision corner. When the route
+   closes, follow the alternative EXIT signs and green arrow around the
+   same-floor corridor to rejoin the stairs, then complete the original stair
+   checkpoints in order.
+6. At the endpoint, **Review safety** opens the debrief. **Continue** leaves the
+   completion card and progress unchanged. **Back** clears the attempt, reloads
+   the classroom, and opens the welcome page directly. This is a fictional
+   learning prototype, not official emergency guidance.
 
 # COMP5424 Group7 Git 协作工作流
 
