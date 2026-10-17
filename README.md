@@ -1,5 +1,16 @@
 # Group 7 Campus Emergency Preparedness
 
+## Group members
+
+| Member | Student ID | GitHub account |
+|---|---|---|
+| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
+| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
+| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
+| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
+| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
+| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
+
 ## Final demonstration update - 2026-10-17
 
 Entry scene: `Assets/Scenes/SampleScene.unity` (Unity 6000.3.25f1).
