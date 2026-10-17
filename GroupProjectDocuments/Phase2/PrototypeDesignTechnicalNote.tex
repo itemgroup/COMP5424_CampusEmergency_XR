@@ -49,11 +49,11 @@
 \vspace{0.8cm}
 \begin{tabularx}{\textwidth}{@{}lY@{}}
 \textbf{Virtual client} & Harbourview University Safety and Resilience Office \\
-\textbf{Submission date} & \fillin{date} \\
+\textbf{Submission date} & 17 October 2026 \\
 \textbf{Repository} & \url{\repo} \\
-\textbf{Source baseline} & \code{feat/final-vr-demo}; updated source in PR \#22 \\
-\textbf{Submitted build} & \fillin{ZIP filename and matching build identifier} \\
-\textbf{Target-PC evidence} & \fillin{PQ604A/B/C platform and launch record} \\
+\textbf{Source baseline} & \code{final-submission-2026-10-17} at \code{9f2b3ff} \\
+\textbf{Submitted build} & \path{Build/CampusEmergency.zip}; Windows x86\_64 IL2CPP, source \code{9f2b3ff} \\
+\textbf{Target-PC evidence} & PQ604B / 604B205; Quest Link/Air Link; full feature test passed on 17 October 2026 \\
 \end{tabularx}
 \vspace{0.8cm}
 \begin{tabularx}{0.75\textwidth}{@{}YY@{}}
@@ -111,7 +111,7 @@ Lift warning and safety review explain stair/lift choice and closure cues; learn
 R5 & Calm, inclusive, low-risk practice. &
 Partial: text feedback, optional tutorial, teleport and moderate audio settings; comfort needs user evidence. V4. \\
 R6 & Pause, exit and restart safely. &
-Implemented controls; full device verification remains open. S2; V5. \\
+Implemented; PCVR lab test passed; broader device coverage remains open. S2; V5, V6. \\
 \bottomrule
 \end{tabularx}
 
@@ -184,7 +184,8 @@ comprehension and individual comfort are not yet established.
 \subsection{Architecture and major technical decisions}
 \textbf{Configuration:} Unity 6000.3.25f1; URP 17.3.0; XR Interaction Toolkit
 3.5.1; Input System 1.20.0; OpenXR 1.17.1; Android IL2CPP/ARM64 for
-Quest 3~\cite{implementation}. Lab-PC compatibility is not established.
+Quest 3~\cite{implementation}. Windows Standalone x86\_64 IL2CPP/OpenXR PCVR
+passed on PQ604B/604B205 via Quest Link/Air Link.
 
 \textbf{Control:} ControllerGuidePanel tracks start, stair entry, two landings
 and completion using actual teleport-anchor positions. An independent 2.5\,m
@@ -202,19 +203,19 @@ ordered completion; reroute practice additionally requires recovery and the
 original stair checkpoints in order.
 
 \subsection{Executable and repository reproducibility}
-Development used Windows, an RTX 5060 Laptop GPU and Quest 3 Android deployment.
-The latest previously recorded test\_2 Build And Run succeeded on 17 October
-at 00:37; it predates the current reroute/reset source update and does not
-verify this version. \textbf{PQ604A/B/C extraction and launch are unverified.}
+The Windows Standalone x86\_64 IL2CPP build from \code{9f2b3ff} is in
+\path{Build/CampusEmergency.zip}. It was extracted and launched on PQ604B
+machine 604B205 on 17 October 2026 through Quest Link/Air Link, with Meta
+Quest Link as the active OpenXR Runtime; the user reported all features
+working. This establishes PCVR on that setup, not Android standalone APK
+acceptance or compatibility with other PCs.
 
-\textbf{Handoff:} \fillin{ZIP, launch path, companion files and lab-PC record}.
-Deploy the current APK to Quest, launch it and select Enter System.
-The cover identifies repository and source commit; access and ZIP/source
-correspondence require confirmation. Required member accounts must still be
-added to the root README.
+\textbf{Handoff:} extract the ZIP and run \code{My project.exe} from
+\path{CampusEmergency} with Quest Link active; keep the data folder and player
+DLLs beside it.
 
 \subsection{Functional verification summary}
-C\# compilation and \textbf{144 isolated Unity regression checks passed} for
+C\# compilation and \textbf{147 isolated Unity regression checks passed} for
 the current source, including XR teleport filtering, barrier collision,
 ordered recovery and two clean scene reloads. These are automated regressions,
 not participant trials or full-campus acceptance (Appendix A).
@@ -227,8 +228,8 @@ V1 & Endpoint before Continue; persistent card; task isolation. & Pass; ordinary
 V2 & Diagram, Continue, panel movement and limits. & Pass; exact labels in evidence file. \\
 V3 & Optional closure, barrier, valid recovery and ordered stairs. & Pass in isolated scene; authored scenario, not participant evidence. \\
 V4 & Lift proximity; muted journey. & Proximity passes; muted journey not recorded. \\
-V5 & Pause, clean classroom reset and exit. & Reset passes in isolated fixture; full device checks not recorded. \\
-V6 & Extracted build on lab PC. & Not run / not evidenced. \\
+V5 & Pause, clean classroom reset and exit. & Automated reset passes; full feature set reported in V6. \\
+V6 & PCVR build on lab PC. & Pass; 17 October 2026, PQ604B/604B205. \\
 \bottomrule
 \end{tabularx}
 
@@ -321,9 +322,10 @@ Implementation evidence: \path{Packages/manifest.json},
 \fancyhead[R]{Appendix: Evidence}
 \section{Evidence Locations and Submission Checks}
 \subsection{Source locators}
-Paths are relative to the repository root. PR \#22 carries the final-source
-update beyond \code{416ca44}. No new APK or submission ZIP was built for this
-report update; verify the submitted package against its source revision.
+Paths are relative to the repository root. This report describes
+\code{final-submission-2026-10-17} at \code{9f2b3ff}. The Windows PCVR ZIP is a
+separate build artifact; verify the submitted archive against this source
+revision. The Android standalone APK was not rebuilt for this acceptance.
 
 \begin{tabularx}{\textwidth}{@{}p{0.8cm}Y@{}}
 \toprule
@@ -345,7 +347,7 @@ S4 & \path{Assets/Scripts/Audio/CampusAudioDirector.cs}:
 
 \subsection{Executed regression evidence}
 The accompanying \path{functional-verification.txt} contains the saved PASS
-record and 144 named checks from an isolated, no-graphics Unity project.
+record and 147 named checks from an isolated, no-graphics Unity project.
 The persistent test definitions are in
 \path{Tools/Sound/Validation/SoundVerification.cs}; execute using
 \path{Tools/Sound/Verify-Sound.ps1} with the Unity editor path.
@@ -372,9 +374,10 @@ Group members report hands-on iterations covering the full route, optional
 reroute, lift-safety prompts, controller/UI use and the Back reset. The issue
 notes below are consolidated from development feedback, not a contemporaneous
 test protocol. Individual attribution, per-session headcount, exact test
-dates, headset/build identifiers and per-person task outcomes were not
-retained. The GitHub development history spans 12--17 October 2026; this is a
-development window, not a claim that each test occurred on those commit dates.
+dates and per-person task outcomes for earlier iterations were not retained.
+The Windows PCVR acceptance is recorded under V6. The GitHub development
+history spans 12--17 October 2026; this is not a claim that each iteration
+occurred on those commit dates.
 
 \begin{tabularx}{\textwidth}{@{}p{2.35cm}YY@{}}
 \toprule
@@ -404,17 +407,21 @@ checks cover four viewing directions and repeated selection. \\
 Back reset &
 Returning to spawn left traces of the previous attempt. &
 Back now reloads the scene and opens the classroom welcome directly. The
-final reset-flow check was reported as passed on 17 October 2026; the device
-and build used for this acceptance were not recorded. Automated tests also
-verify two consecutive clean reloads. \\
+automated suite verifies two consecutive clean reloads. The full-feature
+Windows PCVR test was reported as passed on 17 October 2026; see V6. \\
+Windows PCVR build &
+The extracted Windows ZIP launched successfully on PQ604B/604B205 via Quest
+Link/Air Link; all features were reported working. &
+\path{Build/CampusEmergency.zip}, source \code{9f2b3ff}, 17 October 2026;
+single-machine PCVR result, not Android APK acceptance. \\
 \bottomrule
 \end{tabularx}
 
 \subsection{Items the team must complete before submission}
 \begin{itemize}
-\item Fill the cover date, ZIP identifier and platform launch evidence.
-Confirm repository visibility or teaching-team access. The root README now
-lists each member's name, student ID and GitHub account; the report cover
+\item The cover date, ZIP identifier and one PCVR launch record are complete.
+Confirm repository visibility or teaching-team access. The root README lists
+each member's name, student ID and GitHub account; the report cover
 intentionally lists only names and student IDs.
 \item Supply the separate weekly activity record with actual responsibilities,
 decisions, completed work and unresolved issues; do not infer individual
