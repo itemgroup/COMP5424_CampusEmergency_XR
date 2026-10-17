@@ -1,0 +1,145 @@
+PASS
+22 audio assets import successfully
+NPC voice matches scene text
+Dynamic task-list markers match baked NPC speech
+All eight lift interaction panels use the actual sign positions on four floors
+Lift panels and colliders are hidden when the player is away
+Elevator NPC and End NPC locations do not count as lift sign proximity
+Actual lift marker is detected: LiftSign 0
+Actual lift marker is detected: LiftSign 1
+Actual lift marker is detected: LiftSign 2
+Actual lift marker is detected: LiftSign 3
+Actual lift marker is detected: LiftSign 4
+Actual lift marker is detected: LiftSign 5
+Actual lift marker is detected: LiftSign 6
+Actual lift marker is detected: LiftSign 7
+Lift detection rejects other floors and positions outside 2.5 meters
+Offset anchor resolves to actual destination
+Training route uses corrected anchor position
+Evacuation diagram imports as Texture2D
+Start NPC welcome precedes the optional controller tutorial
+Task updates do not overwrite welcome before Continue
+Continue is an enabled XR-raycastable button
+Continue reveals controller tutorial and dismisses welcome button
+Task card includes the correct evacuation diagram with preserved aspect ratio
+Task list and teleport-effect instructions appear together
+Repeated Continue and bubble styling preserve the task card
+Guide Nearer physically moves its panel 0.2 meters without changing height or orientation
+Guide Farther physically reverses the Nearer adjustment
+Guide Nearer stops at 0.65 meters and disables its button
+Guide Farther stops at 2.2 meters and disables its button
+Guide remains world-fixed after head rotation and player translation
+Completing all five controller exercises opens the navigation panel
+Post-tutorial navigation panel does not follow head rotation, walking or teleport displacement
+Nearer adjusts a distant fixed HUD by one step instead of snapping it to the player
+HUD Nearer physically moves its panel while preserving height and orientation
+HUD Farther physically reverses the Nearer adjustment
+HUD Nearer clamps to 0.65 meters
+HUD Farther clamps to 2.2 meters
+Review explicitly reopens the fixed guide in front of the current viewer
+Skipping the guide also opens a world-fixed navigation panel
+Endpoint dialogue does not trigger outside actual anchor radius
+Endpoint dialogue does not trigger from another floor
+Inactive endpoint NPC does not consume arrival trigger
+Direct endpoint arrival shows configured End NPC text without prior route checkpoints
+Endpoint dialogue leaves ordered task progress unchanged
+Repeated endpoint arrival preserves the persistent card without replaying dialogue
+Completion card remains visible beyond its former seven-second timeout
+Completion card offers an optional controller-ray safety review button
+Completion card lower edge is raised 0.4 meters above the original panel lower edge
+Safety review explains stairs, lifts, closure awareness and the simulated endpoint without claiming reroute success
+Opening safety review preserves persistent display, voice cooldown and ordered route progress
+Taller safety review keeps the same raised lower edge, clear of the NPC head
+Raised review stays below the next floor at the End NPC's configured four-meter storey height
+Safety review body fits its panel at the configured minimum readable font size
+Safety review remains visible beyond the former dialogue timeout
+Back restores the configured completion message without replaying completion voice
+Reset after safety review clears the review page and persistent message for the next experience
+End NPC proximity does not trigger completion from another floor
+Approaching End NPC after reset restores the completion card rather than the previous review page
+Actual frame update still blocks endpoint completion while paused
+Actual frame update shows permanent completion before Continue at (48.72, 12.08, -10.44)
+Actual frame update shows permanent completion before Continue at (55.22, 12.08, -10.44)
+Completion before Continue plays or queues the configured completion voice
+Completion does not bypass Continue for the tutorial or advance ordered route progress
+Emergency starts idempotently
+Indoor alarm fades in to configured level
+Exact emergency PA is selected
+Speech ducks alarm for intelligibility
+Triggered NPC preserves currently displayed task-list text
+Triggered NPC queues the voice for the visible text
+XRI accepts real teleport request
+No teleport sound on request/aim/cancel phase
+Real XRI teleport completes and moves player
+Arrival audio is triggered by completed teleport
+Grounded continuous movement triggers footsteps
+NPC proximity cannot show the lift warning even when explicitly requested
+Lift proximity detected at matching floor
+Nearby lift marker enables its panel and XR collider
+Wrong lift warning is anchored at the matching lift marker, not the player or NPC
+Moving away hides lift panels and disables raycast targets
+Pause freezes alarm fades
+G-floor covered corridor does not count as outdoors
+G-floor open courtyard fades alarm without false completion
+Assembly point triggers success once
+Assembly retains only distant alarm
+EndEmergency clears alarm and speech queue
+Reroute validation is registered on the real XR Interaction Manager
+Optional reroute starts idle with no barrier or restrictions on ordinary exploration
+Original route sign text has viewer-correct left/right and up/down orientation from all four sides
+Optional exercise offers Start reroute while preserving the ordinary task diagram
+Starting reroute establishes the original route before any closure appears
+Repeated start cannot reset an active reroute exercise
+Exercise permits the initial corridor but explains why direct teleport to stairs is unavailable
+Visiting the alternative corner before the closure does not count as recovery
+Pause prevents a route closure from triggering
+Standing below the decision corner cannot trigger closure from another floor
+Reaching the decision corner changes the previously available route to closed exactly once
+Remaining at the closure does not repeat the event
+The visible closure has a static solid collider across the corridor, without a falling Rigidbody
+A real CharacterController continuous move is stopped by the closure instead of passing through
+Both fixed and arbitrary destinations beyond the barrier, downstairs and across the courtyard are rejected
+The registered selection filter rejects a real stair anchor before recovery
+A real XR ray hitting a free-area floor beyond the barrier cannot select it through the manager
+Valid corner-to-corridor teleports are allowed without treating their flight line as walking, while courtyard landings stay blocked
+A player near the barrier can teleport back to safety, but not through to the other side
+Notification regression uses an actively held real XR select input
+An actual invalid teleport gesture reports its reason once
+Holding the same invalid teleport gesture does not repeat a popup after the former four-second cooldown
+Releasing the teleport gesture rearms feedback for a new attempt
+A new invalid teleport gesture can report its reason again
+The same real XR ray and free-area floor remain selectable on the available alternative corridor
+The opposite same-floor corridor remains available for teleporting
+Alternative corner opens the connecting corridor, not an immediate success
+Rejoining stairs restores normal destinations but keeps the closed barrier non-teleportable
+Active exercise hides the answer diagram and start button, retaining environmental-sign guidance
+Recovery alone cannot show success before the ordered stair checkpoints are complete
+An out-of-order endpoint after recovery still cannot complete the stair route
+The original five stair checkpoints still complete in order after reroute recovery
+The real final arrival frame advances the last checkpoint before checking success, without a false incomplete warning
+Recovery plus completed stair checkpoints enables the persistent endpoint completion and review
+The final End NPC card offers Continue and Back alongside the retained safety review
+Continue does not move, rotate, reset progress, hide the card or replay completion voice
+Safety review uses Back to results and hides the classroom-return controls to avoid ambiguous Back buttons
+Returning from safety review restores both finish actions
+Dialogue reset hides both completion action buttons
+Disabling the exercise removes its global interaction filter
+Scene cleanup releases singleton and listeners
+Ordinary scene entry still displays Enter System and plays menu music
+The reloaded classroom reconnects all four tutorial input actions
+A fresh reroute can begin in clean attempt 0
+Restart fixture contains an active barrier, fire audio, popup and moved prop before Back
+Back unloads the previous experience including runtime objects, old XR rig and moved props
+Back skips Enter System and its music, opening the fresh classroom welcome instead
+Reload restores the classroom spawn and original prop placement
+Reload clears closure, task checkmarks, endpoint success and prior completion UI
+Reload resets fire/global state and time while registering exactly one new route filter
+The reloaded classroom reconnects all four tutorial input actions
+A fresh reroute can begin in clean attempt 1
+Restart fixture contains an active barrier, fire audio, popup and moved prop before Back
+Back unloads the previous experience including runtime objects, old XR rig and moved props
+Back skips Enter System and its music, opening the fresh classroom welcome instead
+Reload restores the classroom spawn and original prop placement
+Reload clears closure, task checkmarks, endpoint success and prior completion UI
+Reload resets fire/global state and time while registering exactly one new route filter
+Classroom skip is consumed once: the normal Restart action still opens Enter System

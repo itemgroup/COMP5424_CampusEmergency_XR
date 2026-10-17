@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using UnityEngine.XR.Interaction.Toolkit.UI;
@@ -38,6 +39,31 @@ namespace CampusEmergency.UI
         private GameObject guideRoot;
         private bool menuActive;
         private bool ready;
+        private static string classroomRestartScene;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ClearRestartRequest()
+        {
+            classroomRestartScene = null;
+        }
+
+        public void RestartAtClassroom()
+        {
+            var scene = gameObject.scene;
+            if (!scene.IsValid() || scene.buildIndex < 0 || !ready || !enabled)
+            {
+                Debug.LogError("Clean classroom restart requires an initialized menu and a scene in Build Settings.", this);
+                CampusEmergency.Audio.SoundNotice.Show("RESTART UNAVAILABLE",
+                    "The current scene cannot be restarted. Check its build and menu setup.");
+                return;
+            }
+            if (classroomRestartScene != null)
+                return;
+
+            classroomRestartScene = scene.path;
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(scene.buildIndex);
+        }
 
         private void Awake()
         {
@@ -167,9 +193,17 @@ namespace CampusEmergency.UI
 
         private IEnumerator Start()
         {
-            // Wait for the XR camera's initial tracked pose before showing the screen.
+            // Allow the initial tracked pose to settle without depending on a rendered frame.
             yield return null;
-            yield return new WaitForEndOfFrame();
+            yield return null;
+            if (classroomRestartScene == gameObject.scene.path)
+            {
+                classroomRestartScene = null;
+                CampusEmergency.Core.GameManager.Instance?.ChangeState(CampusEmergency.Core.GameState.Boot);
+                ready = true;
+                EnterSystem();
+                yield break;
+            }
             Vector3 forward = Vector3.ProjectOnPlane(view.transform.forward, Vector3.up);
             if (forward.sqrMagnitude < 0.001f)
                 forward = Vector3.forward;

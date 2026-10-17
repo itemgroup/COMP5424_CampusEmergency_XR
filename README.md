@@ -1,4 +1,68 @@
 # Group 7 Campus Emergency Preparedness
+
+## Final demonstration update - 2026-10-17
+
+Entry scene: `Assets/Scenes/SampleScene.unity` (Unity 6000.3.25f1).
+
+- Fixed world-space startup menu with a blurred background, Enter/Exit buttons, and
+  looping menu music. Enter System pauses the music and restores the campus.
+- Start NPC welcome with Continue, followed by the task list, evacuation diagram,
+  and optional controller practice. The task card explains how to confirm marked
+  teleports to activate the corresponding tutorial effects.
+- Tutorial and post-tutorial navigation panels stay fixed in world space.
+  Nearer/Farther now move the actual panel in 0.2 m steps, with a normal range of
+  0.65-2.2 m. Review reopens the guide in front of the current viewer.
+- Lift safety interactions use eight actual LiftSign markers across four floors,
+  rather than NPC coordinates. Panels only appear near the matching marker;
+  warnings require an active fire exercise. Panels are offset by +0.5 m in world
+  Y and Z to move them away from the sign surface.
+- Reaching the final teleport destination or approaching the End NPC within
+  2.5 m shows the persistent Scene 1 completion message and requests its existing
+  voice once. This works even without pressing welcome Continue and does not
+  automatically complete or skip the ordered route tasks.
+- The completion card offers an optional **Review safety** button explaining
+  stairs, lift avoidance, checking signs and the simulated 2F endpoint.
+  **Back to results** restores the original completion message without replaying its voice.
+  Both pages have a raised, shared lower edge to clear the NPC head; the taller
+  review remains below the next floor. The review stays visible until changed or
+  reset and does not itself certify successful route recovery.
+- The final End NPC card also offers **Continue** (no change to location,
+  progress or the card) and **Back** (reloads the scene for a clean experience at
+  the original classroom spawn). Back clears tasks, barriers, old panels/audio
+  and moved props, then opens the welcome page without Enter System or menu
+  music. The review page's **Back to results** only returns to the completion card.
+- Optional **Start reroute** on the Start NPC task card enables a same-floor
+  closure exercise. The original route is shown first; reaching the 3F decision
+  corner activates a solid barrier and alternative EXIT signs. Follow the
+  opposite corridor to rejoin the original stairs. During the exercise, XR
+  selection validates both marked anchors and free-area destinations, rejecting
+  closed-route, courtyard-landing and premature downstairs shortcuts. Valid
+  corridor landings around a corner are allowed; their flight line is not
+  treated as a walking path. Invalid-teleport feedback appears at most once per
+  held gesture, not every four seconds. Route signs have corrected text facing.
+  The diagram
+  is hidden during the exercise to avoid revealing the answer. Completion then
+  requires both recovery and the original ordered stair checkpoints. Without
+  opting in, ordinary exploration and direct endpoint feedback stay unchanged.
+- Includes the current campus poster/sign placement and required imported assets.
+- Removes obsolete test_1 build backups; generated build backups are now ignored.
+  APKs are local outputs, not part of this source delivery.
+
+Validation: 144 isolated Unity regression checks passed, including real XR
+ray/free-area selection, CharacterController movement against the barrier,
+ordered recovery, four-sided sign readability, held-gesture feedback suppression,
+two consecutive clean scene reloads via Back, welcome/menu entry behavior,
+restored prop positions, cleared task/audio state, raised card bounds,
+panel distance controls, completion before
+Continue, safety review navigation/reset, lift proximity and audio behavior.
+A full C# build passed (0 errors). No generated project files were edited.
+These checks do not replace testing the final APK on Quest. The latest observed
+local test_2 Build And Run succeeded on 2026-10-17 at 00:37.
+
+See [implementation details](Docs/SoundImplementation.md) for trigger conditions,
+audio integration, and the validation command. The new welcome sentence has no
+new voice recording; existing task and completion voices are retained.
+
 # COMP5424 Group7 Git 协作工作流
 
 仓库地址：[https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git](https://github.com/itemgroup/COMP5424_CampusEmergency_XR.git)

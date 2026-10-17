@@ -22,7 +22,7 @@ namespace CampusEmergency.Audio
         [Range(0f, 1f)] public float footstepVolume = 0.22f;
         [Header("SampleScene layout")]
         [SerializeField] private Transform routeStart;
-        [SerializeField] private Transform liftGuide;
+        [SerializeField] private Transform[] liftSigns;
         [SerializeField] private Transform assemblyWaypoint;
         [SerializeField] private Vector3 buildingCenter = new Vector3(40f, 0f, 0f);
         [SerializeField] private Vector2 buildingHalfSize = new Vector2(20.45f, 20.45f);
@@ -133,15 +133,22 @@ namespace CampusEmergency.Audio
                 marker.transform.localPosition = Vector3.up * 1.9f;
                 marker.AddComponent<SoundAreaSign>().SetText("ASSEMBLY POINT\nRemain here and wait for instructions");
             }
-            if (liftGuide == null) return;
-            for (int floor = 0; floor < 4; floor++)
+            if (liftSigns == null || liftSigns.Length == 0)
             {
-                var sign = new GameObject("Lift Safety Interaction " + (floor == 0 ? "G" : floor.ToString()) + "F");
+                Debug.LogError("[CampusAudio] Lift warnings require the LiftSign marker references.", this);
+                return;
+            }
+            foreach (Transform marker in liftSigns)
+            {
+                if (marker == null)
+                {
+                    Debug.LogError("[CampusAudio] A LiftSign marker reference is missing.", this);
+                    continue;
+                }
+                var sign = new GameObject("Lift Safety Interaction - " + marker.name);
                 sign.transform.SetParent(transform, false);
-                Vector3 position = liftGuide.position + liftGuide.right * 1.6f;
-                position.y = groundFloorHeight + floor * 4f;
-                sign.transform.SetPositionAndRotation(position, liftGuide.rotation);
-                sign.AddComponent<LiftSafetyAudio>();
+                sign.transform.position = marker.position + new Vector3(0f, 0.5f, 0.5f);
+                sign.AddComponent<LiftSafetyAudio>().Initialize(marker);
             }
         }
 
@@ -217,10 +224,7 @@ namespace CampusEmergency.Audio
                 QueueAnnouncement("pa_assembly");
                 SoundNotice.Show("Assembly point", "You have reached the designated assembly point. Please remain here and wait for further instructions.");
             }
-            Vector3 liftPosition = liftGuide != null ? liftGuide.position : new Vector3(51.1f, 12f, -11.8f);
-            // The lift shaft repeats at 0, 4, 8 and 12 m in this building.
-            bool floor = Mathf.Abs(feet.y - (groundFloorHeight + Mathf.Round((feet.y - groundFloorHeight) / 4f) * 4f)) < 1.5f;
-            bool nearLift = floor && new Vector2(feet.x - liftPosition.x, feet.z - liftPosition.z).sqrMagnitude < 25f;
+            bool nearLift = head != null && FindNearbyLiftSign(head.transform.position) != null;
             if (nearLift && !wasNearLift && Time.time - lastLiftTime > 25f && !assemblyReached)
             { lastLiftTime = Time.time; QueueAnnouncement("pa_lifts"); }
             wasNearLift = nearLift;
@@ -285,9 +289,41 @@ namespace CampusEmergency.Audio
         public void WarnAgainstLift()
         {
             if (!emergencyActive || Time.unscaledTime - lastLiftAttempt < 2f) return;
+            Camera viewer = head != null ? head : Camera.main;
+            Transform marker = viewer != null ? FindNearbyLiftSign(viewer.transform.position) : null;
+            if (marker == null) return;
             lastLiftAttempt = Time.unscaledTime;
             PlayIncorrect(); QueueAnnouncement("pa_lifts");
-            SoundNotice.Show("Use the stairs", "Do not use lifts during a fire. Please proceed calmly to the designated assembly point.");
+            SoundNotice.ShowAt("Use the stairs", "Do not use lifts during a fire. Please proceed calmly to the designated assembly point.",
+                marker.position + new Vector3(0f, 0.5f, 0.5f));
+        }
+
+        public static bool IsNearLiftSign(Vector3 viewerPosition, Transform marker)
+        {
+            if (marker == null || !marker.gameObject.activeInHierarchy)
+                return false;
+            Vector3 offset = viewerPosition - marker.position;
+            return Mathf.Abs(offset.y) <= 1.25f && new Vector2(offset.x, offset.z).sqrMagnitude <= 2.5f * 2.5f;
+        }
+
+        public Transform FindNearbyLiftSign(Vector3 viewerPosition)
+        {
+            Transform nearest = null;
+            float distance = float.PositiveInfinity;
+            if (liftSigns == null)
+                return null;
+            foreach (Transform marker in liftSigns)
+            {
+                if (!IsNearLiftSign(viewerPosition, marker))
+                    continue;
+                float candidate = (marker.position - viewerPosition).sqrMagnitude;
+                if (candidate < distance)
+                {
+                    nearest = marker;
+                    distance = candidate;
+                }
+            }
+            return nearest;
         }
 
         public AudioClip FindVoice(string text)

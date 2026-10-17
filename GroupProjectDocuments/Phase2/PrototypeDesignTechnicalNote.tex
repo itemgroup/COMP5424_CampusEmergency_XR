@@ -1,0 +1,431 @@
+% Compile twice with XeLaTeX. Blue fields require team confirmation.
+% Cover, references and appendix are excluded from the four-page body.
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\usepackage{array,tabularx,booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{rm}
+\DeclareUrlCommand\path{\urlstyle{rm}}
+\usepackage{microtype}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist[itemize]{leftmargin=*,nosep,topsep=3pt}
+\renewcommand{\arraystretch}{1.12}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{8pt}{5pt}
+\titlespacing*{\subsection}{0pt}{6pt}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{COMP5424 -- Group 7}
+\fancyhead[R]{Phase 2: Prototype}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\newcommand{\fillin}[1]{\textcolor{blue}{[To confirm: #1]}}
+\newcommand{\code}[1]{\textnormal{#1}}
+\newcommand{\repo}{https://github.com/itemgroup/COMP5424_CampusEmergency_XR}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\Large COMP5424 Extended Reality\par}
+\vspace{0.8cm}
+{\LARGE\bfseries Prototype Design and Technical Note\par}
+\vspace{0.5cm}
+{\Large Phase 2 -- Group 7\par}
+\vspace{0.8cm}
+{\large Scenario D: Campus Emergency Preparedness\par}
+\vspace{0.3cm}
+{\large VR Stair-Evacuation and Lift-Safety Practice\par}
+\vspace{0.8cm}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\textbf{Virtual client} & Harbourview University Safety and Resilience Office \\
+\textbf{Submission date} & \fillin{date} \\
+\textbf{Repository} & \url{\repo} \\
+\textbf{Source baseline} & \code{feat/final-vr-demo}; updated source in PR \#22 \\
+\textbf{Submitted build} & \fillin{ZIP filename and matching build identifier} \\
+\textbf{Target-PC evidence} & \fillin{PQ604A/B/C platform and launch record} \\
+\end{tabularx}
+\vspace{0.8cm}
+\begin{tabularx}{0.75\textwidth}{@{}YY@{}}
+\toprule
+\textbf{Member} & \textbf{Student ID} \\
+\midrule
+SUN Jiashi & 26044457G \\
+SONG Zheyi & 26064683G \\
+WENG Zhirui & 26101594G \\
+FENG Kedi & 26058499G \\
+CHU Silu & 26115249G \\
+ZHU Yu & 26101969G \\
+\bottomrule
+\end{tabularx}
+\vfill
+\textit{A supervised educational demonstration; not official emergency guidance,
+an approved campus evacuation plan, or certification.}
+\end{titlepage}
+\pagenumbering{arabic}
+
+% BODY PAGE 1
+\section{Prototype Scope and Requirements Traceability}
+\subsection{Purpose and implemented scope}
+Phase 1 proposed sign interpretation and recovery when an initial evacuation
+route becomes unavailable~\cite{phase1}. Phase 2 prioritises a runnable,
+testable XR journey rather than visual polish~\cite{brief}. The current source
+implements \textbf{stair-evacuation and lift-safety practice} with an optional,
+authored route-closure and recovery exercise.
+
+\textbf{Implemented journey:} Enter System $\rightarrow$ welcome and task
+briefing $\rightarrow$ stair route and fire alert $\rightarrow$ marked
+landings $\rightarrow$ 2F practice endpoint and persistent completion card.
+Optional reroute mode first presents the original route, then closes it at the
+3F decision corner and requires a signposted same-floor alternative before
+rejoining the stairs. The diagram and controller tutorial remain optional.
+A separate G-floor courtyard assembly interaction is additional content, not
+the 2F route's completion condition.
+
+\subsection{Requirement-to-feature mapping}
+Status describes software scope, not demonstrated learning effectiveness.
+Evidence keys refer to Appendix A and the source baseline~\cite{implementation}.
+
+\begin{tabularx}{\textwidth}{@{}p{0.65cm}YY@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement / implementation} & \textbf{Status / evidence} \\
+\midrule
+R1 & Complete evacuation practice journey: briefing, stairs, endpoint and optional recovery. &
+Implemented authored practice; learning effect not validated. S1--S3; V1, V3. \\
+R2 & Interpret signs and environmental cues: floor/lift signs, diagram and task card. &
+Implemented cues; independent interpretation not established. S1--S3; V2. \\
+R3 & Recover when an initial route becomes unavailable. &
+Optional 3F closure, enforced alternative and stair rejoin; authored, not dynamic routing. V3. \\
+R4 & Explain why an action or route is appropriate. &
+Lift warning and safety review explain stair/lift choice and closure cues; learning effect unmeasured. S2--S4; V3. \\
+R5 & Calm, inclusive, low-risk practice. &
+Partial: text feedback, optional tutorial, teleport and moderate audio settings; comfort needs user evidence. V4. \\
+R6 & Pause, exit and restart safely. &
+Implemented controls; full device verification remains open. S2; V5. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Changes from Phase 1}
+The route-change requirement is implemented as a bounded, optional exercise
+using one fixed closure, signs and an authored corridor, not as dynamic
+routing. Reusing the VR template and imported building assets enabled
+integration of movement, signs and feedback. The environment includes multiple
+floors, exceeding the proposed small scene. Campus-derived geometry is a visual
+setting, not a validated real evacuation map. The prototype can be evaluated
+for task completion and cue usability, but current formative evidence cannot
+establish learning or transfer. AI co-navigation, multiplayer, certification
+and graphic emergency effects remain outside scope.
+
+\newpage
+% BODY PAGE 2
+\section{Interaction and Prototype Design}
+\subsection{Core interaction and route decisions}
+The welcome NPC introduces the demonstration. Continue reveals the task list,
+evacuation diagram and optional five-step controller practice. Users then read
+corridor signs and enter the marked stair route. Arrival at its starting
+waypoint starts the exercise audio; ordered checkpoints update the route task
+state. Position-based triggers support both walking and teleport arrival.
+
+Four floors contain eight lift signs. Nearby panels appear within 2.5\,m
+horizontally and 1.25\,m vertically of a sign. During the fire exercise,
+entering this area can announce that lifts must not be used; activating a panel
+adds warning text and an error cue. Panels sit 0.5\,m above and 0.5\,m along
+world $+Z$ from each sign to reduce surface intersection.
+
+\textbf{Decision and rationale:} Fixed markers make arrival feedback repeatable
+and avoid dependence on NPC placement. The optional reroute exercise closes
+the initial 3F route, blocks invalid teleport destinations and cross-barrier
+shortcuts, then signposts an opposite same-floor corridor back to the existing
+stairs. It is an authored scenario, not dynamic route planning. Outside this
+exercise ordinary exploration is unchanged. The diagram's arrows and automatic
+lift announcement reveal directions, so they confound claims of unaided choice.
+
+\subsection{Locomotion, controls, and feedback}
+\textbf{Input:} The left stick moves; the right stick turns and its upward
+teleport input aims at a valid target. Release confirms teleport, the right
+grip cancels, and the right trigger interacts with supported objects/UI.
+Teleport reduces reliance on continuous travel but comfort is not guaranteed.
+The tutorial still describes 45-degree snap turning; this wording must be
+checked against the delivered turn configuration.
+
+\textbf{UI:} Tutorial/navigation panels are world-fixed after opening.
+Nearer/Farther physically move a panel in 0.2\,m steps (normal range
+0.65--2.2\,m); Review reopens the guide at the current viewpoint. Thus the
+panel does not chase head movement, although users can leave it behind.
+The completion card persists after arrival at the endpoint or End NPC,
+independently of Continue. It offers a safety review, a no-op Continue and a
+Back action that reloads the scene to clear the previous attempt and open the
+classroom welcome page. The review describes stairs, lift avoidance, noticing
+a closure and the simulated endpoint; it is not evidence of retained learning.
+
+\textbf{Pause/reset:} Pause sets the simulation time scale to zero and opens
+a view-following menu; Resume restores it. Restart reloads the active scene;
+Exit quits the player. This is not proof that every XR input is disabled.
+
+\subsection{Calmness, accessibility, and journey evidence}
+English text, symbols, high-contrast panels and adjustable panel distance
+provide visual support alongside audio. Low-intensity cues avoid deliberate
+flashes, smoke or graphic harm. Multilingual access, seated reach, silent-mode
+comprehension and individual comfort are not yet established.
+
+\newpage
+% BODY PAGE 3
+\section{Technical Implementation and Functional Verification}
+\subsection{Architecture and major technical decisions}
+\textbf{Configuration:} Unity 6000.3.25f1; URP 17.3.0; XR Interaction Toolkit
+3.5.1; Input System 1.20.0; OpenXR 1.17.1; Android IL2CPP/ARM64 for
+Quest 3~\cite{implementation}. Lab-PC compatibility is not established.
+
+\textbf{Control:} ControllerGuidePanel tracks start, stair entry, two landings
+and completion using actual teleport-anchor positions. An independent 2.5\,m
+check requests the End NPC card once without advancing tasks. Optional
+RouteChangeExercise adds a global XRI selection filter, closure barrier and
+alternative signs only after opt-in. NpcGuideDialogue maintains cards;
+MainMenuController restores campus roots on entry and supports a clean
+classroom reload; CampusAudioDirector coordinates audio; LiftSafetyAudio
+handles signs.
+
+\textbf{Trade-offs:} One scene preserves the XR rig; authored markers and offline
+speech reduce integration/network risk. Optional recovery is bounded to one
+authored closure and corridor. The ordinary endpoint card may appear without
+ordered completion; reroute practice additionally requires recovery and the
+original stair checkpoints in order.
+
+\subsection{Executable and repository reproducibility}
+Development used Windows, an RTX 5060 Laptop GPU and Quest 3 Android deployment.
+The latest previously recorded test\_2 Build And Run succeeded on 17 October
+at 00:37; it predates the current reroute/reset source update and does not
+verify this version. \textbf{PQ604A/B/C extraction and launch are unverified.}
+
+\textbf{Handoff:} \fillin{ZIP, launch path, companion files and lab-PC record}.
+Deploy the current APK to Quest, launch it and select Enter System.
+The cover identifies repository and source commit; access and ZIP/source
+correspondence require confirmation. Required member accounts must still be
+added to the root README.
+
+\subsection{Functional verification summary}
+C\# compilation and \textbf{144 isolated Unity regression checks passed} for
+the current source, including XR teleport filtering, barrier collision,
+ordered recovery and two clean scene reloads. These are automated regressions,
+not participant trials or full-campus acceptance (Appendix A).
+
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}YY@{}}
+\toprule
+\textbf{Key} & \textbf{Executed or required check} & \textbf{Result / evidence} \\
+\midrule
+V1 & Endpoint before Continue; persistent card; task isolation. & Pass; ordinary mode can acknowledge arrival before ordered completion. \\
+V2 & Diagram, Continue, panel movement and limits. & Pass; exact labels in evidence file. \\
+V3 & Optional closure, barrier, valid recovery and ordered stairs. & Pass in isolated scene; authored scenario, not participant evidence. \\
+V4 & Lift proximity; muted journey. & Proximity passes; muted journey not recorded. \\
+V5 & Pause, clean classroom reset and exit. & Reset passes in isolated fixture; full device checks not recorded. \\
+V6 & Extracted build on lab PC. & Not run / not evidenced. \\
+\bottomrule
+\end{tabularx}
+
+\newpage
+% BODY PAGE 4
+\section{Limitations and Evaluation Priorities}
+\subsection{Operational definitions: recovery and assistance}
+Phase 1 feedback requested explicit criteria for successful recovery and
+acceptable assistance. The following is a \textbf{provisional Phase 3 protocol},
+not a measured result or client-approved safety standard. It becomes applicable
+only after an unavailable-route event is implemented.
+
+\textbf{Successful recovery:} After the closure cue appears, the participant
+recognises the closure through observable behaviour or explanation, chooses
+the signposted alternative, and reaches the fictional endpoint without bypass.
+Pilot a 120-second active-time window from cue presentation to endpoint entry,
+excluding pauses and technical interruptions, then freeze the threshold before
+the main study. Record recognition, route selection and completion separately.
+
+\textbf{Assistance:} H0 = no route-recovery hints; H1 = at most one
+non-directional prompt (e.g., ``Look again at the signs''); H2 = repeated
+prompts, explicit directions or facilitator-led navigation. Log wording,
+source and time, including system prompts. Standard control briefing is
+separate from route help. The current arrow diagram/automatic directions must
+be recorded as directional assistance, not silently counted as H0.
+
+\textbf{Judgement:} Report completed recoveries as H0 independent, H1 acceptably
+assisted, or H2 beyond the proposed allowance. Report timeouts, incomplete
+attempts, technical interruptions and comfort withdrawals separately, with
+denominators. Always provide safety/comfort help regardless of classification.
+
+\subsection{Evaluation priorities and evidence}
+\textbf{E1 -- Cue interpretation (R2):} Observe missed signs, hesitation and
+control errors; ask which cue informed each choice.
+\textbf{E2 -- Recovery/rationale (R1, R3, R4):} The closure, alternative and
+safety review are now implemented. Record event times and assistance; ask for
+rationale before the review and record post-review explanations separately.
+\textbf{E3 -- Comfort/inclusion (R5, R6):} Observe reading/reach difficulty,
+pause/exit use and discomfort; participation is voluntary.
+
+\textbf{Study status:} Group members provided iterative hands-on feedback,
+summarised in Appendix A. This is retrospective formative convenience testing,
+not an independent study. The number present at each iteration, individual
+attribution, exact test dates, device/build and standardised outcomes were not
+logged. GitHub commit dates bound the development period but are not treated as
+test timestamps. No success rate, time saving or learning gain is claimed.
+Future evaluation should record anonymous task outcomes, prompts and optional
+comments with consent; do not retain names, account IDs or headset recordings
+by default.
+
+\subsection{Known limitations and next priorities}
+\textbf{1. Establish recovery for unfamiliar users (R1/R3/R4):} The closure,
+alternative and review now exist, but there is no independent evidence that
+users notice the closure, choose the alternative or understand the rationale.
+\textbf{2. Establish delivery reliability (R6):} Verify a matching ZIP on the
+required lab platform, reset/exit and final controls. A development-editor
+D3D11 device-loss crash was observed; its recurrence is unresolved, not proof
+of an APK fault.
+\textbf{3. Pilot clarity and assistance (R2/R5):} Check mute comprehension,
+turning text, fixed-panel reach and sign alignment on-device. Teammate
+familiarity, a single layout and absent transfer evidence limit conclusions.
+
+\clearpage
+% REFERENCES: excluded from body limit.
+\fancyhead[R]{References}
+\pagenumbering{roman}
+\begin{thebibliography}{9}
+\bibitem{phase1}
+Group 7. \textit{Requirements and Prototype Proposal: Scenario D --- Campus
+Emergency Preparedness}. COMP5424 Extended Reality, 20 September 2026.
+Repository copy: \path{GroupProjectDocuments/Group 7 - Group Component.pdf}.
+
+\bibitem{brief}
+COMP5424 Extended Reality. \textit{Phase 2 assignment instructions:
+Purpose, Minimum Prototype Expectations and Submission Components}.
+Course instructions supplied by the team; publication date/version not provided.
+Includes the four-page technical-note and target-platform requirements.
+
+\bibitem{implementation}
+Group 7. \textit{Campus Emergency XR prototype}, source baseline
+\code{416ca44} and follow-on final-source update in PR \#22, 17 October 2026.
+\url{\repo}.
+Implementation evidence: \path{Packages/manifest.json},
+\path{ProjectSettings/ProjectVersion.txt},
+\path{ProjectSettings/ProjectSettings.asset},
+\path{Docs/SoundImplementation.md}, and
+\path{Tools/Sound/Validation/SoundVerification.cs}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\fancyhead[R]{Appendix: Evidence}
+\section{Evidence Locations and Submission Checks}
+\subsection{Source locators}
+Paths are relative to the repository root. PR \#22 carries the final-source
+update beyond \code{416ca44}. No new APK or submission ZIP was built for this
+report update; verify the submitted package against its source revision.
+
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}Y@{}}
+\toprule
+\textbf{Key} & \textbf{Locator and interpretation} \\
+\midrule
+S1 & \path{Assets/Scenes/SampleScene.unity}: Start/End NPCs, DownStair
+waypoints, LiftSign and startup menu. \\
+S2 & \path{Assets/Scripts/UI/ControllerGuidePanel.cs}:
+\code{LateUpdate}, \code{AdvanceRoute}, \code{TryShowEndDialogue},
+\code{AdjustPanelDistance}, pause/restart/exit handlers. \\
+S3 & \path{Assets/Scripts/Building/NpcGuideDialogue.cs}:
+\code{ShowIntroduction}, \code{ShowTaskGuide},
+\code{ShowCompletionDialogue}. \\
+S4 & \path{Assets/Scripts/Audio/CampusAudioDirector.cs}:
+\code{IsNearLiftSign}, \code{WarnAgainstLift}, \code{UpdateEvacuation};
+\path{Assets/Scripts/Audio/LiftSafetyAudio.cs}. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Executed regression evidence}
+The accompanying \path{functional-verification.txt} contains the saved PASS
+record and 144 named checks from an isolated, no-graphics Unity project.
+The persistent test definitions are in
+\path{Tools/Sound/Validation/SoundVerification.cs}; execute using
+\path{Tools/Sound/Verify-Sound.ps1} with the Unity editor path.
+Representative exact labels:
+\begin{itemize}
+\item V1: ``Completion card remains visible beyond its former seven-second
+timeout''; ``Completion before Continue plays or queues the configured
+completion voice''.
+\item V2: ``Guide Nearer physically moves its panel 0.2 meters without
+changing height or orientation''; ``HUD Farther clamps to 2.2 meters''.
+\item V3: ``The registered selection filter rejects a real stair anchor before
+recovery''; ``The original five stair checkpoints still complete in order
+after reroute recovery''.
+\item V4: ``NPC proximity cannot show the lift warning even when explicitly
+requested''.
+\item V5: ``Back skips Enter System and its music, opening the fresh classroom
+welcome instead''; ``Reload clears closure, task checkmarks, endpoint success
+and prior completion UI''. The suite uses an isolated fixture and does not
+verify the entire campus or Quest build.
+\end{itemize}
+
+\subsection{Retrospective group-member formative test log}
+Group members report hands-on iterations covering the full route, optional
+reroute, lift-safety prompts, controller/UI use and the Back reset. The issue
+notes below are consolidated from development feedback, not a contemporaneous
+test protocol. Individual attribution, per-session headcount, exact test
+dates, headset/build identifiers and per-person task outcomes were not
+retained. The GitHub development history spans 12--17 October 2026; this is a
+development window, not a claim that each test occurred on those commit dates.
+
+\begin{tabularx}{\textwidth}{@{}p{2.35cm}YY@{}}
+\toprule
+\textbf{Task / observation} & \textbf{Feedback recorded} & \textbf{Response and evidence} \\
+\midrule
+Controls and UI &
+Navigation/tutorial panels were reported to follow the player or distance
+controls appeared ineffective. &
+Panels are world-fixed; Nearer/Farther move them in bounded 0.2\,m steps.
+Automated checks cover transform stability and distance limits. \\
+Lift safety and completion &
+Lift warning appeared near the NPC rather than the lift signs; completion
+feedback was also reported missing or misplaced. &
+Lift prompts use the eight actual LiftSign markers. Completion is triggered by
+the final anchor or End NPC and remains visible. Regression checks cover
+marker proximity and endpoint behaviour. \\
+Safety review &
+The Review safety button was obscured by the NPC head. &
+The shared completion/review card layout was raised; panel-bound checks pass
+in the isolated regression suite. \\
+Optional reroute &
+The first route sign appeared mirrored and invalid-teleport notices recurred
+frequently. &
+Sign orientation was corrected; teleport validation now checks destination
+and barrier crossing, and rate-limits feedback per held gesture. Regression
+checks cover four viewing directions and repeated selection. \\
+Back reset &
+Returning to spawn left traces of the previous attempt. &
+Back now reloads the scene and opens the classroom welcome directly. The
+final reset-flow check was reported as passed on 17 October 2026; the device
+and build used for this acceptance were not recorded. Automated tests also
+verify two consecutive clean reloads. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Items the team must complete before submission}
+\begin{itemize}
+\item Fill the cover date, ZIP identifier and platform launch evidence.
+Check repository visibility or teaching-team access; add every member's
+repository account to the root README as required by the supplied instructions.
+The report cover intentionally lists only names and student IDs.
+\item Supply the separate weekly activity record with actual responsibilities,
+decisions, completed work and unresolved issues; do not infer individual
+contributions from this report.
+\item Preserve source licences/credits and verify redistribution rights for
+imported models, images and menu music.
+\item Keep this retrospective feedback separate from a future independent
+evaluation; log tester count, device/build, task outcomes and assistance at
+the time of testing. Recompile this PDF after replacing blue fields; retain
+four body pages at 12\,pt.
+\end{itemize}
+\end{document}

@@ -1,22 +1,27 @@
 param(
     [Parameter(Mandatory=$true)][string]$EditorPath,
-    [string]$ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
+    [string]$ProjectRoot,
     [string]$ValidationRoot = (Join-Path $env:TEMP ('CampusSoundVerification-' + [guid]::NewGuid().ToString('N')))
 )
 $ErrorActionPreference = 'Stop'
+if (-not $ProjectRoot) { $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path }
 if (Test-Path -LiteralPath $ValidationRoot) { throw 'ValidationRoot must be a new directory, so existing work is never overwritten.' }
 New-Item -ItemType Directory -Path "$ValidationRoot\Assets\Editor","$ValidationRoot\Packages","$ValidationRoot\ProjectSettings" -Force | Out-Null
 Copy-Item -LiteralPath "$ProjectRoot\Assets\Scripts" -Destination "$ValidationRoot\Assets\Scripts" -Recurse
 New-Item -ItemType Directory -Path "$ValidationRoot\Assets\Resources" -Force | Out-Null
 Copy-Item -LiteralPath "$ProjectRoot\Assets\Resources\CampusSound" -Destination "$ValidationRoot\Assets\Resources\CampusSound" -Recurse
+Copy-Item -LiteralPath "$ProjectRoot\Assets\Resources\RouteExerciseMaterial.mat","$ProjectRoot\Assets\Resources\RouteExerciseMaterial.mat.meta" -Destination "$ValidationRoot\Assets\Resources"
 Copy-Item -LiteralPath "$PSScriptRoot\Validation\SoundVerification.cs" -Destination "$ValidationRoot\Assets\Editor\SoundVerification.cs"
+New-Item -ItemType Directory -Path "$ValidationRoot\Assets\SignsAndPosters" -Force | Out-Null
+Copy-Item -LiteralPath "$ProjectRoot\Assets\SignsAndPosters\Fire_Evacuation_Diagram.png","$ProjectRoot\Assets\SignsAndPosters\Fire_Evacuation_Diagram.png.meta" -Destination "$ValidationRoot\Assets\SignsAndPosters"
 $manifest = @{dependencies=@{
     'com.unity.xr.interaction.toolkit'='3.5.1'; 'com.unity.xr.core-utils'='2.6.0';
     'com.unity.inputsystem'='1.20.0'; 'com.unity.ugui'='2.0.0';
+    'com.unity.render-pipelines.universal'='17.3.0';
     'com.unity.modules.audio'='1.0.0'; 'com.unity.modules.physics'='1.0.0';
     'com.unity.modules.ui'='1.0.0'; 'com.unity.modules.imgui'='1.0.0'; 'com.unity.modules.jsonserialize'='1.0.0'
 }}
-$manifest | ConvertTo-Json | Set-Content -LiteralPath "$ValidationRoot\Packages\manifest.json" -Encoding UTF8
+[System.IO.File]::WriteAllText("$ValidationRoot\Packages\manifest.json", ($manifest | ConvertTo-Json), (New-Object System.Text.UTF8Encoding($false)))
 $editorVersion = Split-Path (Split-Path (Split-Path $EditorPath -Parent) -Parent) -Leaf
 "m_EditorVersion: $editorVersion" | Set-Content -LiteralPath "$ValidationRoot\ProjectSettings\ProjectVersion.txt" -Encoding UTF8
 $arguments = @('-batchmode','-nographics','-projectPath',('"' + $ValidationRoot + '"'),'-executeMethod','SoundVerification.Run','-logFile',('"' + "$ValidationRoot\validation.log" + '"'))

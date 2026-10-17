@@ -134,6 +134,8 @@ Desktop.ini
 # Android / Quest build artifacts
 *.apk.idsig
 *.symbols.zip
+/*_BackUpThisFolder_ButDontShipItWithYourGame/
+/*_BurstDebugInformation_DoNotShip/
 /[Aa]rtefacts/
 /[Ee]ngine/
 /[Gg]radleOut*/
