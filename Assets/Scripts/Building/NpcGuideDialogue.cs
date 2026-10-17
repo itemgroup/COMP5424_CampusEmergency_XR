@@ -352,8 +352,8 @@ namespace CampusEmergency.Building
             bool completion = guideCard == GuideCard.Completion || guideCard == GuideCard.Review;
             Vector2 size = tasks ? new Vector2(1700f, hasRouteExerciseButton ? 1200f : 1050f) :
                 guideCard == GuideCard.Review ? new Vector2(1250f, 1050f) : new Vector2(1250f, 650f);
-            // Keep the lower edge above the NPC head, including on the taller review page.
-            float heightOffset = completion ? 0.4f + (size.y - panelHeight) * bubbleScale * 0.5f : 0.5f;
+            float heightOffset = completion ? 0.4f + (size.y - panelHeight) * bubbleScale * 0.5f :
+                0.5f;
             speechBubbleRoot.transform.localPosition =
                 new Vector3(0f, bubbleHeight + heightOffset, bubbleForwardOffset);
             speechBubbleRoot.GetComponent<RectTransform>().sizeDelta = size;
@@ -366,8 +366,9 @@ namespace CampusEmergency.Building
             if (continueButton != null)
             {
                 continueButton.gameObject.SetActive(!tasks || hasRouteExerciseButton);
-                SetAnchors(continueButton.transform, new Vector2(0.30f, tasks ? 0.02f : 0.06f),
-                    new Vector2(0.70f, tasks ? 0.12f : 0.26f));
+                SetAnchors(continueButton.transform,
+                    new Vector2(tasks && hasRouteExerciseButton ? 0.74f : 0.30f, tasks ? 0.02f : 0.06f),
+                    new Vector2(tasks && hasRouteExerciseButton ? 0.97f : 0.70f, tasks ? 0.12f : 0.26f));
                 if (guideCard == GuideCard.Completion && returnToStartAction != null)
                     SetAnchors(continueButton.transform, new Vector2(0.30f, 0.18f), new Vector2(0.70f, 0.30f));
             }
