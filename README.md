@@ -1,5 +1,16 @@
 # Group 7 Campus Emergency Preparedness
 
+## Group members
+
+| Member | Student ID | GitHub account |
+|---|---|---|
+| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
+| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
+| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
+| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
+| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
+| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
+
 ## Final demonstration update - 2026-10-17
 
 Final submission branch: `final-submission-2026-10-17`.
@@ -69,17 +80,6 @@ reroute/reset source update; no APK was rebuilt for that update.
 See [implementation details](Docs/SoundImplementation.md) for trigger conditions,
 audio integration, and the validation command. The new welcome sentence has no
 new voice recording; existing task and completion voices are retained.
-
-## Group members
-
-| Member | Student ID | GitHub account |
-|---|---|---|
-| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
-| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
-| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
-| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
-| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
-| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
 
 ## Basic use
 
