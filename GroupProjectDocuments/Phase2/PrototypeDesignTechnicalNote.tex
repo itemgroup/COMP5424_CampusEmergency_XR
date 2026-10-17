@@ -1,12 +1,10 @@
-% Compile twice with XeLaTeX. Blue fields require team confirmation.
-% Cover, references and appendix are excluded from the four-page body.
+% Cover, references, and appendix are excluded from the four-page body.
 \documentclass[12pt,a4paper]{article}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 \usepackage{array,tabularx,booktabs}
 \usepackage{enumitem}
-\usepackage{xcolor}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage[hidelinks]{hyperref}
@@ -29,7 +27,6 @@
 \fancyhead[R]{Phase 2: Prototype}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{15pt}
-\newcommand{\fillin}[1]{\textcolor{blue}{[To confirm: #1]}}
 \newcommand{\code}[1]{\textnormal{#1}}
 \newcommand{\repo}{https://github.com/itemgroup/COMP5424_CampusEmergency_XR}
 
@@ -53,7 +50,7 @@
 \textbf{Repository} & \url{\repo} \\
 \textbf{Source baseline} & \code{final-submission-2026-10-17} at \code{9f2b3ff} \\
 \textbf{Submitted build} & \path{Build/CampusEmergency.zip}; Windows x86\_64 IL2CPP, source \code{9f2b3ff} \\
-\textbf{Target-PC evidence} & PQ604B / 604B205; Quest Link/Air Link; full feature test passed on 17 October 2026 \\
+\textbf{Target-PC evidence} & Team-reported Windows PCVR test on PQ604B / 604B205; Quest Link/Air Link; 17 October 2026 \\
 \end{tabularx}
 \vspace{0.8cm}
 \begin{tabularx}{0.75\textwidth}{@{}YY@{}}
@@ -111,7 +108,7 @@ Lift warning and safety review explain stair/lift choice and closure cues; learn
 R5 & Calm, inclusive, low-risk practice. &
 Partial: text feedback, optional tutorial, teleport and moderate audio settings; comfort needs user evidence. V4. \\
 R6 & Pause, exit and restart safely. &
-Implemented; PCVR lab test passed; broader device coverage remains open. S2; V5, V6. \\
+Implemented; PCVR pass reported for PQ604B/604B205; broader device coverage remains unverified. S2; V5, V6. \\
 \bottomrule
 \end{tabularx}
 
@@ -120,8 +117,8 @@ The route-change requirement is implemented as a bounded, optional exercise
 using one fixed closure, signs and an authored corridor, not as dynamic
 routing. Reusing the VR template and imported building assets enabled
 integration of movement, signs and feedback. The environment includes multiple
-floors, exceeding the proposed small scene. Campus-derived geometry is a visual
-setting, not a validated real evacuation map. The prototype can be evaluated
+floors, exceeding the proposed small scene. Campus geometry is illustrative,
+not a validated evacuation map. The prototype can be evaluated
 for task completion and cue usability, but current formative evidence cannot
 establish learning or transfer. AI co-navigation, multiplayer, certification
 and graphic emergency effects remain outside scope.
@@ -154,23 +151,24 @@ lift announcement reveal directions, so they confound claims of unaided choice.
 \textbf{Input:} The left stick moves; the right stick turns and its upward
 teleport input aims at a valid target. Release confirms teleport, the right
 grip cancels, and the right trigger interacts with supported objects/UI.
-Teleport reduces reliance on continuous travel but comfort is not guaranteed.
-The tutorial still describes 45-degree snap turning; this wording must be
-checked against the delivered turn configuration.
+Teleport reduces reliance on continuous travel; individual comfort has not
+been evaluated. The right stick uses 45-degree snap turning.
 
 \textbf{UI:} Tutorial/navigation panels are world-fixed after opening.
 Nearer/Farther physically move a panel in 0.2\,m steps (normal range
 0.65--2.2\,m); Review reopens the guide at the current viewpoint. Thus the
 panel does not chase head movement, although users can leave it behind.
 The completion card persists after arrival at the endpoint or End NPC,
-independently of Continue. It offers a safety review, a no-op Continue and a
-Back action that reloads the scene to clear the previous attempt and open the
-classroom welcome page. The review describes stairs, lift avoidance, noticing
-a closure and the simulated endpoint; it is not evidence of retained learning.
+independently of Continue. It offers a safety review, a Continue button that
+leaves the current state unchanged, and a Back action that reloads the scene
+to clear the previous attempt and open the classroom welcome page. The review
+describes stairs, lift avoidance, noticing a closure and the simulated
+endpoint; it is not evidence of retained learning.
 
 \textbf{Pause/reset:} Pause sets the simulation time scale to zero and opens
 a view-following menu; Resume restores it. Restart reloads the active scene;
-Exit quits the player. This is not proof that every XR input is disabled.
+Exit quits the player. Input disabling while paused has not been separately
+verified.
 
 \subsection{Calmness, accessibility, and journey evidence}
 English text, symbols, high-contrast panels and adjustable panel distance
@@ -184,34 +182,31 @@ comprehension and individual comfort are not yet established.
 \subsection{Architecture and major technical decisions}
 \textbf{Configuration:} Unity 6000.3.25f1; URP 17.3.0; XR Interaction Toolkit
 3.5.1; Input System 1.20.0; OpenXR 1.17.1; Android IL2CPP/ARM64 for
-Quest 3~\cite{implementation}. Windows Standalone x86\_64 IL2CPP/OpenXR PCVR
-passed on PQ604B/604B205 via Quest Link/Air Link.
+Quest 3~\cite{implementation}; the Windows PCVR test is summarised below.
 
-\textbf{Control:} ControllerGuidePanel tracks start, stair entry, two landings
-and completion using actual teleport-anchor positions. An independent 2.5\,m
-check requests the End NPC card once without advancing tasks. Optional
-RouteChangeExercise adds a global XRI selection filter, closure barrier and
-alternative signs only after opt-in. NpcGuideDialogue maintains cards;
-MainMenuController restores campus roots on entry and supports a clean
-classroom reload; CampusAudioDirector coordinates audio; LiftSafetyAudio
-handles signs.
+\textbf{Control:} ControllerGuidePanel tracks route start, stair entry,
+landings and completion from teleport-anchor positions; a separate 2.5\,m
+check shows the End NPC card once without advancing tasks. Opt-in
+RouteChangeExercise adds the selection filter, closure barrier and alternative
+signs. NpcGuideDialogue manages dialogue cards; MainMenuController restores
+campus roots and reloads the classroom; CampusAudioDirector and LiftSafetyAudio
+manage audio.
 
-\textbf{Trade-offs:} One scene preserves the XR rig; authored markers and offline
-speech reduce integration/network risk. Optional recovery is bounded to one
-authored closure and corridor. The ordinary endpoint card may appear without
-ordered completion; reroute practice additionally requires recovery and the
-original stair checkpoints in order.
+\textbf{Trade-offs:} One scene preserves the XR rig; authored markers and
+offline speech reduce integration and network risk. Recovery is limited to
+one optional authored closure and corridor. The ordinary endpoint card does
+not require ordered completion; reroute practice does.
 
 \subsection{Executable and repository reproducibility}
 The Windows Standalone x86\_64 IL2CPP build from \code{9f2b3ff} is in
-\path{Build/CampusEmergency.zip}. It was extracted and launched on PQ604B
-machine 604B205 on 17 October 2026 through Quest Link/Air Link, with Meta
-Quest Link as the active OpenXR Runtime; the user reported all features
-working. This establishes PCVR on that setup, not Android standalone APK
-acceptance or compatibility with other PCs.
+\path{Build/CampusEmergency.zip}. The team reported launching it on PQ604B
+machine 604B205 on 17 October 2026 via Quest Link/Air Link, with Meta Quest
+Link as the active OpenXR Runtime; all intended features reportedly worked.
+No task-by-task result log was retained. This records one PCVR setup, not
+Android APK acceptance or compatibility with other PCs.
 
-\textbf{Handoff:} extract the ZIP and run \code{My project.exe} from
-\path{CampusEmergency} with Quest Link active; keep the data folder and player
+\textbf{Handoff:} Extract the ZIP and run \code{My project.exe} in
+\path{CampusEmergency} with Quest Link active and the data folder and player
 DLLs beside it.
 
 \subsection{Functional verification summary}
@@ -228,8 +223,8 @@ V1 & Endpoint before Continue; persistent card; task isolation. & Pass; ordinary
 V2 & Diagram, Continue, panel movement and limits. & Pass; exact labels in evidence file. \\
 V3 & Optional closure, barrier, valid recovery and ordered stairs. & Pass in isolated scene; authored scenario, not participant evidence. \\
 V4 & Lift proximity; muted journey. & Proximity passes; muted journey not recorded. \\
-V5 & Pause, clean classroom reset and exit. & Automated reset passes; full feature set reported in V6. \\
-V6 & PCVR build on lab PC. & Pass; 17 October 2026, PQ604B/604B205. \\
+V5 & Pause, clean classroom reset and exit. & Automated reset passes; PCVR test report is summarised in V6. \\
+V6 & PCVR build on lab PC. & Team-reported pass; 17 October 2026, PQ604B/604B205. \\
 \bottomrule
 \end{tabularx}
 
@@ -284,8 +279,9 @@ by default.
 \textbf{1. Establish recovery for unfamiliar users (R1/R3/R4):} The closure,
 alternative and review now exist, but there is no independent evidence that
 users notice the closure, choose the alternative or understand the rationale.
-\textbf{2. Establish delivery reliability (R6):} Verify a matching ZIP on the
-required lab platform, reset/exit and final controls.
+\textbf{2. Establish delivery reliability (R6):} Repeat PCVR verification on
+additional required lab PCs or headset/runtime combinations. Test Android
+standalone deployment separately if it remains a delivery target.
 \textbf{3. Pilot clarity and assistance (R2/R5):} Check mute comprehension,
 turning text, fixed-panel reach and sign alignment on-device. Teammate
 familiarity, a single layout and absent transfer evidence limit conclusions.
@@ -307,8 +303,8 @@ Course instructions supplied by the team; publication date/version not provided.
 Includes the four-page technical-note and target-platform requirements.
 
 \bibitem{implementation}
-Group 7. \textit{Campus Emergency XR prototype}, source baseline
-\code{416ca44} and follow-on final-source update in PR \#22, 17 October 2026.
+Group 7. \textit{Campus Emergency XR prototype}, release branch
+\code{final-submission-2026-10-17}, source commit \code{9f2b3ff}, 17 October 2026.
 \url{\repo}.
 Implementation evidence: \path{Packages/manifest.json},
 \path{ProjectSettings/ProjectVersion.txt},
@@ -324,8 +320,8 @@ Implementation evidence: \path{Packages/manifest.json},
 \subsection{Source locators}
 Paths are relative to the repository root. This report describes
 \code{final-submission-2026-10-17} at \code{9f2b3ff}. The Windows PCVR ZIP is a
-separate build artifact; verify the submitted archive against this source
-revision. The Android standalone APK was not rebuilt for this acceptance.
+separate build artifact produced from that source revision. The Android
+standalone APK was not rebuilt for this acceptance.
 
 \begin{tabularx}{\textwidth}{@{}p{0.8cm}Y@{}}
 \toprule
@@ -407,19 +403,18 @@ checks cover four viewing directions and repeated selection. \\
 Back reset &
 Returning to spawn left traces of the previous attempt. &
 Back now reloads the scene and opens the classroom welcome directly. The
-automated suite verifies two consecutive clean reloads. The full-feature
-Windows PCVR test was reported as passed on 17 October 2026; see V6. \\
+automated suite verifies two consecutive clean reloads. \\
 Windows PCVR build &
-The extracted Windows ZIP launched successfully on PQ604B/604B205 via Quest
-Link/Air Link; all features were reported working. &
+The team reported successful launch and operation of all intended features on
+PQ604B/604B205 via Quest Link/Air Link; no itemised task log was retained. &
 \path{Build/CampusEmergency.zip}, source \code{9f2b3ff}, 17 October 2026;
 single-machine PCVR result, not Android APK acceptance. \\
 \bottomrule
 \end{tabularx}
 
 \subsection{Interpretation of evidence}
-Automated regressions document implemented behaviour; the manual result
-documents one Windows PCVR setup. Neither constitutes a controlled learner
-study. No claims are made about learning gains, independent route choice,
-comfort, or compatibility beyond the tested PC/headset configuration.
+Automated regressions document implemented behaviour; the reported manual
+result documents one Windows PCVR setup. Neither constitutes a controlled
+learner study. No claims are made about learning gains, independent route
+choice, comfort, or compatibility beyond the tested PC/headset configuration.
 \end{document}
