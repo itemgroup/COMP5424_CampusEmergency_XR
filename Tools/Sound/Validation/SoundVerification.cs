@@ -505,6 +505,27 @@ public static class SoundVerification
         rig.transform.position = exerciseSpawn;
         exerciseNpc.ShowTaskGuide(tasks, diagram, () => exercise.BeginExercise(exerciseSpawn));
         var exerciseButton = Field<UnityEngine.UI.Button>(exerciseNpc, "continueButton");
+        var taskCardRect = Field<GameObject>(exerciseNpc, "speechBubbleRoot").GetComponent<RectTransform>();
+        var exerciseButtonRect = exerciseButton.GetComponent<RectTransform>();
+        Check(taskCardRect.rect.height == 1200f &&
+            Mathf.Abs(taskCardRect.localPosition.y - (Field<float>(exerciseNpc, "bubbleHeight") + 0.5f)) < 0.001f &&
+            taskCardRect.localPosition.y + taskCardRect.rect.height * taskCardRect.localScale.y * 0.5f < 4f,
+            "Start NPC task panel retains its original safe height below the next floor");
+        Check(Mathf.Abs(exerciseButtonRect.anchorMin.x - 0.74f) < 0.001f &&
+            Mathf.Abs(exerciseButtonRect.anchorMax.x - 0.97f) < 0.001f &&
+            Mathf.Abs(exerciseButtonRect.anchorMin.y - 0.02f) < 0.001f &&
+            Mathf.Abs(exerciseButtonRect.anchorMax.y - 0.12f) < 0.001f,
+            "Start reroute button moves to the right panel edge, away from the NPC head");
+        var taskTitleRect = Field<GameObject>(exerciseNpc, "speechBubbleRoot").transform
+            .Find("PanelBackground/TitleText") as RectTransform;
+        var taskMessageRect = Field<UnityEngine.UI.Text>(exerciseNpc, "uiDialogueText").rectTransform;
+        var diagramFrame = Field<UnityEngine.UI.RawImage>(exerciseNpc, "evacuationImage").transform.parent as RectTransform;
+        var instructionsRect = Field<UnityEngine.UI.Text>(exerciseNpc, "teleportInstructions").rectTransform;
+        Check(taskTitleRect.anchorMin.y == 0.85f && taskTitleRect.anchorMax.y == 0.98f &&
+            taskMessageRect.anchorMin.y == 0.32f && taskMessageRect.anchorMax.y == 0.80f &&
+            diagramFrame.anchorMin.y == 0.27f && diagramFrame.anchorMax.y == 0.80f &&
+            instructionsRect.anchorMin.y == 0.14f && instructionsRect.anchorMax.y == 0.30f,
+            "Task card content restores its original unraised layout");
         Check(exerciseButton.gameObject.activeInHierarchy &&
             exerciseButton.GetComponentInChildren<UnityEngine.UI.Text>().text == "Start reroute" &&
             Field<UnityEngine.UI.RawImage>(exerciseNpc, "evacuationImage").transform.parent.gameObject.activeSelf,
