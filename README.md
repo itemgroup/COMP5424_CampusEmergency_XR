@@ -1,6 +1,19 @@
 # Group 7 Campus Emergency Preparedness
 
+## Group members
+
+| Member | Student ID | GitHub account |
+|---|---|---|
+| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
+| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
+| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
+| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
+| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
+| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
+
 ## Final demonstration update - 2026-10-17
+
+Final submission branch: `final-submission-2026-10-17`.
 
 Entry scene: `Assets/Scenes/SampleScene.unity` (Unity 6000.3.25f1).
 
@@ -44,11 +57,14 @@ Entry scene: `Assets/Scenes/SampleScene.unity` (Unity 6000.3.25f1).
   is hidden during the exercise to avoid revealing the answer. Completion then
   requires both recovery and the original ordered stair checkpoints. Without
   opting in, ordinary exploration and direct endpoint feedback stay unchanged.
+- The Start NPC task card keeps its original position, size, and content layout;
+  only the **Start reroute** button is moved to the right edge to avoid the NPC
+  without pushing the panel into the ceiling.
 - Includes the current campus poster/sign placement and required imported assets.
 - Removes obsolete test_1 build backups; generated build backups are now ignored.
   APKs are local outputs, not part of this source delivery.
 
-Validation: 144 isolated Unity regression checks passed, including real XR
+Validation: 147 isolated Unity regression checks passed, including real XR
 ray/free-area selection, CharacterController movement against the barrier,
 ordered recovery, four-sided sign readability, held-gesture feedback suppression,
 two consecutive clean scene reloads via Back, welcome/menu entry behavior,
@@ -64,17 +80,6 @@ reroute/reset source update; no APK was rebuilt for that update.
 See [implementation details](Docs/SoundImplementation.md) for trigger conditions,
 audio integration, and the validation command. The new welcome sentence has no
 new voice recording; existing task and completion voices are retained.
-
-## Group members
-
-| Member | Student ID | GitHub account |
-|---|---|---|
-| SUN Jiashi | 26044457G | [@JsSun-1000001000](https://github.com/JsSun-1000001000) |
-| SONG Zheyi | 26064683G | [@iZheGit](https://github.com/iZheGit) |
-| WENG Zhirui | 26101594G | [@iamwzzr](https://github.com/iamwzzr) |
-| FENG Kedi | 26058499G | [@Cody](https://github.com/Cody) |
-| CHU Silu | 26115249G | [@tsuyu76](https://github.com/tsuyu76) |
-| ZHU Yu | 26101969G | [@xiedaimalaile](https://github.com/xiedaimalaile) |
 
 ## Basic use
 
