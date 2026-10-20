@@ -87,6 +87,9 @@ EndEmergency clears alarm and speech queue
 Reroute validation is registered on the real XR Interaction Manager
 Optional reroute starts idle with no barrier or restrictions on ordinary exploration
 Original route sign text has viewer-correct left/right and up/down orientation from all four sides
+Start NPC task panel retains its original safe height below the next floor
+Start reroute button moves to the right panel edge, away from the NPC head
+Task card content restores its original unraised layout
 Optional exercise offers Start reroute while preserving the ordinary task diagram
 Starting reroute establishes the original route before any closure appears
 Repeated start cannot reset an active reroute exercise
