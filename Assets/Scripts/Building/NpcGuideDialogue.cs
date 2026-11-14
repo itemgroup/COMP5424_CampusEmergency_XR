@@ -36,6 +36,9 @@ namespace CampusEmergency.Building
         [Header("Trigger area")]
         [SerializeField] private string[] playerTags = { "Player", "MainCamera" };
 
+        public bool AutomaticDialogue { get; set; } = true;
+        private Button directRouteButton;
+        private bool hasDirectRouteButton;
         private bool hasTriggered;
         private Coroutine hideCoroutine;
         private string persistentMessage;
@@ -45,7 +48,7 @@ namespace CampusEmergency.Building
             "SAFETY REVIEW\n\n" +
             "Use the designated stairs during a fire alarm. Lifts may become unsafe or unavailable.\n\n" +
             "Check exit signs as you move. If a route is closed, stop and find a marked available route.\n\n" +
-            "This 2F endpoint ends the prototype, not a real evacuation. In a real emergency, " +
+            "You have reached the G floor assembly point. Stay with your group. In a real emergency, " +
             "follow official signs and on-site instructions to the designated assembly point.";
         private GuideCard guideCard;
         private Button continueButton;
@@ -294,7 +297,8 @@ namespace CampusEmergency.Building
         }
 
         public void ShowTaskGuide(string taskList, Texture2D diagram,
-            UnityEngine.Events.UnityAction startRouteExercise = null, bool routeExerciseActive = false)
+            UnityEngine.Events.UnityAction startRouteExercise = null, bool routeExerciseActive = false,
+            UnityEngine.Events.UnityAction startDirectRoute = null)
         {
             if (string.IsNullOrWhiteSpace(taskList) || diagram == null)
             {
@@ -306,8 +310,16 @@ namespace CampusEmergency.Building
             rerouteGuideActive = routeExerciseActive;
             hasRouteExerciseButton = startRouteExercise != null;
             if (hasRouteExerciseButton)
-                ConfigureCardButton("Start reroute", startRouteExercise);
+                ConfigureCardButton("Route 2: Reroute", startRouteExercise);
             Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
+            hasDirectRouteButton = startDirectRoute != null;
+            if (hasDirectRouteButton)
+            {
+                if (directRouteButton == null) directRouteButton = CreateCardButton("Direct Route", panel);
+                directRouteButton.GetComponentInChildren<Text>().text = "Route 1: Direct";
+                directRouteButton.onClick.RemoveAllListeners();
+                directRouteButton.onClick.AddListener(startDirectRoute);
+            }
             if (evacuationImage == null)
             {
                 var frame = new GameObject("Evacuation Diagram Frame", typeof(RectTransform));
@@ -333,16 +345,9 @@ namespace CampusEmergency.Building
                 teleportInstructions.color = new Color(1f, 0.85f, 0.25f, 1f);
                 teleportInstructions.raycastTarget = false;
             }
-            teleportInstructions.text = routeExerciseActive
-                ? "Reroute exercise: check the environment signs and the current objective. " +
-                    "The diagram is hidden to avoid revealing the alternative route.\n" +
-                    "Confirm marked teleport points to activate tutorial effects."
-                : hasRouteExerciseButton
-                    ? "Use the marked teleport points and confirm to activate tutorial effects.\n" +
-                        "Optional: select Start reroute to practise responding to a route closure."
-                    : "Use the marked teleport points to trigger the corresponding tutorial effects. " +
-                        "Aim at a teleport point and confirm the teleport; pointing alone does not activate it.\n" +
-                        "Follow the red arrows on the evacuation diagram to the stairs.";
+            teleportInstructions.text = "Route 1: follow the stairs directly to G.\n" +
+                "Route 2: respond to a closed corridor, follow the alternate EXIT signs, then descend to G.\n" +
+                "Both routes finish at the courtyard assembly point. The map shows the starting floor.";
             ApplyGuideCardLayout();
         }
 
@@ -367,10 +372,15 @@ namespace CampusEmergency.Building
             {
                 continueButton.gameObject.SetActive(!tasks || hasRouteExerciseButton);
                 SetAnchors(continueButton.transform,
-                    new Vector2(tasks && hasRouteExerciseButton ? 0.74f : 0.30f, tasks ? 0.02f : 0.06f),
+                    new Vector2(tasks && hasRouteExerciseButton ? 0.52f : 0.30f, tasks ? 0.02f : 0.06f),
                     new Vector2(tasks && hasRouteExerciseButton ? 0.97f : 0.70f, tasks ? 0.12f : 0.26f));
                 if (guideCard == GuideCard.Completion && returnToStartAction != null)
                     SetAnchors(continueButton.transform, new Vector2(0.30f, 0.18f), new Vector2(0.70f, 0.30f));
+            }
+            if (directRouteButton != null)
+            {
+                directRouteButton.gameObject.SetActive(tasks && hasDirectRouteButton);
+                SetAnchors(directRouteButton.transform, new Vector2(0.04f, 0.02f), new Vector2(0.48f, 0.12f));
             }
             bool showCompletionActions = guideCard == GuideCard.Completion && returnToStartAction != null;
             if (completionContinueButton != null)
@@ -415,6 +425,7 @@ namespace CampusEmergency.Building
         [ContextMenu("Test Trigger Dialogue")]
         public void TriggerDialogue()
         {
+            if (!AutomaticDialogue) return;
             if (triggerOnce && hasTriggered)
                 return;
 
@@ -467,7 +478,7 @@ namespace CampusEmergency.Building
 
         private void ShowCompletionCard()
         {
-            ShowPersistentDialogue("SCENE 1 COMPLETE", dialogueMessage);
+            ShowPersistentDialogue("G FLOOR — PRACTICE COMPLETE", "You reached the courtyard assembly point. Stay here, keep access clear, and wait for instructions.");
             guideCard = GuideCard.Completion;
             ConfigureCardButton("Review safety", ShowSafetyReview);
             if (returnToStartAction != null)
@@ -476,12 +487,13 @@ namespace CampusEmergency.Building
                 if (completionContinueButton == null)
                 {
                     completionContinueButton = CreateCardButton("Continue Experience", panel);
-                    completionContinueButton.GetComponentInChildren<Text>().text = "Continue";
+                    completionContinueButton.GetComponentInChildren<Text>().text = "Close results";
+                    completionContinueButton.onClick.AddListener(() => speechBubbleRoot.SetActive(false));
                 }
                 if (completionBackButton == null)
                 {
                     completionBackButton = CreateCardButton("Return To Start", panel);
-                    completionBackButton.GetComponentInChildren<Text>().text = "Back";
+                    completionBackButton.GetComponentInChildren<Text>().text = "Restart in classroom";
                 }
                 completionBackButton.onClick.RemoveAllListeners();
                 completionBackButton.onClick.AddListener(returnToStartAction);
@@ -575,6 +587,7 @@ namespace CampusEmergency.Building
 
         public void ResetDialogue()
         {
+            if (directRouteButton != null) directRouteButton.gameObject.SetActive(false);
             hasTriggered = false;
             nextVoiceTime = 0f;
             persistentMessage = null;

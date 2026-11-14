@@ -19,6 +19,7 @@ namespace CampusEmergency.UI
         [SerializeField] private AudioClip backgroundMusic;
         [SerializeField] private GameObject[] keepActiveRoots;
 
+        private readonly List<RawImage> lights = new List<RawImage>();
         private Button enterButton;
         private Button exitButton;
         private AudioSource musicSource;
@@ -180,10 +181,16 @@ namespace CampusEmergency.UI
 
             RawImage photo = CreateImage("Campus Background", rect, background, Vector2.zero, Vector2.one);
             photo.raycastTarget = false;
-            enterButton = CreateButton("Enter System", rect, font,
+            for (int i = 0; i < 8; i++)
+            {
+                RawImage light = CreateImage("Ambient Light", rect, Texture2D.whiteTexture, Vector2.zero, Vector2.zero);
+                light.rectTransform.sizeDelta = new Vector2(3f, 3f);
+                lights.Add(light);
+            }
+            enterButton = CreateButton("Start practice", rect, font,
                 new Vector2(0.55f, 0.24f), new Vector2(0.77f, 0.35f),
                 new Color(0.03f, 0.30f, 0.40f, 0.97f));
-            exitButton = CreateButton("Exit System", rect, font,
+            exitButton = CreateButton("Exit", rect, font,
                 new Vector2(0.55f, 0.09f), new Vector2(0.77f, 0.20f),
                 new Color(0.28f, 0.09f, 0.10f, 0.97f));
             enterButton.onClick.AddListener(EnterSystem);
@@ -235,6 +242,19 @@ namespace CampusEmergency.UI
             Debug.Log($"Main menu ready: camera='{view.name}', camera position={view.transform.position}, " +
                 $"menu position={transform.position}, background={background.width}x{background.height}, " +
                 "menu and blurred background remain fixed in world space.", this);
+        }
+
+        private void Update()
+        {
+            if (!menuActive || !ready) return;
+            RectTransform rect = (RectTransform)transform;
+            for (int i = 0; i < lights.Count; i++)
+            {
+                float phase = Mathf.Repeat(Time.unscaledTime * 0.025f + i * 0.137f, 1f);
+                lights[i].rectTransform.anchoredPosition = new Vector2(
+                    rect.rect.width * (0.56f + i * 0.052f), rect.rect.height * (0.42f + phase * 0.45f));
+                lights[i].color = new Color(0.65f, 1f, 0.88f, Mathf.Sin(phase * Mathf.PI) * 0.5f);
+            }
         }
 
         public void EnterSystem()

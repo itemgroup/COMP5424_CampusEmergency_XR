@@ -117096,15 +117096,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400308, guid: 57f20341b832af54687c15e02f01e0d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50.170322
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 400308, guid: 57f20341b832af54687c15e02f01e0d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.998
+      value: 0.048
       objectReference: {fileID: 0}
     - target: {fileID: 400308, guid: 57f20341b832af54687c15e02f01e0d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.388368
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400308, guid: 57f20341b832af54687c15e02f01e0d5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -251555,6 +251555,7 @@ MonoBehaviour:
   downStairAssist1: {fileID: 1103659943}
   downStairAssist2: {fileID: 225268291}
   downStairFinished: {fileID: 1654367769}
+  groundAssemblyPoint: {fileID: 1500000111}
   elizabethGuideDialogue: {fileID: 953927710}
   elizabethEndDialogue: {fileID: 651727378}
   evacuationDiagram: {fileID: 2800000, guid: 0452cc926d45a7b42b9cec4d55791255, type: 3}
@@ -299548,7 +299549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1654367769}
   m_Layer: 0
-  m_Name: Teleport Corner DownStair Finished
+  m_Name: Teleport Corner DownStair 2F Landing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323194,7 +323195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08924781b494455191f2b94988831187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 2800000, guid: 780c40f407760744095f01e952f381f4, type: 3}
+  background: {fileID: 2800000, guid: f392d240968b40a3839924980f88fec4, type: 3}
   surroundings: {fileID: 2100000, guid: b9c8cab00e751434689ec94b2c04bb8d, type: 2}
   backgroundMusic: {fileID: 8300000, guid: 4164f5705c0b78d4d9244efe3eb25b88, type: 3}
   keepActiveRoots:

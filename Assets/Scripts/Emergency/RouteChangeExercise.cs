@@ -47,7 +47,7 @@ namespace CampusEmergency.Emergency
                 ? "The route ahead is closed. Check EXIT signs for an available route."
                 : phase == Phase.AlternativeReached
                     ? "Alternative corridor reached. Follow its EXIT signs towards the stairs."
-                    : "Alternative route rejoins the stairs. Continue through the stair checkpoints to 2F.";
+                    : "Alternative route rejoins the stairs. Continue through the stairs through 2F and 1F to G.";
 
         private void Awake()
         {

@@ -22,6 +22,12 @@ namespace CampusEmergency.UI
         [SerializeField] private Transform downStairAssist1;
         [SerializeField] private Transform downStairAssist2;
         [SerializeField] private Transform downStairFinished;
+        [SerializeField] private Transform groundAssemblyPoint;
+        private bool routeSelected;
+        public bool CanCompleteAssembly => routeSelected && !introductionPending &&
+            (routeProgress == RouteProgress.ReachedGround || routeProgress == RouteProgress.Completed);
+        private readonly List<UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionProvider> pausedLocomotion =
+            new List<UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionProvider>();
         [SerializeField] private NpcGuideDialogue elizabethGuideDialogue;
         [SerializeField] private NpcGuideDialogue elizabethEndDialogue;
         [SerializeField] private Texture2D evacuationDiagram;
@@ -61,7 +67,9 @@ namespace CampusEmergency.UI
             "Enter the stair route",
             "Follow stair landing 1",
             "Follow stair landing 2",
-            "Reach the 2F practice endpoint"
+            "Continue down to 1F",
+            "Reach G floor",
+            "Reach the G floor assembly point"
         };
 
         private enum RouteProgress
@@ -71,6 +79,8 @@ namespace CampusEmergency.UI
             EnteredStairs,
             ReachedAssist1,
             ReachedAssist2,
+            DescendingToGround,
+            ReachedGround,
             Completed
         }
 
@@ -126,6 +136,8 @@ namespace CampusEmergency.UI
                 return;
             }
 
+            if (elizabethGuideDialogue != null) elizabethGuideDialogue.AutomaticDialogue = false;
+            if (elizabethEndDialogue != null) elizabethEndDialogue.AutomaticDialogue = false;
             FindTutorialActions();
             ValidateRoutePoints();
             RegisterTeleportTargets();
@@ -154,17 +166,7 @@ namespace CampusEmergency.UI
                 Debug.LogError("Introduction requires the Start NPC and the evacuation diagram Texture2D.", this);
                 yield break;
             }
-            elizabethGuideDialogue.ShowIntroduction(
-                "Welcome to the Requirements and Prototype Proposal Demonstration System!",
-                ContinueIntroduction);
-        }
-
-        private void ContinueIntroduction()
-        {
-            if (!introductionPending)
-                return;
-            introductionPending = false;
-            CampusAudioDirector.Instance?.PlayClick();
+            elizabethGuideDialogue.ResetDialogue();
             ShowWelcome();
         }
 
@@ -204,7 +206,7 @@ namespace CampusEmergency.UI
                 routeChangeExercise.ObservePlayer(feet, isPaused);
             if (!isPaused)
             {
-                if (!introductionPending)
+                if (!introductionPending && routeSelected)
                     AdvanceRoute(feet);
                 TryShowEndDialogue(feet);
             }
@@ -256,34 +258,37 @@ namespace CampusEmergency.UI
                 Debug.LogError("Practice route requires Inspector references to all five DownStair waypoint transforms.", this);
             }
 
+            if (groundAssemblyPoint == null)
+                Debug.LogError("Practice requires the G floor assembly point.", this);
             if (elizabethEndDialogue == null)
                 Debug.LogError("Practice endpoint requires the End NPC dialogue reference.", this);
         }
 
         private void TryShowEndDialogue(Vector3 playerPosition)
         {
-            if (endDialogueTriggered || downStairFinished == null || elizabethEndDialogue == null ||
+            if (introductionPending || !routeSelected || endDialogueTriggered || groundAssemblyPoint == null || elizabethEndDialogue == null ||
                 !elizabethEndDialogue.isActiveAndEnabled)
                 return;
 
-            bool nearEndpoint = IsRouteDestination(playerPosition, downStairFinished);
+            bool nearEndpoint = IsRouteDestination(playerPosition, groundAssemblyPoint);
             bool nearNpc = (playerPosition - elizabethEndDialogue.transform.position).sqrMagnitude <=
                 RoutePointTolerance * RoutePointTolerance;
             if (!nearEndpoint && !nearNpc)
                 return;
-            if (routeChangeExercise != null && routeChangeExercise.HasStarted &&
-                (!routeChangeExercise.RecoveryCompleted || routeProgress != RouteProgress.Completed))
+            if (routeProgress != RouteProgress.Completed)
             {
                 if (Time.unscaledTime >= nextIncompleteEndNoticeTime)
                 {
                     nextIncompleteEndNoticeTime = Time.unscaledTime + 10f;
-                    SoundNotice.Show("PRACTICE NOT COMPLETE", routeChangeExercise.RecoveryCompleted
+                    SoundNotice.Show("PRACTICE NOT COMPLETE", (routeChangeExercise == null || !routeChangeExercise.HasStarted || routeChangeExercise.RecoveryCompleted)
                         ? "Follow the stair checkpoints in order before finishing the exercise."
                         : routeChangeExercise.Objective);
                 }
                 return;
             }
 
+            hudCanvasObject.SetActive(false);
+            elizabethGuideDialogue?.ResetDialogue();
             elizabethEndDialogue.ShowCompletionDialogue(ReturnToSpawn);
             endDialogueTriggered = true;
         }
@@ -379,13 +384,13 @@ namespace CampusEmergency.UI
 
         private void OnMove(InputAction.CallbackContext context)
         {
-            if (guideInProgress && currentStep == 0 && context.ReadValue<Vector2>().sqrMagnitude > 0.09f)
+            if (!isPaused && guideInProgress && currentStep == 0 && context.ReadValue<Vector2>().sqrMagnitude > 0.09f)
                 CompleteStep("Movement detected. Push the right joystick left or right to turn.");
         }
 
         private void OnTurn(InputAction.CallbackContext context)
         {
-            if (guideInProgress && currentStep == 1 && context.ReadValue<Vector2>().sqrMagnitude > 0.09f)
+            if (!isPaused && guideInProgress && currentStep == 1 && context.ReadValue<Vector2>().sqrMagnitude > 0.09f)
                 CompleteStep("45-degree snap turn detected. Push the right joystick up, aim at a valid surface, and teleport.");
         }
 
@@ -425,7 +430,7 @@ namespace CampusEmergency.UI
                 routeChangeExercise.ObservePlayer(destination, isPaused);
             if (!isPaused)
                 AdvanceRoute(destination);
-            if (guideInProgress && currentStep == 2)
+            if (!isPaused && guideInProgress && currentStep == 2)
                 CompleteStep("Teleport successful. Push the right joystick up to aim again, then press the right grip to cancel.");
         }
 
@@ -433,6 +438,7 @@ namespace CampusEmergency.UI
 
         private void AdvanceRoute(Vector3 destination)
         {
+            if (introductionPending || !routeSelected || isPaused) return;
             if (routeChangeExercise != null && routeChangeExercise.HasStarted &&
                 !routeChangeExercise.RecoveryCompleted)
                 return;
@@ -447,7 +453,7 @@ namespace CampusEmergency.UI
                     CampusAudioDirector.Instance?.BeginEmergency();
                     routeProgress = RouteProgress.RouteChoiceStarted;
                     currentTaskIndex = 1;
-                    currentObjective = "At the DownStair corner, read the signs and choose the stair route to 2F.";
+                    currentObjective = "At the DownStair corner, read the signs and choose the stair route towards G.";
                     currentFloor = "3F";
                     floorTrackingConnected = true;
                     onTeleportCornerReached?.Invoke();
@@ -470,23 +476,46 @@ namespace CampusEmergency.UI
                     routeProgress = RouteProgress.ReachedAssist2;
                     completedTasks[3] = true;
                     currentTaskIndex = 4;
-                    currentObjective = "Stair landing 2 reached. Continue to the marked 2F endpoint.";
+                    currentObjective = "Stair landing 2 reached. Continue to the marked 2F landing, then descend to G.";
                     currentFloor = "2F";
                     break;
                 case RouteProgress.ReachedAssist2 when IsRouteDestination(destination, downStairFinished):
+                    routeProgress = RouteProgress.DescendingToGround;
+                    completedTasks[4] = true;
+                    currentTaskIndex = 5;
+                    currentObjective = "Continue down the stairs through 1F to G. Follow the floor labels.";
+                    currentFloor = "2F";
+                    break;
+                case RouteProgress.DescendingToGround when destination.y < 4.6f && destination.y > 2f:
+                    if (completedTasks[5]) return;
+                    completedTasks[5] = true;
+                    currentTaskIndex = 6;
+                    currentFloor = "1F";
+                    currentObjective = "One floor to go. Continue down to G, then enter the courtyard.";
+                    break;
+                case RouteProgress.DescendingToGround when groundAssemblyPoint != null &&
+                    Mathf.Abs(destination.y - groundAssemblyPoint.position.y) < 0.6f:
+                    routeProgress = RouteProgress.ReachedGround;
+                    completedTasks[5] = completedTasks[6] = true;
+                    currentTaskIndex = 7;
+                    currentFloor = "G";
+                    currentObjective = "Follow ASSEMBLY POINT signs into the central courtyard on G.";
+                    break;
+                case RouteProgress.ReachedGround when groundAssemblyPoint != null && IsRouteDestination(destination, groundAssemblyPoint):
                     routeProgress = RouteProgress.Completed;
                     completedTasks[4] = true;
                     completedTasks[5] = true;
-                    currentTaskIndex = 5;
-                    currentObjective = "Route complete. You reached the fictional 2F practice endpoint.";
-                    currentFloor = "2F";
+                    completedTasks[6] = completedTasks[7] = true;
+                    currentTaskIndex = 7;
+                    currentObjective = "You reached the G floor assembly point. Stay here and review your practice.";
+                    currentFloor = "G";
                     break;
                 default:
                     return;
             }
 
             if (routeProgress == RouteProgress.Completed)
-                CampusAudioDirector.Instance?.PlayCompletion();
+                CampusAudioDirector.Instance?.CompleteAssembly();
             else
                 CampusAudioDirector.Instance?.PlayCorrect();
             UpdateNavigationHud();
@@ -501,9 +530,22 @@ namespace CampusEmergency.UI
             Vector3 feet = origin != null ? origin.transform.position : headCamera.transform.position - Vector3.up * 1.6f;
             if (routeChangeExercise.BeginExercise(feet))
             {
+                SelectDirectRoute();
                 endDialogueTriggered = false;
                 elizabethEndDialogue?.ResetDialogue();
             }
+        }
+
+        private void SelectDirectRoute()
+        {
+            routeSelected = true;
+            currentTaskIndex = 1;
+            currentObjective = routeChangeExercise != null && routeChangeExercise.HasStarted
+                ? routeChangeExercise.Objective : "Route 1 selected. Follow the corridor to the stairs, then descend to G.";
+            elizabethGuideDialogue?.ResetDialogue();
+            hudCanvasObject.SetActive(true);
+            PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
+            UpdateNavigationHud();
         }
 
         private void OnRouteExerciseChanged()
@@ -522,14 +564,23 @@ namespace CampusEmergency.UI
 
         private void OnTeleportCancel(InputAction.CallbackContext context)
         {
-            if (guideInProgress && currentStep == 3)
+            if (!isPaused && guideInProgress && currentStep == 3)
                 CompleteStep("Cancellation detected. Point the ray at an interactive object and press the right trigger.");
         }
 
         private void OnActivate(InputAction.CallbackContext context)
         {
-            if (guideInProgress && currentStep == 4)
-                CompleteStep("Trigger detected. You have completed all controller exercises!");
+            if (isPaused || !guideInProgress || currentStep != 4) return;
+            foreach (var ray in FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor>(FindObjectsSortMode.None))
+            {
+                if (ray.TryGetCurrent3DRaycastHit(out RaycastHit hit) &&
+                    hit.collider.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>() != null)
+                {
+                    CompleteStep("Interaction confirmed. Choose your route to G.");
+                    return;
+                }
+            }
+            UpdateTutorialText("Aim at an interactive object, then press the trigger. Or select Continue to routes.");
         }
 
         private void CompleteStep(string feedback)
@@ -546,10 +597,7 @@ namespace CampusEmergency.UI
                     currentObjective = routeChangeExercise != null && routeChangeExercise.HasStarted
                         ? routeChangeExercise.Objective : "Controller practice complete. Continue to the DownStair corner.";
                 }
-                guideCanvasObject.SetActive(false);
-                hudCanvasObject.SetActive(true);
-                PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
-                UpdateNavigationHud();
+                SkipGuide();
             }
 
             UpdateTutorialText(feedback);
@@ -588,7 +636,7 @@ namespace CampusEmergency.UI
 
             CreateText("Title", canvasRect, font, "Controller Quick Guide", 72, AccentColor,
                 new Vector2(0.055f, 0.88f), new Vector2(0.95f, 0.98f), TextAnchor.MiddleLeft);
-            CreateText("Subtitle", canvasRect, font, "Welcome to the Campus Emergency Practice · 3F to 2F", 36, SecondaryTextColor,
+            CreateText("Subtitle", canvasRect, font, "Welcome to the Campus Emergency Practice · 3F to G", 36, SecondaryTextColor,
                 new Vector2(0.06f, 0.80f), new Vector2(0.58f, 0.87f), TextAnchor.MiddleLeft);
             guideNearerButton = CreateButton("Guide Nearer Button", canvasRect, font, "Nearer",
                 new Vector2(0.62f, 0.80f), new Vector2(0.78f, 0.87f), MoveGuideNearer);
@@ -617,7 +665,7 @@ namespace CampusEmergency.UI
 
             beginGuideButton = CreateButton("Begin Guide Button", canvasRect, font, "Begin guided practice",
                 new Vector2(0.055f, 0.005f), new Vector2(0.35f, 0.065f), BeginGuide);
-            skipGuideButton = CreateButton("Skip Guide Button", canvasRect, font, "Skip controls",
+            skipGuideButton = CreateButton("Skip Guide Button", canvasRect, font, "Continue to routes",
                 new Vector2(0.37f, 0.005f), new Vector2(0.65f, 0.065f), SkipGuide);
             CreateButton("Guide Pause Button", canvasRect, font, "Pause",
                 new Vector2(0.67f, 0.005f), new Vector2(0.95f, 0.065f), PausePractice);
@@ -782,6 +830,15 @@ namespace CampusEmergency.UI
             previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
             isPaused = true;
+            foreach (var provider in FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionProvider>(FindObjectsSortMode.None))
+            {
+                if (!provider.enabled) continue;
+                pausedLocomotion.Add(provider);
+                provider.enabled = false;
+            }
+            guideCanvasObject.SetActive(false);
+            hudCanvasObject.SetActive(false);
+            elizabethGuideDialogue?.ResetDialogue();
             pauseCanvasObject.SetActive(true);
         }
 
@@ -792,7 +849,13 @@ namespace CampusEmergency.UI
 
             Time.timeScale = previousTimeScale;
             isPaused = false;
+            foreach (var provider in pausedLocomotion)
+                if (provider != null) provider.enabled = true;
+            pausedLocomotion.Clear();
             pauseCanvasObject.SetActive(false);
+            guideCanvasObject.SetActive(introductionPending);
+            hudCanvasObject.SetActive(!introductionPending && routeSelected);
+            UpdateNavigationHud();
         }
 
         private void RestartPractice()
@@ -838,6 +901,7 @@ namespace CampusEmergency.UI
 
         private void SkipGuide()
         {
+            introductionPending = false;
             guideInProgress = false;
             if (routeProgress == RouteProgress.AwaitingStart)
             {
@@ -848,7 +912,7 @@ namespace CampusEmergency.UI
                     : "Controls skipped. Continue to the DownStair corner.";
             }
             guideCanvasObject.SetActive(false);
-            hudCanvasObject.SetActive(true);
+            hudCanvasObject.SetActive(routeSelected);
             PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
             UpdateNavigationHud();
         }
@@ -863,6 +927,8 @@ namespace CampusEmergency.UI
 
         private void ShowWelcome()
         {
+            introductionPending = true;
+            elizabethGuideDialogue?.ResetDialogue();
             guideCanvasObject.SetActive(true);
             PositionPanelInFront(guideCanvasObject, InitialGuideDistance, -0.02f);
             CampusAudioDirector.Instance?.PlayPopup();
@@ -905,14 +971,14 @@ namespace CampusEmergency.UI
             if (hudFloorText != null && hudObjectiveText != null)
             {
                 hudFloorText.text = floorTrackingConnected
-                    ? $"Current floor: {currentFloor}     Practice route: 3F to 2F"
-                    : "Planned practice route: 3F to 2F";
+                    ? $"Current floor: {currentFloor}     Practice route: 3F to G"
+                    : "Planned practice route: 3F to G";
                 hudObjectiveText.text = $"Current objective: {currentObjective}";
             }
             if (hudTasksText != null)
                 hudTasksText.text = taskList;
 
-            if (introductionPending)
+            if (introductionPending || routeSelected)
                 return;
 
             if (elizabethGuideDialogue == null)
@@ -924,7 +990,7 @@ namespace CampusEmergency.UI
                 bool canStartExercise = routeChangeExercise != null && routeChangeExercise.isActiveAndEnabled &&
                     !exerciseActive && routeProgress == RouteProgress.AwaitingStart;
                 elizabethGuideDialogue.ShowTaskGuide(taskList, evacuationDiagram,
-                    canStartExercise ? BeginRouteExercise : (UnityAction)null, exerciseActive);
+                    canStartExercise ? BeginRouteExercise : (UnityAction)null, exerciseActive, SelectDirectRoute);
             }
         }
 
@@ -981,7 +1047,7 @@ namespace CampusEmergency.UI
             rect.offsetMax = Vector2.zero;
 
             Image background = buttonObject.GetComponent<Image>();
-            background.color = AccentColor;
+            background.color = Color.white;
             Button button = buttonObject.GetComponent<Button>();
             button.targetGraphic = background;
             button.transition = Selectable.Transition.ColorTint;
@@ -1002,9 +1068,7 @@ namespace CampusEmergency.UI
 
         private static Font CreateGuideFont()
         {
-            return Font.CreateDynamicFontFromOSFont(
-                new[] { "Arial", "Segoe UI", "Noto Sans" },
-                64);
+            return Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         }
 
         private static Image CreateImage(string objectName, RectTransform parent, Color color, Vector2 anchorMin, Vector2 anchorMax)

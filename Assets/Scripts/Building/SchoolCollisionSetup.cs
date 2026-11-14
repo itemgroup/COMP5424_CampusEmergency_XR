@@ -20,6 +20,48 @@ namespace CampusEmergency.Building
         private void Awake()
         {
             BuildCollisionGeometry();
+            ApplyArchitectureFinish();
+        }
+
+        private void ApplyArchitectureFinish()
+        {
+            Material finish = Resources.Load<Material>("CampusArchitecture");
+            if (finish == null) return;
+            foreach (MeshFilter mesh in GetComponentsInChildren<MeshFilter>(true))
+            {
+                // The architecture OBJ names its structural meshes Unnamed; furnishings keep their own finishes.
+                if (mesh.sharedMesh == null || !mesh.sharedMesh.name.StartsWith("Unnamed")) continue;
+                MeshRenderer renderer = mesh.GetComponent<MeshRenderer>();
+                if (renderer == null) continue;
+                var materials = renderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++) materials[i] = finish;
+                renderer.sharedMaterials = materials;
+            }
+            foreach (float x in new[] { -6.5f, 6.5f })
+            {
+                CreateCourtyardDetail("Courtyard seat", new Vector3(x, 0.48f, 6f), new Vector3(2.4f, 0.18f, 0.6f), finish);
+                CreateCourtyardDetail("Seat plinth", new Vector3(x, 0.2f, 6f), new Vector3(1.8f, 0.4f, 0.45f), finish);
+                CreateCourtyardDetail("Raised planter", new Vector3(x, 0.35f, -6f), new Vector3(1.4f, 0.7f, 1.4f), finish);
+            }
+            for (int floor = 0; floor < 4; floor++)
+            {
+                var sign = new GameObject("Floor wayfinding " + floor);
+                sign.transform.SetParent(transform, false);
+                sign.transform.localPosition = new Vector3(16f, floor * 4f + 2.1f, -10f);
+                sign.AddComponent<CampusEmergency.Audio.SoundAreaSign>().SetText(floor == 0
+                    ? "G / GROUND FLOOR\nASSEMBLY POINT: CENTRAL COURTYARD"
+                    : floor + "F / STAIRS\nContinue downstairs to G");
+            }
+        }
+
+        private void CreateCourtyardDetail(string label, Vector3 position, Vector3 scale, Material material)
+        {
+            var detail = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            detail.name = label;
+            detail.transform.SetParent(transform, false);
+            detail.transform.localPosition = position;
+            detail.transform.localScale = scale;
+            detail.GetComponent<Renderer>().sharedMaterial = material;
         }
 
         private void OnDestroy()

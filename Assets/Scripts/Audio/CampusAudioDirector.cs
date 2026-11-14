@@ -218,11 +218,8 @@ namespace CampusEmergency.Audio
             { ambience.clip = windClip; ambience.Play(); }
             if (ground && !assemblyReached && NearWaypoint(feet, assemblyWaypoint, 2.5f))
             {
-                assemblyReached = true;
-                speechQueue.Clear(); // Do not announce indoor evacuation after reaching safety.
-                PlayCompletion();
-                QueueAnnouncement("pa_assembly");
-                SoundNotice.Show("Assembly point", "You have reached the designated assembly point. Please remain here and wait for further instructions.");
+                var guide = FindFirstObjectByType<CampusEmergency.UI.ControllerGuidePanel>();
+                if (guide == null || guide.CanCompleteAssembly) CompleteAssembly();
             }
             bool nearLift = head != null && FindNearbyLiftSign(head.transform.position) != null;
             if (nearLift && !wasNearLift && Time.time - lastLiftTime > 25f && !assemblyReached)
@@ -230,6 +227,19 @@ namespace CampusEmergency.Audio
             wasNearLift = nearLift;
             if (!assemblyReached && outdoorAmount == 0f && Time.time >= nextPaTime)
             { QueueAnnouncement("pa_emergency"); nextPaTime = Time.time + paRepeatSeconds; }
+        }
+
+        public void CompleteAssembly()
+        {
+            if (assemblyReached) return;
+            assemblyReached = true;
+            speechQueue.Clear();
+            if (speechRoutine != null) StopCoroutine(speechRoutine);
+            speechRoutine = null;
+            speech.Stop();
+            PlayCompletion();
+            QueueAnnouncement("pa_assembly");
+            SoundNotice.Show("G FLOOR ASSEMBLY POINT", "You have arrived. Stay with your group and wait for instructions.");
         }
 
         private void UpdateMix()
@@ -366,7 +376,7 @@ namespace CampusEmergency.Audio
             while (speechQueue.Count > 0)
             {
                 SpeechRequest request = speechQueue.Dequeue();
-                speech.spatialBlend = request.announcement ? 0f : 0.65f;
+                speech.spatialBlend = request.announcement ? 0f : 0.25f;
                 if (request.speaker != null) speech.transform.position = request.speaker.position + Vector3.up * 1.6f;
                 speech.clip = request.clip; speech.volume = masterVolume * voiceVolume; speech.Play();
                 // Scaled time freezes both the queue and audio while the practice is paused.
