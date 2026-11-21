@@ -239,7 +239,6 @@ namespace CampusEmergency.Audio
             speech.Stop();
             PlayCompletion();
             QueueAnnouncement("pa_assembly");
-            SoundNotice.Show("G FLOOR ASSEMBLY POINT", "You have arrived. Stay with your group and wait for instructions.");
         }
 
         private void UpdateMix()

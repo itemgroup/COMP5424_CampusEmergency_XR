@@ -266,12 +266,6 @@ namespace CampusEmergency.UI
             gameObject.SetActive(false);
         }
 
-        private void OnDisable()
-        {
-            if (Application.isPlaying)
-                RestoreExperience();
-        }
-
         private void OnDestroy()
         {
             if (musicSource != null)

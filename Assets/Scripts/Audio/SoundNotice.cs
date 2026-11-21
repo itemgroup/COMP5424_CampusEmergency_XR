@@ -42,6 +42,18 @@ namespace CampusEmergency.Audio
             if (current.hide != null) current.StopCoroutine(current.hide);
             current.hide = current.StartCoroutine(current.HideAfterDelay());
         }
+        public static void HideCurrent()
+        {
+            if (current == null)
+                return;
+            if (current.hide != null)
+            {
+                current.StopCoroutine(current.hide);
+                current.hide = null;
+            }
+            current.gameObject.SetActive(false);
+        }
+
         private static void Stretch(RectTransform rect, float margin)
         { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = Vector2.one * margin; rect.offsetMax = -Vector2.one * margin; }
         public static void ShowAt(string title, string body, Vector3 position)

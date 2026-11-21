@@ -17,15 +17,13 @@ namespace CampusEmergency.UI
     {
         [SerializeField] private Transform spawnAnchor;
         [SerializeField] private Camera headCamera;
-        [SerializeField] private Transform downStairStart;
-        [SerializeField] private Transform downStairAssist;
-        [SerializeField] private Transform downStairAssist1;
-        [SerializeField] private Transform downStairAssist2;
-        [SerializeField] private Transform downStairFinished;
+        [SerializeField] private Transform[] downStairCheckpoints;
+        [SerializeField] private Transform teleportEnd;
+        private Transform teleportEndTarget;
         [SerializeField] private Transform groundAssemblyPoint;
         private bool routeSelected;
         public bool CanCompleteAssembly => routeSelected && !introductionPending &&
-            (routeProgress == RouteProgress.ReachedGround || routeProgress == RouteProgress.Completed);
+            routeProgress == RouteProgress.Completed;
         private readonly List<UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionProvider> pausedLocomotion =
             new List<UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionProvider>();
         [SerializeField] private NpcGuideDialogue elizabethGuideDialogue;
@@ -60,32 +58,19 @@ namespace CampusEmergency.UI
         private static readonly Color AccentColor = new Color(0.23f, 0.78f, 0.9f, 1f);
         private static readonly Color MainTextColor = new Color(0.91f, 0.96f, 0.99f, 1f);
         private static readonly Color SecondaryTextColor = new Color(0.68f, 0.79f, 0.86f, 1f);
-        private static readonly string[] PracticeTasks =
-        {
-            "Learn the controls",
-            "Read signs and choose the stair route",
-            "Enter the stair route",
-            "Follow stair landing 1",
-            "Follow stair landing 2",
-            "Continue down to 1F",
-            "Reach G floor",
-            "Reach the G floor assembly point"
-        };
+        private string[] PracticeTasks = System.Array.Empty<string>();
 
         private enum RouteProgress
         {
             AwaitingStart,
-            RouteChoiceStarted,
-            EnteredStairs,
-            ReachedAssist1,
-            ReachedAssist2,
-            DescendingToGround,
+            FollowingStairs,
             ReachedGround,
             Completed
         }
 
         private readonly List<BaseTeleportationInteractable> teleportTargets = new List<BaseTeleportationInteractable>();
-        private readonly bool[] completedTasks = new bool[PracticeTasks.Length];
+        private bool[] completedTasks;
+        private int nextStairCheckpoint;
 
         private InputAction moveAction;
         private InputAction turnAction;
@@ -139,7 +124,9 @@ namespace CampusEmergency.UI
             if (elizabethGuideDialogue != null) elizabethGuideDialogue.AutomaticDialogue = false;
             if (elizabethEndDialogue != null) elizabethEndDialogue.AutomaticDialogue = false;
             FindTutorialActions();
+            ResolveRouteCheckpoints();
             ValidateRoutePoints();
+            if (!enabled) return;
             RegisterTeleportTargets();
             BuildPanel();
             BuildNavigationHud();
@@ -249,17 +236,96 @@ namespace CampusEmergency.UI
             canvasObject.transform.SetPositionAndRotation(position, rotation);
         }
 
+        private void ResolveRouteCheckpoints()
+        {
+            if (downStairCheckpoints == null || downStairCheckpoints.Length == 0)
+            {
+                var checkpoints = new List<Transform>();
+                foreach (Transform candidate in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    if (candidate.gameObject.scene == gameObject.scene &&
+                        candidate.name.StartsWith("Teleport Corner DownStair Assist"))
+                        checkpoints.Add(candidate);
+                }
+                checkpoints.Sort((first, second) =>
+                {
+                    Vector3 firstPosition = CampusAudioDirector.WaypointPosition(first);
+                    Vector3 secondPosition = CampusAudioDirector.WaypointPosition(second);
+                    return Mathf.Abs(firstPosition.y - secondPosition.y) > 0.1f
+                        ? secondPosition.y.CompareTo(firstPosition.y)
+                        : secondPosition.x.CompareTo(firstPosition.x);
+                });
+                downStairCheckpoints = checkpoints.ToArray();
+            }
+
+            if (teleportEnd == null)
+            {
+                foreach (Transform candidate in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    if (candidate.gameObject.scene == gameObject.scene &&
+                        candidate.name.Replace(" ", "").Equals("TeleportEnd", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        teleportEnd = candidate;
+                        break;
+                    }
+                }
+            }
+            ResolveTeleportEndTarget();
+            PracticeTasks = new string[downStairCheckpoints.Length + 2];
+            PracticeTasks[0] = "Learn the controls";
+            for (int checkpoint = 0; checkpoint < downStairCheckpoints.Length; checkpoint++)
+                PracticeTasks[checkpoint + 1] = "Reach " + (downStairCheckpoints[checkpoint] != null
+                    ? downStairCheckpoints[checkpoint].name : "missing stair checkpoint");
+            PracticeTasks[PracticeTasks.Length - 1] = "Stand on Teleport End in the G floor courtyard";
+            completedTasks = new bool[PracticeTasks.Length];
+        }
+
+        private void ResolveTeleportEndTarget()
+        {
+            teleportEndTarget = null;
+            if (teleportEnd == null || groundAssemblyPoint == null) return;
+            TeleportationAnchor[] anchors = teleportEnd.GetComponentsInChildren<TeleportationAnchor>();
+            if (anchors.Length == 0 && IsInGroundCourtyard(teleportEnd.position))
+                teleportEndTarget = teleportEnd;
+            float closestDistance = float.PositiveInfinity;
+            foreach (TeleportationAnchor anchor in anchors)
+            {
+                Transform target = anchor.teleportAnchorTransform;
+                if (!anchor.isActiveAndEnabled || target == null || !IsInGroundCourtyard(target.position)) continue;
+                Vector3 offset = target.position - groundAssemblyPoint.position;
+                if (offset.sqrMagnitude >= closestDistance)
+                    continue;
+                closestDistance = offset.sqrMagnitude;
+                teleportEndTarget = target;
+            }
+        }
+
+        private bool IsInGroundCourtyard(Vector3 position)
+        {
+            if (groundAssemblyPoint == null) return false;
+            Vector3 offset = position - groundAssemblyPoint.position;
+            return Mathf.Abs(offset.y) <= 0.45f && Mathf.Abs(offset.x) <= 9.15f && Mathf.Abs(offset.z) <= 9.15f;
+        }
+
         private void ValidateRoutePoints()
         {
-            if (downStairStart == null || downStairAssist == null ||
-                downStairAssist1 == null || downStairAssist2 == null ||
-                downStairFinished == null)
+            if (downStairCheckpoints == null || downStairCheckpoints.Length == 0 ||
+                System.Array.Exists(downStairCheckpoints, checkpoint => checkpoint == null))
             {
-                Debug.LogError("Practice route requires Inspector references to all five DownStair waypoint transforms.", this);
+                Debug.LogError("Practice route requires the DownStair Assist checkpoints.", this);
+                enabled = false;
             }
 
             if (groundAssemblyPoint == null)
+            {
                 Debug.LogError("Practice requires the G floor assembly point.", this);
+                enabled = false;
+            }
+            if (teleportEndTarget == null)
+            {
+                Debug.LogError("Both routes require an active Teleport End landing point in the G floor courtyard. Check its scene position and TeleportationAnchor target.", this);
+                enabled = false;
+            }
             if (elizabethEndDialogue == null)
                 Debug.LogError("Practice endpoint requires the End NPC dialogue reference.", this);
         }
@@ -270,10 +336,7 @@ namespace CampusEmergency.UI
                 !elizabethEndDialogue.isActiveAndEnabled)
                 return;
 
-            bool nearEndpoint = IsRouteDestination(playerPosition, groundAssemblyPoint);
-            bool nearNpc = (playerPosition - elizabethEndDialogue.transform.position).sqrMagnitude <=
-                RoutePointTolerance * RoutePointTolerance;
-            if (!nearEndpoint && !nearNpc)
+            if (!IsAtTeleportEnd(playerPosition))
                 return;
             if (routeProgress != RouteProgress.Completed)
             {
@@ -281,16 +344,20 @@ namespace CampusEmergency.UI
                 {
                     nextIncompleteEndNoticeTime = Time.unscaledTime + 10f;
                     SoundNotice.Show("PRACTICE NOT COMPLETE", (routeChangeExercise == null || !routeChangeExercise.HasStarted || routeChangeExercise.RecoveryCompleted)
-                        ? "Follow the stair checkpoints in order before finishing the exercise."
+                        ? nextStairCheckpoint < downStairCheckpoints.Length
+                            ? "Missing checkpoint: " + downStairCheckpoints[nextStairCheckpoint].name + ". Reach it before returning to Teleport End."
+                            : "Stand on the Teleport End landing point to finish."
                         : routeChangeExercise.Objective);
                 }
                 return;
             }
 
             hudCanvasObject.SetActive(false);
+            guideCanvasObject.SetActive(false);
+            SoundNotice.HideCurrent();
             elizabethGuideDialogue?.ResetDialogue();
-            elizabethEndDialogue.ShowCompletionDialogue(ReturnToSpawn);
             endDialogueTriggered = true;
+            elizabethEndDialogue.ShowCompletionDialogue(ReturnToSpawn, ExitPractice);
         }
 
         private void ReturnToSpawn()
@@ -438,87 +505,53 @@ namespace CampusEmergency.UI
 
         private void AdvanceRoute(Vector3 destination)
         {
-            if (introductionPending || !routeSelected || isPaused) return;
-            if (routeChangeExercise != null && routeChangeExercise.HasStarted &&
-                !routeChangeExercise.RecoveryCompleted)
+            if (introductionPending || !routeSelected || isPaused || routeProgress == RouteProgress.Completed) return;
+            if (routeChangeExercise != null && routeChangeExercise.HasStarted && !routeChangeExercise.RecoveryCompleted)
                 return;
-            if (downStairStart == null || downStairAssist == null ||
-                downStairAssist1 == null || downStairAssist2 == null ||
-                downStairFinished == null || routeProgress == RouteProgress.Completed)
+            if (downStairCheckpoints == null || downStairCheckpoints.Length == 0 || teleportEnd == null || groundAssemblyPoint == null)
                 return;
 
-            switch (routeProgress)
+            if (nextStairCheckpoint < downStairCheckpoints.Length)
             {
-                case RouteProgress.AwaitingStart when IsRouteDestination(destination, downStairStart):
+                Transform checkpoint = downStairCheckpoints[nextStairCheckpoint];
+                if (!IsRouteDestination(destination, checkpoint)) return;
+                if (nextStairCheckpoint == 0)
+                {
                     CampusAudioDirector.Instance?.BeginEmergency();
-                    routeProgress = RouteProgress.RouteChoiceStarted;
-                    currentTaskIndex = 1;
-                    currentObjective = "At the DownStair corner, read the signs and choose the stair route towards G.";
-                    currentFloor = "3F";
-                    floorTrackingConnected = true;
                     onTeleportCornerReached?.Invoke();
-                    break;
-                case RouteProgress.RouteChoiceStarted when IsRouteDestination(destination, downStairAssist):
-                    routeProgress = RouteProgress.EnteredStairs;
-                    completedTasks[1] = true;
-                    currentTaskIndex = 2;
-                    currentObjective = "You have entered the stair route. Follow the next marked landing.";
-                    currentFloor = "3F";
-                    break;
-                case RouteProgress.EnteredStairs when IsRouteDestination(destination, downStairAssist1):
-                    routeProgress = RouteProgress.ReachedAssist1;
-                    completedTasks[2] = true;
-                    currentTaskIndex = 3;
-                    currentObjective = "Stair landing 1 reached. Continue by following the stair route.";
-                    currentFloor = "3F";
-                    break;
-                case RouteProgress.ReachedAssist1 when IsRouteDestination(destination, downStairAssist2):
-                    routeProgress = RouteProgress.ReachedAssist2;
-                    completedTasks[3] = true;
-                    currentTaskIndex = 4;
-                    currentObjective = "Stair landing 2 reached. Continue to the marked 2F landing, then descend to G.";
-                    currentFloor = "2F";
-                    break;
-                case RouteProgress.ReachedAssist2 when IsRouteDestination(destination, downStairFinished):
-                    routeProgress = RouteProgress.DescendingToGround;
-                    completedTasks[4] = true;
-                    currentTaskIndex = 5;
-                    currentObjective = "Continue down the stairs through 1F to G. Follow the floor labels.";
-                    currentFloor = "2F";
-                    break;
-                case RouteProgress.DescendingToGround when destination.y < 4.6f && destination.y > 2f:
-                    if (completedTasks[5]) return;
-                    completedTasks[5] = true;
-                    currentTaskIndex = 6;
-                    currentFloor = "1F";
-                    currentObjective = "One floor to go. Continue down to G, then enter the courtyard.";
-                    break;
-                case RouteProgress.DescendingToGround when groundAssemblyPoint != null &&
-                    Mathf.Abs(destination.y - groundAssemblyPoint.position.y) < 0.6f:
-                    routeProgress = RouteProgress.ReachedGround;
-                    completedTasks[5] = completedTasks[6] = true;
-                    currentTaskIndex = 7;
-                    currentFloor = "G";
-                    currentObjective = "Follow ASSEMBLY POINT signs into the central courtyard on G.";
-                    break;
-                case RouteProgress.ReachedGround when groundAssemblyPoint != null && IsRouteDestination(destination, groundAssemblyPoint):
-                    routeProgress = RouteProgress.Completed;
-                    completedTasks[4] = true;
-                    completedTasks[5] = true;
-                    completedTasks[6] = completedTasks[7] = true;
-                    currentTaskIndex = 7;
-                    currentObjective = "You reached the G floor assembly point. Stay here and review your practice.";
-                    currentFloor = "G";
-                    break;
-                default:
-                    return;
+                }
+                completedTasks[nextStairCheckpoint + 1] = true;
+                nextStairCheckpoint++;
+                routeProgress = nextStairCheckpoint == downStairCheckpoints.Length
+                    ? RouteProgress.ReachedGround : RouteProgress.FollowingStairs;
+                currentTaskIndex = nextStairCheckpoint + 1;
+                floorTrackingConnected = true;
+                float height = CampusAudioDirector.WaypointPosition(checkpoint).y - groundAssemblyPoint.position.y;
+                int floor = Mathf.Clamp(Mathf.CeilToInt((height - 0.1f) / 4f), 0, 3);
+                currentFloor = floor == 0 ? "G" : floor + "F";
+                currentObjective = nextStairCheckpoint < downStairCheckpoints.Length
+                    ? "Follow the stairs to " + downStairCheckpoints[nextStairCheckpoint].name + "."
+                    : "All stair checkpoints reached. Stand on Teleport End in the G floor courtyard to finish.";
+                CampusAudioDirector.Instance?.PlayCorrect();
+                UpdateNavigationHud();
+                return;
             }
 
-            if (routeProgress == RouteProgress.Completed)
-                CampusAudioDirector.Instance?.CompleteAssembly();
-            else
-                CampusAudioDirector.Instance?.PlayCorrect();
+            if (!IsAtTeleportEnd(destination)) return;
+            routeProgress = RouteProgress.Completed;
+            completedTasks[completedTasks.Length - 1] = true;
+            currentTaskIndex = completedTasks.Length - 1;
+            currentFloor = "G";
+            currentObjective = "You reached Teleport End. Your practice is complete.";
+            CampusAudioDirector.Instance?.CompleteAssembly();
             UpdateNavigationHud();
+        }
+
+        private bool IsAtTeleportEnd(Vector3 position)
+        {
+            if (teleportEndTarget == null) return false;
+            Vector3 offset = position - teleportEndTarget.position;
+            return Mathf.Abs(offset.y) <= 0.45f && offset.x * offset.x + offset.z * offset.z <= 0.8f * 0.8f;
         }
 
         private void BeginRouteExercise()
@@ -541,7 +574,7 @@ namespace CampusEmergency.UI
             routeSelected = true;
             currentTaskIndex = 1;
             currentObjective = routeChangeExercise != null && routeChangeExercise.HasStarted
-                ? routeChangeExercise.Objective : "Route 1 selected. Follow the corridor to the stairs, then descend to G.";
+                ? routeChangeExercise.Objective : "Follow the corridor to the first DownStair Assist, then follow the stair checkpoints to G.";
             elizabethGuideDialogue?.ResetDialogue();
             hudCanvasObject.SetActive(true);
             PositionPanelInFront(hudCanvasObject, InitialHudDistance, -0.38f);
@@ -1008,7 +1041,7 @@ namespace CampusEmergency.UI
             if (routeProgress == RouteProgress.AwaitingStart)
                 taskLines.Append(routeChangeExercise != null && routeChangeExercise.HasStarted
                     ? "\nReroute exercise: " + routeChangeExercise.Objective
-                    : "\nContinue to the DownStair corner to begin route practice.");
+                    : "\nReach the first DownStair Assist to begin the stair checkpoints.");
 
             return taskLines.ToString();
         }

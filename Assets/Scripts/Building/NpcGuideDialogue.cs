@@ -43,7 +43,7 @@ namespace CampusEmergency.Building
         private Coroutine hideCoroutine;
         private string persistentMessage;
         private float nextVoiceTime;
-        private enum GuideCard { None, Introduction, Tasks, Completion, Review }
+        private enum GuideCard { None, Introduction, Tasks, Completion, CompletionActions, ExitConfirmation }
         private const string SafetyReview =
             "SAFETY REVIEW\n\n" +
             "Use the designated stairs during a fire alarm. Lifts may become unsafe or unavailable.\n\n" +
@@ -59,6 +59,7 @@ namespace CampusEmergency.Building
         private Button completionContinueButton;
         private Button completionBackButton;
         private UnityEngine.Events.UnityAction returnToStartAction;
+        private UnityEngine.Events.UnityAction exitPracticeAction;
 
         private void OnValidate()
         {
@@ -354,9 +355,10 @@ namespace CampusEmergency.Building
         private void ApplyGuideCardLayout()
         {
             bool tasks = guideCard == GuideCard.Tasks;
-            bool completion = guideCard == GuideCard.Completion || guideCard == GuideCard.Review;
+            bool completion = guideCard == GuideCard.Completion || guideCard == GuideCard.CompletionActions ||
+                guideCard == GuideCard.ExitConfirmation;
             Vector2 size = tasks ? new Vector2(1700f, hasRouteExerciseButton ? 1200f : 1050f) :
-                guideCard == GuideCard.Review ? new Vector2(1250f, 1050f) : new Vector2(1250f, 650f);
+                guideCard == GuideCard.Completion ? new Vector2(1250f, 1050f) : new Vector2(1250f, 650f);
             float heightOffset = completion ? 0.4f + (size.y - panelHeight) * bubbleScale * 0.5f :
                 0.5f;
             speechBubbleRoot.transform.localPosition =
@@ -370,11 +372,11 @@ namespace CampusEmergency.Building
                 tasks ? new Vector2(rerouteGuideActive ? 0.96f : 0.49f, 0.80f) : new Vector2(0.95f, 0.80f));
             if (continueButton != null)
             {
-                continueButton.gameObject.SetActive(!tasks || hasRouteExerciseButton);
+                continueButton.gameObject.SetActive(guideCard != GuideCard.ExitConfirmation && (!tasks || hasRouteExerciseButton));
                 SetAnchors(continueButton.transform,
                     new Vector2(tasks && hasRouteExerciseButton ? 0.52f : 0.30f, tasks ? 0.02f : 0.06f),
                     new Vector2(tasks && hasRouteExerciseButton ? 0.97f : 0.70f, tasks ? 0.12f : 0.26f));
-                if (guideCard == GuideCard.Completion && returnToStartAction != null)
+                if (guideCard == GuideCard.CompletionActions)
                     SetAnchors(continueButton.transform, new Vector2(0.30f, 0.18f), new Vector2(0.70f, 0.30f));
             }
             if (directRouteButton != null)
@@ -382,7 +384,7 @@ namespace CampusEmergency.Building
                 directRouteButton.gameObject.SetActive(tasks && hasDirectRouteButton);
                 SetAnchors(directRouteButton.transform, new Vector2(0.04f, 0.02f), new Vector2(0.48f, 0.12f));
             }
-            bool showCompletionActions = guideCard == GuideCard.Completion && returnToStartAction != null;
+            bool showCompletionActions = guideCard == GuideCard.CompletionActions || guideCard == GuideCard.ExitConfirmation;
             if (completionContinueButton != null)
             {
                 completionContinueButton.gameObject.SetActive(showCompletionActions);
@@ -469,43 +471,73 @@ namespace CampusEmergency.Building
                 voiceAudioSource.Play();
         }
 
-        public void ShowCompletionDialogue(UnityEngine.Events.UnityAction onReturnToStart = null)
+        public void ShowCompletionDialogue(UnityEngine.Events.UnityAction onReturnToStart = null,
+            UnityEngine.Events.UnityAction onExit = null)
         {
             returnToStartAction = onReturnToStart;
+            exitPracticeAction = onExit;
             TriggerDialogue();
             ShowCompletionCard();
         }
 
         private void ShowCompletionCard()
         {
-            ShowPersistentDialogue("G FLOOR — PRACTICE COMPLETE", "You reached the courtyard assembly point. Stay here, keep access clear, and wait for instructions.");
+            ShowPersistentDialogue("G FLOOR — PRACTICE COMPLETE",
+                "You reached the courtyard assembly point. Stay here, keep access clear, and wait for instructions.\n\n" + SafetyReview);
             guideCard = GuideCard.Completion;
-            ConfigureCardButton("Review safety", ShowSafetyReview);
-            if (returnToStartAction != null)
-            {
-                Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
-                if (completionContinueButton == null)
-                {
-                    completionContinueButton = CreateCardButton("Continue Experience", panel);
-                    completionContinueButton.GetComponentInChildren<Text>().text = "Close results";
-                    completionContinueButton.onClick.AddListener(() => speechBubbleRoot.SetActive(false));
-                }
-                if (completionBackButton == null)
-                {
-                    completionBackButton = CreateCardButton("Return To Start", panel);
-                    completionBackButton.GetComponentInChildren<Text>().text = "Restart in classroom";
-                }
-                completionBackButton.onClick.RemoveAllListeners();
-                completionBackButton.onClick.AddListener(returnToStartAction);
-            }
+            ConfigureCardButton("Continue", ShowCompletionActions);
             ApplyGuideCardLayout();
+            CampusAudioDirector.Instance?.PlayPopup();
+        }
+
+        private void ShowCompletionActions()
+        {
+            ShowPersistentDialogue("PRACTICE FINISHED — NEXT STEPS",
+                "Read safety tips, return to the classroom, or end the practice.");
+            guideCard = GuideCard.CompletionActions;
+            ConfigureCardButton("Safety tips", ShowSafetyReview);
+            Transform panel = speechBubbleRoot.transform.Find("PanelBackground");
+            if (completionContinueButton == null)
+            {
+                completionContinueButton = CreateCardButton("End Practice", panel);
+            }
+            completionContinueButton.GetComponentInChildren<Text>().text = "End";
+            completionContinueButton.interactable = true;
+            completionContinueButton.onClick.RemoveAllListeners();
+            completionContinueButton.onClick.AddListener(ShowExitConfirmation);
+            if (completionBackButton == null)
+            {
+                completionBackButton = CreateCardButton("Return To Start", panel);
+            }
+            completionBackButton.GetComponentInChildren<Text>().text = "Return to classroom";
+            completionBackButton.onClick.RemoveAllListeners();
+            completionBackButton.interactable = returnToStartAction != null;
+            if (returnToStartAction != null)
+                completionBackButton.onClick.AddListener(returnToStartAction);
+            ApplyGuideCardLayout();
+            CampusAudioDirector.Instance?.PlayPopup();
         }
 
         private void ShowSafetyReview()
         {
-            ShowPersistentDialogue("SCENE 1 REVIEW", SafetyReview);
-            guideCard = GuideCard.Review;
-            ConfigureCardButton("Back to results", ShowCompletionCard);
+            ShowCompletionCard();
+        }
+
+        private void ShowExitConfirmation()
+        {
+            ShowPersistentDialogue("EXIT PRACTICE?",
+                "Do you want to exit?\n\nYes: exit the application.\nNo: return to the classroom and start again.");
+            guideCard = GuideCard.ExitConfirmation;
+            completionContinueButton.GetComponentInChildren<Text>().text = "Yes, exit";
+            completionContinueButton.onClick.RemoveAllListeners();
+            completionContinueButton.interactable = exitPracticeAction != null;
+            if (exitPracticeAction != null)
+                completionContinueButton.onClick.AddListener(exitPracticeAction);
+            completionBackButton.GetComponentInChildren<Text>().text = "No, return to classroom";
+            completionBackButton.onClick.RemoveAllListeners();
+            completionBackButton.interactable = returnToStartAction != null;
+            if (returnToStartAction != null)
+                completionBackButton.onClick.AddListener(returnToStartAction);
             ApplyGuideCardLayout();
             CampusAudioDirector.Instance?.PlayPopup();
         }
@@ -593,6 +625,7 @@ namespace CampusEmergency.Building
             persistentMessage = null;
             guideCard = GuideCard.None;
             returnToStartAction = null;
+            exitPracticeAction = null;
             if (completionContinueButton != null)
                 completionContinueButton.gameObject.SetActive(false);
             if (completionBackButton != null)
