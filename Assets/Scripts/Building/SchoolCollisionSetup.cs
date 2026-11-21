@@ -36,6 +36,13 @@ namespace CampusEmergency.Building
                 var materials = renderer.sharedMaterials;
                 for (int i = 0; i < materials.Length; i++) materials[i] = finish;
                 renderer.sharedMaterials = materials;
+                Bounds bounds = GetCampusBounds(mesh);
+                bool woodSurface = Mathf.Abs(bounds.size.y - 0.22f) < 0.015f &&
+                    Mathf.Max(bounds.size.x, bounds.size.z) > 1f;
+                bool courtyardEnclosure = bounds.size.y > 1f && bounds.size.y < 1.3f &&
+                    bounds.min.x >= -9.2f && bounds.max.x <= 9.2f &&
+                    bounds.min.z >= -9.2f && bounds.max.z <= 9.2f;
+                ApplyFinishProperties(renderer, woodSurface, courtyardEnclosure);
             }
             foreach (float x in new[] { -6.5f, 6.5f })
             {
@@ -54,6 +61,33 @@ namespace CampusEmergency.Building
             }
         }
 
+        private Bounds GetCampusBounds(MeshFilter meshFilter)
+        {
+            Bounds meshBounds = meshFilter.sharedMesh.bounds;
+            Matrix4x4 meshToCampus = transform.worldToLocalMatrix * meshFilter.transform.localToWorldMatrix;
+            var bounds = new Bounds(meshToCampus.MultiplyPoint3x4(meshBounds.center), Vector3.zero);
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 offset = new Vector3(
+                    (corner & 1) == 0 ? -meshBounds.extents.x : meshBounds.extents.x,
+                    (corner & 2) == 0 ? -meshBounds.extents.y : meshBounds.extents.y,
+                    (corner & 4) == 0 ? -meshBounds.extents.z : meshBounds.extents.z);
+                bounds.Encapsulate(meshToCampus.MultiplyPoint3x4(meshBounds.center + offset));
+            }
+            return bounds;
+        }
+
+        private void ApplyFinishProperties(Renderer renderer, bool woodSurface, bool courtyardEnclosure)
+        {
+            var properties = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(properties);
+            properties.SetMatrix("_WorldToCampus", transform.worldToLocalMatrix);
+            properties.SetVector("_CampusUp", transform.up);
+            properties.SetFloat("_WoodSurface", woodSurface ? 1f : 0f);
+            properties.SetFloat("_SolidAccent", courtyardEnclosure ? 1f : 0f);
+            renderer.SetPropertyBlock(properties);
+        }
+
         private void CreateCourtyardDetail(string label, Vector3 position, Vector3 scale, Material material)
         {
             var detail = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -62,6 +96,7 @@ namespace CampusEmergency.Building
             detail.transform.localPosition = position;
             detail.transform.localScale = scale;
             detail.GetComponent<Renderer>().sharedMaterial = material;
+            ApplyFinishProperties(detail.GetComponent<Renderer>(), label == "Courtyard seat", label != "Courtyard seat");
         }
 
         private void OnDestroy()

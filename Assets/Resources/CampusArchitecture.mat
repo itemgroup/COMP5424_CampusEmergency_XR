@@ -28,9 +28,15 @@ Material:
     - _Cull: 2
     - _Surface: 0
     - _ZWrite: 1
+    - _StoreyHeight: 4
+    - _WallSplitHeight: 1.85
+    - _CourtyardHalfSize: 9
+    - _WoodSurface: 0
+    - _SolidAccent: 0
     m_Colors:
-    - _BaseColor: {r: 0.83, g: 0.79, b: 0.69, a: 1}
-    - _AccentColor: {r: 0.08, g: 0.32, b: 0.34, a: 1}
-    - _FloorColor: {r: 0.40, g: 0.45, b: 0.46, a: 1}
+    - _BaseColor: {r: 0.96, g: 0.97, b: 0.98, a: 1}
+    - _AccentColor: {r: 0.64, g: 0.81, b: 0.91, a: 1}
+    - _FloorColor: {r: 0.65, g: 0.43, b: 0.25, a: 1}
+    - _CourtyardColor: {r: 0.69, g: 0.84, b: 0.65, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

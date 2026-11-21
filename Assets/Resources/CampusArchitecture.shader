@@ -3,9 +3,15 @@ Shader "Campus/Architecture"
     Properties
     {
         _BaseMap("Base", 2D) = "white" {}
-        _BaseColor("Wall", Color) = (0.83,0.79,0.69,1)
-        _AccentColor("Wayfinding band", Color) = (0.08,0.32,0.34,1)
-        _FloorColor("Stone floor", Color) = (0.40,0.45,0.46,1)
+        _BaseColor("Upper wall", Color) = (0.96,0.97,0.98,1)
+        _AccentColor("Lower wall and courtyard enclosure", Color) = (0.64,0.81,0.91,1)
+        _FloorColor("Wood floor and stairs", Color) = (0.65,0.43,0.25,1)
+        _CourtyardColor("Ground courtyard floor", Color) = (0.69,0.84,0.65,1)
+        _StoreyHeight("Storey height", Float) = 4
+        _WallSplitHeight("Lower wall height", Float) = 1.85
+        _CourtyardHalfSize("Courtyard half size", Float) = 9
+        [HideInInspector] _WoodSurface("Wood surface", Float) = 0
+        [HideInInspector] _SolidAccent("Courtyard enclosure", Float) = 0
         _Cutoff("Cutoff", Float) = 0.5
         _Cull("Cull", Float) = 2
     }
@@ -23,9 +29,12 @@ Shader "Campus/Architecture"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             CBUFFER_START(UnityPerMaterial)
-            half4 _BaseColor, _AccentColor, _FloorColor;
+            half4 _BaseColor, _AccentColor, _FloorColor, _CourtyardColor;
             float4 _BaseMap_ST;
             float _Cutoff, _Cull;
+            float _StoreyHeight, _WallSplitHeight, _CourtyardHalfSize, _WoodSurface, _SolidAccent;
+            float4x4 _WorldToCampus;
+            float4 _CampusUp;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
             struct Varyings { float4 positionCS:SV_POSITION; float3 positionWS:TEXCOORD0; half3 normalWS:TEXCOORD1; half fog:TEXCOORD2; UNITY_VERTEX_OUTPUT_STEREO };
@@ -44,13 +53,21 @@ Shader "Campus/Architecture"
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 half3 normal = normalize(i.normalWS);
-                float height = frac((i.positionWS.y + 0.001) / 4.0) * 4.0;
-                float band = step(0.72, height) * (1.0-step(1.08,height));
-                half3 wall = lerp(_BaseColor.rgb, _AccentColor.rgb, band);
-                float2 grid = abs(frac(i.positionWS.xz)-0.5);
-                float seam = smoothstep(0.485,0.499,max(grid.x,grid.y));
-                half3 floor = lerp(_FloorColor.rgb, _FloorColor.rgb*0.72,seam);
-                half3 color = lerp(wall,floor,step(0.8,normal.y));
+                float3 campusPosition = mul(_WorldToCampus, float4(i.positionWS, 1.0)).xyz;
+                float storeyHeight = max(_StoreyHeight, 0.01);
+                float height = frac((campusPosition.y + 0.001) / storeyHeight) * storeyHeight;
+                half3 wall = lerp(_AccentColor.rgb, _BaseColor.rgb, step(_WallSplitHeight, height));
+                float grain = sin(campusPosition.x * 65.0 + sin(campusPosition.z * 3.0) * 0.6);
+                float plankEdge = abs(frac(campusPosition.x / 0.25) - 0.5);
+                float seam = smoothstep(0.48, 0.5, plankEdge);
+                half3 wood = _FloorColor.rgb * (0.96 + grain * 0.04) * (1.0 - seam * 0.12);
+                float upward = step(0.8, dot(normal, normalize(_CampusUp.xyz)));
+                float courtyard = (1.0 - step(_CourtyardHalfSize, max(abs(campusPosition.x), abs(campusPosition.z)))) *
+                    (1.0 - step(0.08, abs(campusPosition.y)));
+                half3 floor = lerp(wood, _CourtyardColor.rgb, courtyard);
+                half3 color = lerp(wall, floor, upward);
+                color = lerp(color, wood, _WoodSurface);
+                color = lerp(color, _AccentColor.rgb, _SolidAccent);
                 Light light = GetMainLight();
                 half3 illumination = max(SampleSH(normal),half3(0.35,0.35,0.35)) + light.color*saturate(dot(normal,light.direction))*0.6;
                 return half4(MixFog(color*illumination,i.fog),1);
